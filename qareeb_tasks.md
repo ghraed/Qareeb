@@ -81,7 +81,7 @@ Dependencies: seeker tasks require Q03; Q04 requires Q05; Q08 builds on Q07; Q06
 | Q12 | Provider profile editing | Implemented; verify | Done |
 | Q13 | Provider dashboard | Implemented; fix/verify | Pending |
 | Q14 | Provider location | Implemented; verify | Done |
-| Q15 | Provider availability | Implemented; verify | Pending |
+| Q15 | Provider availability | Implemented; verify | Done |
 | Q16 | Provider pictures | Implemented; verify | Done |
 | Q17 | #Hiring banner | Partial; refine | Pending |
 | Q18 | Add Photography | Change | Done |
@@ -248,9 +248,9 @@ For each task append:
 - Next eligible task
 
 ## Resume checkpoint
-- Current task: Q15
-- Last completed task/commit: Q11 (hash below after commit)
-- Next action: Inspect and execute Q15 following task specification; preserve user edits and use isolated commit index.
+- Current task: Q13
+- Last completed task/commit: Q15 (hash below after commit)
+- Next action: Inspect and execute Q13 following task specification; preserve user edits and use isolated commit index.
 
 
 ## Initial repository evidence
@@ -352,7 +352,15 @@ For each task append:
 ### Q11 — Provider completion percentage — Done
 - Centralized nine completion fields and shared business-edit validation rules in BusinessProfile. Completion counts valid persisted field values, rejects stale retired categories/orphan cities/invalid phones and invalid image references, excludes email; no stored percentage.
 - Shared accessible completion component displays percent and missing guidance consistently in dashboard/editor. Files: BusinessProfile/request, completion component, dashboard/editor, completion and identity tests.
-- Checks: SQLite focused completion/identity/profile/category group: 14 tests / 159 assertions passed; empty=0, email-less complete=100, removed phone=89, invalid phone/category/city=67; both views verified. Pint/diff check passed.
+- Checks: SQLite focused completion/identity/profile/category group: 14 tests / 158 assertions passed; empty=0, email-less complete=100, removed phone=89, invalid phone/category/city=67; both views verified. Pint/diff check passed.
 - Stored image paths are validated as owning managed references, without filesystem reads on completion rendering. Q16 approval timeout resolved by successful retry (e18cd12); Done status restored in tracker.
-- Commit: pending recording immediately after commit.
+- Commit: `0c7380ed47609d75db157a67f179d094ff42146e`.
 - Next: Q15.
+
+### Q15 — Provider availability — Done
+- Fixed dashboard to use is_available_for_hire; added working enquiry-availability toggle and inline errors. Ordinary profile saves now preserve availability unless explicitly submitted; editor toggle copy explains accepting work enquiries. Save failures return feedback without falsely claiming success.
+- Files: BusinessProfileController, dashboard/editor views, ProviderAvailabilityTest.
+- Checks: SQLite availability/auth/moderation group: 6 tests / 182 assertions passed; available/unavailable roundtrip and ordinary-edit persistence verified in dashboard/editor/public views; rejected invalid values and injected save failure; role/status denial and approval/reactivation unavailable covered by earlier tests. Diff check passed.
+- Directory availability display integration follows Q07; enquiry status is not a booking.
+- Commit: pending recording immediately after commit.
+- Next: Q13.

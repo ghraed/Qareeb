@@ -231,18 +231,21 @@
                         <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                             <div>
                                 <h2 class="q-heading text-2xl">Availability</h2>
-                                <p class="q-copy mt-1 text-sm">Control whether customers see you as available for new work.</p>
+                                <p class="q-copy mt-1 text-sm">Control whether Seekers see you as accepting enquiries for work.</p>
                             </div>
                             <span class="q-badge" x-text="available ? 'Available for hire' : 'Currently unavailable'"></span>
                         </div>
 
+                        @error('is_available_for_hire')
+                            <p class="mt-2 text-sm text-rose-700" role="alert">{{ $message }}</p>
+                        @enderror
                         <div class="mt-5 flex flex-wrap items-center gap-3">
                             <button
                                 type="submit"
                                 form="hiring-availability-toggle-form"
                                 class="{{ $profile->is_available_for_hire ? 'inline-flex items-center justify-center rounded-[1.15rem] border border-[#f0c9c9] bg-[#fff5f5] px-5 py-3 text-sm font-semibold text-[#9a3d3d] transition hover:bg-[#ffecec]' : 'q-button-secondary' }}"
                             >
-                                {{ $profile->is_available_for_hire ? 'Stop hiring now' : 'Start hiring now' }}
+                                {{ $profile->is_available_for_hire ? 'Mark unavailable' : 'Accept enquiries' }}
                             </button>
                             <p class="text-sm text-[#6b6b6b]">
                                 {{ $profile->is_available_for_hire ? 'This removes the hiring badge from your public profile immediately.' : 'This shows the hiring badge on your public profile immediately.' }}

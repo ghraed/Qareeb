@@ -70,7 +70,7 @@ class BusinessProfileController extends Controller
             'postal_code' => $request->string('postal_code')->toString() ?: null,
             'latitude' => null,
             'longitude' => null,
-            'is_available_for_hire' => $request->boolean('is_available_for_hire'),
+            ...($request->has('is_available_for_hire') ? ['is_available_for_hire' => $request->boolean('is_available_for_hire')] : []),
         ]);
 
         return redirect()
@@ -86,9 +86,15 @@ class BusinessProfileController extends Controller
 
         $isAvailable = (bool) $validated['is_available_for_hire'];
 
-        $request->user()->businessProfile->update([
-            'is_available_for_hire' => $isAvailable,
-        ]);
+        try {
+            if (! $request->user()->businessProfile->update(['is_available_for_hire' => $isAvailable])) {
+                throw new \RuntimeException('Availability save failed.');
+            }
+        } catch (\Throwable $exception) {
+            report($exception);
+
+            return back()->withErrors(['is_available_for_hire' => 'Availability could not be saved. Please try again.']);
+        }
 
         return back()->with(
             'status',

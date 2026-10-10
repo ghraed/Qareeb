@@ -36,7 +36,17 @@
                 <div class="mt-6 grid gap-4 sm:grid-cols-2">
                     <div class="q-panel p-5">
                         <p class="text-sm font-medium text-[#6b6b6b]">Availability status</p>
-                        <p class="mt-2 text-2xl font-semibold text-[#1f3b2e]">{{ $profile->is_available ? 'Available' : 'Unavailable' }}</p>
+                        <p class="mt-2 text-2xl font-semibold text-[#1f3b2e]">{{ $profile->is_available_for_hire ? 'Available' : 'Unavailable' }}</p>
+                        <p class="q-copy mt-2 text-sm">Availability means accepting enquiries for work.</p>
+                        <form method="POST" action="{{ route('business.profile.hiring-availability') }}" class="mt-4">
+                            @csrf
+                            @method('PATCH')
+                            <input type="hidden" name="is_available_for_hire" value="{{ $profile->is_available_for_hire ? 0 : 1 }}">
+                            <button class="q-button-secondary" type="submit">{{ $profile->is_available_for_hire ? 'Mark unavailable' : 'Accept enquiries' }}</button>
+                        </form>
+                        @error('is_available_for_hire')
+                            <p class="mt-2 text-sm text-rose-700" role="alert">{{ $message }}</p>
+                        @enderror
                     </div>
                     <div class="q-panel p-5">
                         <p class="text-sm font-medium text-[#6b6b6b]">Business name</p>
