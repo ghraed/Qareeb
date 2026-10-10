@@ -57,6 +57,9 @@
                         <div class="max-w-3xl">
                             <div class="flex flex-wrap items-center gap-3">
                                 <h3 class="font-serif text-3xl font-semibold text-[#1f3b2e]">{{ $provider->businessProfile?->business_name ?: $provider->name }}</h3>
+                                @if ($provider->businessProfile && $provider->businessProfile->categories === [])
+                                    <span class="q-badge">Needs work category correction</span>
+                                @endif
                                 <span class="rounded-full bg-[#ece4d0] px-4 py-2 text-sm font-semibold text-[#1f3b2e]">{{ $provider->account_status->label() }}</span>
                             </div>
                             <p class="mt-2 text-sm text-[#6b6b6b]">{{ $provider->email ?: ($provider->username ?: 'Email not provided') }} · Registered {{ $provider->created_at->diffForHumans() }}</p>
@@ -104,6 +107,9 @@
                             <div>
                                 <div class="flex flex-wrap items-center gap-3">
                                     <h3 class="font-serif text-2xl font-semibold text-[#1f3b2e]">{{ $provider->businessProfile?->business_name ?: $provider->name }}</h3>
+                                @if ($provider->businessProfile && $provider->businessProfile->categories === [])
+                                    <span class="q-badge">Needs work category correction</span>
+                                @endif
                                     <span class="rounded-full bg-[#e1efe3] px-4 py-2 text-sm font-semibold text-[#2e583b]">{{ $provider->account_status->label() }}</span>
                                 </div>
                                 <p class="mt-2 text-sm text-[#6b6b6b]">{{ $provider->email ?: ($provider->username ?: 'Email not provided') }}</p>
@@ -142,6 +148,9 @@
                             <div>
                                 <div class="flex flex-wrap items-center gap-3">
                                     <h3 class="font-serif text-2xl font-semibold text-[#1f3b2e]">{{ $provider->businessProfile?->business_name ?: $provider->name }}</h3>
+                                @if ($provider->businessProfile && $provider->businessProfile->categories === [])
+                                    <span class="q-badge">Needs work category correction</span>
+                                @endif
                                     <span @class([
                                         'rounded-full px-4 py-2 text-sm font-semibold',
                                         'bg-rose-100 text-rose-700' => $provider->account_status === AccountStatus::Rejected,

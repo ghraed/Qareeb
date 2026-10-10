@@ -3,6 +3,9 @@
 @section('title', 'Edit Business Profile')
 
 @section('content')
+    @if ($profile->categories === [])
+        <x-alert type="info" message="Choose at least one current work category so Seekers can find your services." class="mb-5" />
+    @endif
     @php
         $selectedDistricts = old('state', $profile->state);
         $selectedDistricts = is_array($selectedDistricts) ? array_values($selectedDistricts) : (filled($selectedDistricts) ? [$selectedDistricts] : []);

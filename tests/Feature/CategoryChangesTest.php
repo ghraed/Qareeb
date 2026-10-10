@@ -21,4 +21,29 @@ class CategoryChangesTest extends TestCase
         $this->assertSame(['Photography', 'Electrician'], $provider->businessProfile->refresh()->categories);
         $this->get(route('providers.show', $provider))->assertOk()->assertSee('Photography, Electrician');
     }
+
+    public function test_retired_category_migration_is_exact_idempotent_and_flags_empty_profiles(): void
+    {
+        $profiles = [];
+        foreach ([['Home Maintenance', 'Photography'], ['Computer Repair', 'Mobile Repair'], ['Mobile Repair', 'Mobile Repair Plus'], ['Electrician']] as $categories) {
+            $provider = User::factory()->serviceProvider()->create();
+            $profiles[] = $provider->businessProfile()->create(['categories' => $categories]);
+        }
+        $migration = require database_path('migrations/2026_10_10_000002_remove_retired_provider_categories.php');
+        $migration->up();
+        $this->assertSame(['Photography'], $profiles[0]->refresh()->categories);
+        $this->assertSame([], $profiles[1]->refresh()->categories);
+        $this->assertSame(['Mobile Repair Plus'], $profiles[2]->refresh()->categories);
+        $this->assertSame(['Electrician'], $profiles[3]->refresh()->categories);
+        $migration->up();
+        $this->assertSame(['Photography'], $profiles[0]->refresh()->categories);
+        $this->assertSame([], $profiles[1]->refresh()->categories);
+        $this->get(route('providers.show', $profiles[1]->user))->assertOk()->assertSee('No categories listed yet');
+        $this->actingAs($profiles[1]->user)->get(route('business.profile.edit'))->assertOk()->assertSee('Choose at least one current work category');
+        foreach (['Home Maintenance', 'Computer Repair', 'Mobile Repair'] as $category) {
+            $this->put(route('business.profile.update'), ['categories' => [$category]])->assertSessionHasErrors('categories.0');
+        }
+        $admin = User::factory()->admin()->create();
+        $this->actingAs($admin)->get(route('admin.dashboard'))->assertOk()->assertSee('Needs work category correction');
+    }
 }

@@ -254,14 +254,14 @@ class BusinessProfileFeatureTest extends TestCase
 
         $response = $this->actingAs($provider)->put(route('business.profile.update'), [
             'business_name' => 'Qareeb Works',
-            'categories' => ['Home Maintenance', 'Technical & Repair Services'],
+            'categories' => ['Electrician', 'Technical & Repair Services'],
         ]);
 
         $response->assertRedirect(route('business.profile.show'));
 
         $provider->businessProfile->refresh();
 
-        $this->assertSame(['Home Maintenance', 'Technical & Repair Services'], $provider->businessProfile->categories);
+        $this->assertSame(['Electrician', 'Technical & Repair Services'], $provider->businessProfile->categories);
     }
 
     public function test_profile_update_uses_authenticated_user_email_for_business_email(): void

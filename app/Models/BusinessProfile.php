@@ -16,7 +16,6 @@ class BusinessProfile extends Model
 
     public const WORK_CATEGORIES = [
         'Photography',
-        'Home Maintenance',
         'Agriculture and Seasonal Work',
         'Private Tutoring',
         'Technical & Repair Services',
@@ -29,8 +28,6 @@ class BusinessProfile extends Model
         'Cleaning',
         'HVAC',
         'Appliance Repair',
-        'Mobile Repair',
-        'Computer Repair',
         'Construction',
         'Interior Design',
         'Gardening',

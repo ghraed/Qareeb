@@ -22,7 +22,7 @@ class EditBusinessProfileViewTest extends TestCase
             'business_email' => 'contact@qareeb.test',
             'phone' => '+961 70 000 000',
             'description' => 'Trusted home services.',
-            'categories' => ['Home Maintenance', 'Technical & Repair Services'],
+            'categories' => ['Electrician', 'Technical & Repair Services'],
             'address' => 'Main street, building 12',
             'city' => 'Beirut',
             'state' => 'Beirut',
@@ -47,7 +47,7 @@ class EditBusinessProfileViewTest extends TestCase
         $this->assertStringContainsString('value="+961 70 000 000"', $html);
         $this->assertStringContainsString('Trusted home services.', $html);
         $this->assertStringContainsString('name="categories[]"', $html);
-        $this->assertStringContainsString('Home Maintenance, Technical &amp; Repair Services', $html);
+        $this->assertStringContainsString('Electrician, Technical &amp; Repair Services', $html);
         $this->assertStringContainsString('value="Main street, building 12"', $html);
         $this->assertStringContainsString('name="state[]"', $html);
         $this->assertStringContainsString('name="city[]"', $html);

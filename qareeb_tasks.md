@@ -85,7 +85,7 @@ Dependencies: seeker tasks require Q03; Q04 requires Q05; Q08 builds on Q07; Q06
 | Q16 | Provider pictures | Implemented; verify | Pending |
 | Q17 | #Hiring banner | Partial; refine | Pending |
 | Q18 | Add Photography | Change | Done |
-| Q19 | Remove three categories | Change | Pending |
+| Q19 | Remove three categories | Change | Done |
 | Q20 | Moving → Transportation | Change | Pending |
 | Q21 | Provider preregistration | Existing flow; clarify/verify | Done |
 | Q22 | Optional email | Change | Done |
@@ -248,9 +248,9 @@ For each task append:
 - Next eligible task
 
 ## Resume checkpoint
-- Current task: Q19
-- Last completed task/commit: Q18 (hash below after commit)
-- Next action: Inspect and execute Q19 following task specification; preserve user edits and use isolated commit index.
+- Current task: Q20
+- Last completed task/commit: Q19 (hash below after commit)
+- Next action: Inspect and execute Q20 following task specification; preserve user edits and use isolated commit index.
 
 
 ## Initial repository evidence
@@ -306,5 +306,13 @@ For each task append:
 - Added Photography to the single BusinessProfile WORK_CATEGORIES definition used by validation, editor options, preview and public display; no duplicate list. Directory integration uses this same definition in Q07.
 - Files: BusinessProfile, CategoryChangesTest. Checks: SQLite CategoryChangesTest: 1 test / 7 assertions passed; editor/public HTTP rendering and mixed-category persistence verified; diff check passed.
 - Dependency clarification: category definition tasks establish accepted filter labels; directory UI/filter integration follows Q03/Q07, avoiding premature seeker implementation.
-- Commit: pending recording immediately after commit.
+- Commit: `e27f88904ab799be2af01e1b06907ed14ece805a`.
 - Next: Q19.
+
+### Q19 — Remove three retired categories — Done
+- Removed exact Home Maintenance, Computer Repair and Mobile Repair from central options/validation. Added idempotent data migration preserving all other labels; logs affected count and category-less profile IDs. Editor/admin visibly flag category-less profiles; public empty profiles render safely.
+- Files: category model/fixtures, retired-category migration, provider editor/admin dashboard, CategoryChangesTest.
+- Checks: SQLite CategoryChangesTest|ProviderPreregistrationTest: 3 tests / 46 assertions passed; migration run twice on fixtures (3 affected, 1 category-less first run; 0 affected on rerun); exact similar labels preserved; retired labels rejected. Pint/diff check passed.
+- Stored data inspection is limited to local fixtures; actual deployment counts will be logged by migration. No application/production database read or migrated. Irreversible removal down intentionally does not fabricate past assignments.
+- Commit: pending recording immediately after commit.
+- Next: Q20.
