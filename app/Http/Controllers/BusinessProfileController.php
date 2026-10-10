@@ -22,7 +22,10 @@ class BusinessProfileController extends Controller
 
     public function edit(): View
     {
-        $user = request()->user()->loadMissing('businessProfile');
+        $user = request()->user()->load('businessProfile');
+        if (! $user->businessProfile) {
+            $user->setRelation('businessProfile', $user->businessProfile()->firstOrCreate([], ['business_email' => $user->email, 'is_available_for_hire' => false]));
+        }
 
         return view('business.profile.edit', [
             'user' => $user,

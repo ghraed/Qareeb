@@ -79,7 +79,7 @@ Dependencies: seeker tasks require Q03; Q04 requires Q05; Q08 builds on Q07; Q06
 | Q10 | Provider login | Implemented; verify | Done |
 | Q11 | Provider completion percentage | Implemented; adjust/verify | Done |
 | Q12 | Provider profile editing | Implemented; verify | Done |
-| Q13 | Provider dashboard | Implemented; fix/verify | Pending |
+| Q13 | Provider dashboard | Implemented; fix/verify | Done |
 | Q14 | Provider location | Implemented; verify | Done |
 | Q15 | Provider availability | Implemented; verify | Done |
 | Q16 | Provider pictures | Implemented; verify | Done |
@@ -248,9 +248,9 @@ For each task append:
 - Next eligible task
 
 ## Resume checkpoint
-- Current task: Q13
-- Last completed task/commit: Q15 (hash below after commit)
-- Next action: Inspect and execute Q13 following task specification; preserve user edits and use isolated commit index.
+- Current task: Q24
+- Last completed task/commit: Q13 (hash below after commit)
+- Next action: Inspect and execute Q24 following task specification; preserve user edits and use isolated commit index.
 
 
 ## Initial repository evidence
@@ -362,5 +362,13 @@ For each task append:
 - Files: BusinessProfileController, dashboard/editor views, ProviderAvailabilityTest.
 - Checks: SQLite availability/auth/moderation group: 6 tests / 182 assertions passed; available/unavailable roundtrip and ordinary-edit persistence verified in dashboard/editor/public views; rejected invalid values and injected save failure; role/status denial and approval/reactivation unavailable covered by earlier tests. Diff check passed.
 - Directory availability display integration follows Q07; enquiry status is not a booking.
-- Commit: pending recording immediately after commit.
+- Commit: `ab36d04aa4429b461ce09ed3481629d7894030ab`.
 - Next: Q13.
+
+### Q13 — Provider dashboard — Done
+- Replaced fictitious upcoming tools with persisted business summary; fixed misleading empty/active wording. Dashboard/editor load current profile state and safely recover a missing legacy active-provider profile with unavailable default. Q15 already corrected the is_available mismatch.
+- Files: dashboard, dashboard/profile controllers, ProviderDashboardTest.
+- Checks: SQLite dashboard/completion/availability/auth group: 6 tests / 164 assertions passed; identity/details/location/category/phone, completion, working links and availability agree across views; empty legacy profile recovers once. Diff check passed.
+- No fabricated metrics, bookings or payment activity; profile creation checked only in isolated test databases.
+- Commit: pending recording immediately after commit.
+- Next: Q24.

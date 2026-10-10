@@ -28,7 +28,7 @@
                 <div class="flex flex-col items-start gap-4 sm:flex-row sm:justify-between">
                     <div>
                         <h2 class="font-serif text-2xl font-semibold text-[#1f3b2e]">Profile completion</h2>
-                        <p class="mt-2 text-sm leading-6 text-[#6b6b6b]">Your empty business profile has already been created. Add your business details to strengthen your public presence.</p>
+                        <p class="mt-2 text-sm leading-6 text-[#6b6b6b]">Keep your business details complete so Seekers can understand your services.</p>
                     </div>
                     <span class="rounded-full bg-[#f3f0e5] px-4 py-2 text-sm font-semibold text-[#1f3b2e]">{{ $profileCompletion }}% complete</span>
                 </div>
@@ -65,13 +65,16 @@
                         </div>
                         <div class="q-panel p-4">
                             <p class="font-semibold text-[#1f3b2e]">Configure availability</p>
-                            <p class="mt-1 text-sm text-[#6b6b6b]">Control whether new customers can see you as active.</p>
+                            <p class="mt-1 text-sm text-[#6b6b6b]">Choose whether you are accepting enquiries for work.</p>
                         </div>
                     </div>
                 </div>
-                <div class="rounded-[2rem] border border-dashed border-[#d5cab2] bg-[#fbf8f1] p-6">
-                    <h2 class="font-serif text-2xl font-semibold text-[#1f3b2e]">Upcoming business tools</h2>
-                    <p class="mt-2 text-sm leading-6 text-[#6b6b6b]">Placeholder cards for bookings, services, analytics, and customer communication will live here next.</p>
+                <div class="q-panel p-6 space-y-4">
+                    <h2 class="font-serif text-2xl font-semibold text-[#1f3b2e]">Your business details</h2>
+                    <p class="q-copy text-sm">{{ $profile->description ?: 'No description added yet.' }}</p>
+                    <p class="q-copy text-sm">Categories: {{ $profile->formattedCategories() ?: 'None selected yet' }}</p>
+                    <p class="q-copy text-sm">Phone: {{ $profile->phone ?: 'Not listed yet' }}</p>
+                    <p class="q-copy text-sm">Location: {{ $profile->locationLine() ?: 'Not listed yet' }}</p>
                 </div>
             </div>
         </section>
