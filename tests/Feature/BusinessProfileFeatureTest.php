@@ -210,7 +210,7 @@ class BusinessProfileFeatureTest extends TestCase
             ]);
 
         $response->assertRedirect(route('business.profile.edit'));
-        $response->assertSessionHasErrors(['state']);
+        $response->assertSessionHasErrors(['state.0']);
     }
 
     public function test_city_outside_selected_districts_is_rejected(): void

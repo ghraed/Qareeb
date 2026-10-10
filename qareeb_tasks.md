@@ -80,7 +80,7 @@ Dependencies: seeker tasks require Q03; Q04 requires Q05; Q08 builds on Q07; Q06
 | Q11 | Provider completion percentage | Implemented; adjust/verify | Pending |
 | Q12 | Provider profile editing | Implemented; verify | Done |
 | Q13 | Provider dashboard | Implemented; fix/verify | Pending |
-| Q14 | Provider location | Implemented; verify | Pending |
+| Q14 | Provider location | Implemented; verify | Done |
 | Q15 | Provider availability | Implemented; verify | Pending |
 | Q16 | Provider pictures | Implemented; verify | Pending |
 | Q17 | #Hiring banner | Partial; refine | Pending |
@@ -248,9 +248,9 @@ For each task append:
 - Next eligible task
 
 ## Resume checkpoint
-- Current task: Q14
-- Last completed task/commit: Q12 (hash below after commit)
-- Next action: Inspect and execute Q14 following task specification; preserve user edits and use isolated commit index.
+- Current task: Q16
+- Last completed task/commit: Q14 (hash below after commit)
+- Next action: Inspect and execute Q16 following task specification; preserve user edits and use isolated commit index.
 
 
 ## Initial repository evidence
@@ -329,5 +329,13 @@ For each task append:
 - Files: UpdateBusinessProfileRequest, gallery component, public location partial, profile tests, ProviderProfileEditingTest.
 - Checks: SQLite focused editor/profile/upload group: 11 tests / 74 assertions passed; saved/input/error/public HTTP rendering tested; other account IDs ignored, non-provider/admin writes forbidden, nonexistent cross-account URL 404; Pint/diff check passed.
 - Image concurrency/cleanup depth follows Q16; location select-all/removal depth follows Q14. Existing provider email stays read-only; supplied spoofed email/username never updates account.
-- Commit: pending recording immediately after commit.
+- Commit: `ec0f5902c6afd33deb4aeab7262135f60c52e059`.
 - Next: Q14.
+
+### Q14 — Provider location — Done
+- Verified multiple Lebanese districts/cities, address/postal display, server rejection of invalid/orphan city selections, empty coverage, select-all expansion, and persisted valid edits. Corrected outdated district validation assertion.
+- Files: profile feature/editor tests plus tests/js/provider-location.test.mjs.
+- Checks: SQLite location/profile group: 7 tests / 59 assertions passed; node --test tests/js/provider-location.test.mjs: passed, exercises actual editor JS district removal and select-all; diff check passed.
+- Coverage storage uses existing decoded arrays; directory matching integration follows Q07/Q08. No maps/GPS or geocoding.
+- Commit: pending recording immediately after commit.
+- Next: Q16.

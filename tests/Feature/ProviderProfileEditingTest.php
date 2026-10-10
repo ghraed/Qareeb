@@ -45,4 +45,19 @@ class ProviderProfileEditingTest extends TestCase
         }
         $this->assertSame('Saved', $profile->refresh()->business_name);
     }
+    public function test_orphan_cities_cannot_persist_and_select_all_expands_only_selected_districts(): void
+    {
+        $provider = User::factory()->serviceProvider()->create();
+        $profile = $provider->businessProfile()->create(['state' => ['Beirut', 'Keserwan'], 'city' => ['Achrafieh', 'Jounieh']]);
+        $this->actingAs($provider)->put(route('business.profile.update'), ['state' => ['Beirut'], 'city' => ['Achrafieh', 'Jounieh']])
+            ->assertSessionHasErrors('city.1');
+        $this->assertSame(['Achrafieh', 'Jounieh'], $profile->refresh()->city);
+        $this->put(route('business.profile.update'), ['state' => ['Beirut'], 'city' => ['__all__']])->assertSessionHasNoErrors();
+        $this->assertSame(\App\Models\BusinessProfile::LEBANON_DISTRICT_CITIES['Beirut'], $profile->refresh()->city);
+        $this->put(route('business.profile.update'), ['state' => [], 'city' => ['Achrafieh']])->assertSessionHasErrors('city.0');
+        $this->put(route('business.profile.update'), ['state' => [], 'city' => [], 'address' => 'Street', 'postal_code' => '1107'])->assertSessionHasNoErrors();
+        $this->assertSame([], $profile->refresh()->state);
+        $this->assertSame([], $profile->city);
+        $this->get(route('providers.show', $provider))->assertOk()->assertSee('Street')->assertSee('1107')->assertDontSee('Cities:');
+    }
 }
