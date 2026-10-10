@@ -72,7 +72,7 @@ Dependencies: seeker tasks require Q03; Q04 requires Q05; Q08 builds on Q07; Q06
 | Q03 | Seeker registration/login | New | Done |
 | Q04 | Seeker completion percentage | New | Done |
 | Q05 | Seeker profile editing | New | Done |
-| Q06 | Seeker dashboard | New | Pending |
+| Q06 | Seeker dashboard | New | Done |
 | Q07 | Category search/provider directory | New | Done |
 | Q08 | Location search | New | Done |
 | Q09 | Complaint survey | New | Done |
@@ -248,9 +248,9 @@ For each task append:
 - Next eligible task
 
 ## Resume checkpoint
-- Current task: Q06
-- Last completed task/commit: Q09 (hash below after commit)
-- Next action: Inspect and execute Q06 following task specification; preserve user edits and use isolated commit index.
+- Current task: Q25
+- Last completed task/commit: Q06 (hash below after commit)
+- Next action: Inspect and execute Q25 following task specification; preserve user edits and use isolated commit index.
 
 
 ## Initial repository evidence
@@ -435,5 +435,13 @@ For each task append:
 - Files: Complaint/ReportStatus, migration, complaint request/controllers/seeker/admin views/routes/navigation, PrivateComplaintTest.
 - Checks: whole SQLite suite: 93 tests / 863 assertions passed; private status transitions, ownership/role/guest checks, forged user/status/notes ignored, inactive/non-provider references rejected, token/content duplicates and 429 limit verified. Pint/diff check passed.
 - Proposed private-survey interpretation matches repository; no public complaint content or administrator notes.
-- Commit: pending recording immediately after commit.
+- Commit: `55417a9548be6c4fcd9b282a174bdea24365e3c0`.
 - Next: Q06.
+
+### Q06 — Seeker dashboard — Done
+- Built responsive Seeker dashboard with real name, private profile percentage/missing fields, working profile/discovery/complaint/status links and logout. Shows incomplete/complete profiles without fabricated activity or booking/payment metrics. Styled accessible native completion progress consistently with Qareeb colors.
+- Files: seeker dashboard, shared completion component/CSS, SeekerDashboardTest and isolated UI fixture renderer.
+- Checks: focused dashboard/seeker/provider completion/auth SQLite group: 6 tests / 103 assertions passed; all destination routes return successful owned pages; non-seeker access forbidden. npm run build passed. Headless Chrome 390×1000 incomplete and 1280×1100 complete: no horizontal overflow; screenshots manually inspected at /tmp/qareeb-ui-q06/mobile.png and desktop.png. Diff check passed.
+- A browser screenshot paint artifact was resolved by compositor-complete capture; profile/contact privacy and established UI conventions preserved.
+- Commit: pending recording immediately after commit.
+- Next: Q25.

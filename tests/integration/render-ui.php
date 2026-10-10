@@ -26,6 +26,18 @@ foreach ([true, false] as $available) {
     $html = str_replace('</body>', '<script>window.addEventListener("load",()=>{let result=document.createElement("output");result.id="ui-check";result.dataset.overflow=String(document.documentElement.scrollWidth>innerWidth);result.dataset.hiring=String(Boolean(document.querySelector(\'[aria-label="Available for work"]\')));document.body.append(result);});</script></body>', $html);
     file_put_contents($root.'/provider-'.($available ? 'available' : 'unavailable').'.html', $html);
 }
+$seeker = App\Models\User::factory()->customer()->create(['name' => 'Seeker with a long name for mobile layout', 'username' => 'seeker.fixture', 'email' => null]);
+foreach ([false, true] as $complete) {
+    if ($complete) {
+        $seeker->update(['phone' => '+96170123456', 'district' => 'Beirut', 'city' => 'Achrafieh']);
+    }
+    Illuminate\Support\Facades\Auth::login($seeker);
+    $html = view('seeker.dashboard', ['user' => $seeker->fresh()])->render();
+    $html = preg_replace('#<link[^>]+(?:fonts\.bunny|preconnect)[^>]*>#', '', $html);
+    $html = str_replace(['http://localhost/build/', 'http://localhost/images/'], ['/build/', '/images/'], $html);
+    $html = str_replace('</body>', '<script>window.addEventListener("load",()=>{let result=document.createElement("output");result.id="ui-check";result.dataset.overflow=String(document.documentElement.scrollWidth>innerWidth);document.body.append(result);});</script></body>', $html);
+    file_put_contents($root.'/seeker-'.($complete ? 'complete' : 'incomplete').'.html', $html);
+}
 foreach (['build', 'images'] as $folder) {
     if (! is_link($root.'/'.$folder)) {
         symlink(public_path($folder), $root.'/'.$folder);

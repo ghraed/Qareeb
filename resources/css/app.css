@@ -77,3 +77,25 @@
         @apply rounded-full bg-[#f3f0e5] px-4 py-2 text-sm font-semibold text-[#1f3b2e];
     }
 }
+
+/* Native progress semantics with consistent Qareeb colors in supported browsers. */
+.q-profile-progress {
+    appearance: none;
+    display: block;
+    overflow: hidden;
+    border: 0;
+    border-radius: 0.75rem;
+    background: #ede7d7;
+}
+.q-profile-progress::-webkit-progress-bar {
+    border-radius: 0.75rem;
+    background: #ede7d7;
+}
+.q-profile-progress::-webkit-progress-value {
+    border-radius: 0.75rem;
+    background: #1f3b2e;
+}
+.q-profile-progress::-moz-progress-bar {
+    border-radius: 0.75rem;
+    background: #1f3b2e;
+}

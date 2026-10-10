@@ -5,7 +5,7 @@
 @endphp
 <div class="mt-4 space-y-3">
     <p class="q-copy text-sm">{{ $percentage }}% complete</p>
-    <progress class="h-3 w-full accent-[#1f3b2e]" value="{{ $percentage }}" max="100" aria-label="Profile completion">{{ $percentage }}%</progress>
+    <progress class="q-profile-progress h-3 w-full" value="{{ $percentage }}" max="100" aria-label="Profile completion">{{ $percentage }}%</progress>
     @if ($missing)
         <p class="q-copy text-sm">Missing: {{ implode(', ', $missing) }}.</p>
     @else
