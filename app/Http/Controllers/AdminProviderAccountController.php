@@ -6,6 +6,7 @@ use App\Enums\AccountStatus;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
 class AdminProviderAccountController extends Controller
@@ -14,7 +15,7 @@ class AdminProviderAccountController extends Controller
     {
         $provider = $this->ensureServiceProvider($provider);
 
-        $provider->update([
+        $this->recordDecision($provider, [
             'account_status' => AccountStatus::Active,
             'approved_at' => now(),
             'approved_by' => $request->user()->id,
@@ -24,12 +25,7 @@ class AdminProviderAccountController extends Controller
             'suspended_at' => null,
             'suspended_by' => null,
             'suspension_reason' => null,
-        ]);
-
-        $provider->businessProfile()?->update([
-            'business_email' => $provider->email,
-            'is_available_for_hire' => false,
-        ]);
+        ], resetAvailability: true);
 
         return back()->with('status', "{$provider->name} has been approved and activated.");
     }
@@ -41,7 +37,7 @@ class AdminProviderAccountController extends Controller
             'rejection_reason' => ['required', 'string', 'max:1000'],
         ]);
 
-        $provider->update([
+        $this->recordDecision($provider, [
             'account_status' => AccountStatus::Rejected,
             'approved_at' => null,
             'approved_by' => null,
@@ -63,7 +59,7 @@ class AdminProviderAccountController extends Controller
             'suspension_reason' => ['required', 'string', 'max:1000'],
         ]);
 
-        $provider->update([
+        $this->recordDecision($provider, [
             'account_status' => AccountStatus::Suspended,
             'suspended_at' => now(),
             'suspended_by' => $request->user()->id,
@@ -77,7 +73,7 @@ class AdminProviderAccountController extends Controller
     {
         $provider = $this->ensureServiceProvider($provider);
 
-        $provider->update([
+        $this->recordDecision($provider, [
             'account_status' => AccountStatus::Active,
             'approved_at' => $provider->approved_at ?? now(),
             'approved_by' => $provider->approved_by ?? $request->user()->id,
@@ -87,14 +83,23 @@ class AdminProviderAccountController extends Controller
             'suspended_at' => null,
             'suspended_by' => null,
             'suspension_reason' => null,
-        ]);
-
-        $provider->businessProfile()?->update([
-            'business_email' => $provider->email,
-            'is_available_for_hire' => false,
-        ]);
+        ], resetAvailability: true);
 
         return back()->with('status', "{$provider->name} has been activated.");
+    }
+
+    private function recordDecision(User $provider, array $attributes, bool $resetAvailability = false): void
+    {
+        DB::transaction(function () use ($provider, $attributes, $resetAvailability): void {
+            $provider = User::query()->lockForUpdate()->findOrFail($provider->id);
+            $provider->update($attributes);
+            if ($resetAvailability) {
+                $provider->businessProfile()->update([
+                    'business_email' => $provider->email,
+                    'is_available_for_hire' => false,
+                ]);
+            }
+        });
     }
 
     private function ensureServiceProvider(User $provider): User

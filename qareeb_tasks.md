@@ -68,7 +68,7 @@ Dependencies: seeker tasks require Q03; Q04 requires Q05; Q08 builds on Q07; Q06
 | ID | Task | Initial state | Execution status |
 | --- | --- | --- | --- |
 | Q01 | Admin login | Implemented; verify | Done |
-| Q02 | Accept/reject providers | Implemented; verify | Pending |
+| Q02 | Accept/reject providers | Implemented; verify | Done |
 | Q03 | Seeker registration/login | New | Pending |
 | Q04 | Seeker completion percentage | New | Pending |
 | Q05 | Seeker profile editing | New | Pending |
@@ -248,9 +248,9 @@ For each task append:
 - Next eligible task
 
 ## Resume checkpoint
-- Current task: Q02 — Accept/reject providers
-- Last completed task/commit: Q01 (hash below after commit)
-- Next action: Repair restricted-provider public review access and verify admin account decisions.
+- Current task: Q10
+- Last completed task/commit: Q02 (hash below after commit)
+- Next action: Inspect and execute Q10 following task specification; preserve user edits and use isolated commit index.
 
 
 ## Initial repository evidence
@@ -274,5 +274,14 @@ For each task append:
 - Files: AdminAuthController, task-only BusinessAuthController hunk, AdminAuthenticationTest. Existing user controller/test changes remain uncommitted and preserved.
 - Checks: SQLite focused AdminAuthenticationTest|BusinessAuthTest|OptionalIdentityTest: 23 tests / 138 assertions passed; Pint on changed PHP passed. Isolated commit snapshot rechecked before commit without pre-existing user edits.
 - Decision: admin destination fixed rather than following potentially stale/provider/external intended URL.
-- Commit: pending recording immediately after commit.
+- Commit: `7213c6102ca7b95413ab0929b4e763ef60df62df`.
 - Next: Q02.
+- Q01 isolated committed snapshot: 21 tests / 125 assertions passed (two pre-existing user tests deliberately absent).
+
+### Q02 — Accept/reject providers — Done
+- Made review index/create/update/delete consistently require active provider with business profile; restricted/missing/non-provider direct requests return 404. Approval/reactivation status and availability reset now save transactionally. Preserved existing suspension/reactivation decisions and responsible admin/timestamps/reasons.
+- Files: AdminProviderAccountController, EnsureProviderIsPublic, bootstrap middleware aliases, review route guards, ProviderModerationTest.
+- Checks: SQLite focused ProviderModerationTest|review: 9 tests / 80 assertions passed; Pint passed; diff check passed; admin dashboard/account-status HTTP assertions verify rejection reasons.
+- Decisions: existing admin state transitions preserved; availability reset on approval/reactivation.
+- Commit: pending recording immediately after commit.
+- Next: Q10.

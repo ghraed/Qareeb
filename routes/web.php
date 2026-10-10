@@ -54,10 +54,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 });
 
 Route::get('/providers/{provider}', [PublicServiceProviderController::class, 'show'])->name('providers.show');
-Route::get('/providers/{provider}/reviews', [ProviderReviewController::class, 'index'])->name('providers.reviews.index');
+Route::get('/providers/{provider}/reviews', [ProviderReviewController::class, 'index'])->middleware('public-provider')->name('providers.reviews.index');
 
 Route::middleware('auth')->group(function (): void {
-    Route::post('/providers/{provider}/reviews', [ProviderReviewController::class, 'store'])->name('providers.reviews.store');
-    Route::put('/providers/{provider}/reviews/{review}', [ProviderReviewController::class, 'update'])->name('providers.reviews.update');
-    Route::delete('/providers/{provider}/reviews/{review}', [ProviderReviewController::class, 'destroy'])->name('providers.reviews.destroy');
+    Route::post('/providers/{provider}/reviews', [ProviderReviewController::class, 'store'])->middleware('public-provider')->name('providers.reviews.store');
+    Route::put('/providers/{provider}/reviews/{review}', [ProviderReviewController::class, 'update'])->middleware('public-provider')->name('providers.reviews.update');
+    Route::delete('/providers/{provider}/reviews/{review}', [ProviderReviewController::class, 'destroy'])->middleware('public-provider')->name('providers.reviews.destroy');
 });
