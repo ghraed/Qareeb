@@ -76,7 +76,7 @@ Dependencies: seeker tasks require Q03; Q04 requires Q05; Q08 builds on Q07; Q06
 | Q07 | Category search/provider directory | New | Pending |
 | Q08 | Location search | New | Pending |
 | Q09 | Complaint survey | New | Pending |
-| Q10 | Provider login | Implemented; verify | Pending |
+| Q10 | Provider login | Implemented; verify | Done |
 | Q11 | Provider completion percentage | Implemented; adjust/verify | Pending |
 | Q12 | Provider profile editing | Implemented; verify | Pending |
 | Q13 | Provider dashboard | Implemented; fix/verify | Pending |
@@ -248,9 +248,9 @@ For each task append:
 - Next eligible task
 
 ## Resume checkpoint
-- Current task: Q10
-- Last completed task/commit: Q02 (hash below after commit)
-- Next action: Inspect and execute Q10 following task specification; preserve user edits and use isolated commit index.
+- Current task: Q21
+- Last completed task/commit: Q10 (hash below after commit)
+- Next action: Inspect and execute Q21 following task specification; preserve user edits and use isolated commit index.
 
 
 ## Initial repository evidence
@@ -283,5 +283,13 @@ For each task append:
 - Files: AdminProviderAccountController, EnsureProviderIsPublic, bootstrap middleware aliases, review route guards, ProviderModerationTest.
 - Checks: SQLite focused ProviderModerationTest|review: 9 tests / 80 assertions passed; Pint passed; diff check passed; admin dashboard/account-status HTTP assertions verify rejection reasons.
 - Decisions: existing admin state transitions preserved; availability reset on approval/reactivation.
-- Commit: pending recording immediately after commit.
+- Commit: `4eea6c35ea1bcd547cc79ec7717009b00449d151`.
 - Next: Q10.
+
+### Q10 — Provider login — Done
+- Provider login now clears stale/external intended URLs and chooses dashboard only for active accounts, account-status for every restricted state.
+- Files: BusinessAuthController task-only redirect hunk; ProviderAuthenticationTest.
+- Checks: focused authentication tests: 24 tests / 231 assertions passed; direct mutation/upload/delete restrictions tested for pending/rejected/suspended; remember tokens, session rotation, bad passwords (existing tests), logout and guest redirects verified. Diff check passed.
+- Existing admin/customer login behavior preserved; pre-existing user changes excluded from commits.
+- Commit: pending recording immediately after commit.
+- Next: Q21.

@@ -80,8 +80,10 @@ class BusinessAuthController extends Controller
         Auth::login($user, $request->boolean('remember'));
         $request->session()->regenerate();
 
+        $request->session()->forget('url.intended');
+
         return redirect()
-            ->intended(route($user->hasActiveProviderAccount() ? 'business.dashboard' : 'business.account.status'))
+            ->route($user->hasActiveProviderAccount() ? 'business.dashboard' : 'business.account.status')
             ->with('status', $user->hasActiveProviderAccount()
                 ? 'Welcome back to your business account.'
                 : 'Your provider account is signed in, but access stays limited until an administrator activates it.');
