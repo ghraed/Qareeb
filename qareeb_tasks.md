@@ -86,7 +86,7 @@ Dependencies: seeker tasks require Q03; Q04 requires Q05; Q08 builds on Q07; Q06
 | Q17 | #Hiring banner | Partial; refine | Pending |
 | Q18 | Add Photography | Change | Done |
 | Q19 | Remove three categories | Change | Done |
-| Q20 | Moving → Transportation | Change | Pending |
+| Q20 | Moving → Transportation | Change | Done |
 | Q21 | Provider preregistration | Existing flow; clarify/verify | Done |
 | Q22 | Optional email | Change | Done |
 | Q23 | Terms and Conditions | New/change | Pending |
@@ -248,9 +248,9 @@ For each task append:
 - Next eligible task
 
 ## Resume checkpoint
-- Current task: Q20
-- Last completed task/commit: Q19 (hash below after commit)
-- Next action: Inspect and execute Q20 following task specification; preserve user edits and use isolated commit index.
+- Current task: Q12
+- Last completed task/commit: Q20 (hash below after commit)
+- Next action: Inspect and execute Q12 following task specification; preserve user edits and use isolated commit index.
 
 
 ## Initial repository evidence
@@ -314,5 +314,12 @@ For each task append:
 - Files: category model/fixtures, retired-category migration, provider editor/admin dashboard, CategoryChangesTest.
 - Checks: SQLite CategoryChangesTest|ProviderPreregistrationTest: 3 tests / 46 assertions passed; migration run twice on fixtures (3 affected, 1 category-less first run; 0 affected on rerun); exact similar labels preserved; retired labels rejected. Pint/diff check passed.
 - Stored data inspection is limited to local fixtures; actual deployment counts will be logged by migration. No application/production database read or migrated. Irreversible removal down intentionally does not fabricate past assignments.
-- Commit: pending recording immediately after commit.
+- Commit: `54e211e3fbc1485651711c06835d9cc0622659a6`.
 - Next: Q20.
+
+### Q20 — Moving → Transportation — Done
+- Renamed the central category to Transportation; idempotent migration preserves old assignments and deduplicates profiles containing both labels without changing other categories. Shared filter normalization maps legacy Moving links to Transportation for Q07.
+- Files: BusinessProfile, rename migration, CategoryChangesTest. Checks: SQLite category tests: 3 tests / 38 assertions passed; rename run twice and exact persistence/public render verified; old label rejected on profile save; Pint/diff check passed.
+- No production data touched; migration logs deployment affected counts. Rollback cannot reliably distinguish pre-existing Transportation from migrated assignments and preserves data.
+- Commit: pending recording immediately after commit.
+- Next: Q12.

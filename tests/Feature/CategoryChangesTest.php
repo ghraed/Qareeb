@@ -46,4 +46,20 @@ class CategoryChangesTest extends TestCase
         $admin = User::factory()->admin()->create();
         $this->actingAs($admin)->get(route('admin.dashboard'))->assertOk()->assertSee('Needs work category correction');
     }
+
+    public function test_transportation_rename_preserves_assignments_deduplicates_and_accepts_legacy_filters(): void
+    {
+        $provider = User::factory()->serviceProvider()->create();
+        $profile = $provider->businessProfile()->create(['categories' => ['Moving', 'Photography', 'Transportation']]);
+        $migration = require database_path('migrations/2026_10_10_000003_rename_moving_to_transportation.php');
+        $migration->up();
+        $this->assertSame(['Transportation', 'Photography'], $profile->refresh()->categories);
+        $migration->up();
+        $this->assertSame(['Transportation', 'Photography'], $profile->refresh()->categories);
+        $this->assertSame('Transportation', BusinessProfile::normalizeCategoryFilter('Moving'));
+        $this->assertNotContains('Moving', BusinessProfile::WORK_CATEGORIES);
+        $this->actingAs($provider)->put(route('business.profile.update'), ['categories' => ['Moving']])->assertSessionHasErrors('categories.0');
+        $this->put(route('business.profile.update'), ['categories' => ['Transportation']])->assertSessionHasNoErrors();
+        $this->get(route('providers.show', $provider))->assertOk()->assertSee('Transportation')->assertDontSee('Moving');
+    }
 }

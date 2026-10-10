@@ -31,7 +31,7 @@ class BusinessProfile extends Model
         'Construction',
         'Interior Design',
         'Gardening',
-        'Moving',
+        'Transportation',
         'Pest Control',
         'Security Systems',
     ];
@@ -247,6 +247,11 @@ class BusinessProfile extends Model
         $cities = $this->city;
 
         return $cities === [] ? null : implode(', ', $cities);
+    }
+
+    public static function normalizeCategoryFilter(mixed $category): mixed
+    {
+        return $category === 'Moving' ? 'Transportation' : $category;
     }
 
     public function formattedCategories(): ?string
