@@ -22,11 +22,16 @@ class ProviderDirectoryRequest extends FormRequest
 
     public function rules(): array
     {
-        return ['category' => ['nullable', 'string', Rule::in(BusinessProfile::WORK_CATEGORIES)], 'page' => ['nullable', 'integer', 'min:1']];
+        return [
+            'category' => ['nullable', 'string', Rule::in(BusinessProfile::WORK_CATEGORIES)],
+            'district' => ['bail', 'nullable', 'required_with:city', 'string', Rule::in(BusinessProfile::LEBANON_DISTRICTS)],
+            'city' => ['bail', 'nullable', 'string', Rule::in(BusinessProfile::citiesForDistricts(is_string($this->input('district')) ? [$this->input('district')] : []))],
+            'page' => ['nullable', 'integer', 'min:1'],
+        ];
     }
 
     protected function failedValidation(Validator $validator): void
     {
-        throw new HttpResponseException(redirect()->route('providers.index')->withErrors($validator)->withInput($this->only(['category'])));
+        throw new HttpResponseException(redirect()->route('providers.index')->withErrors($validator)->withInput($this->only(['category', 'district', 'city'])));
     }
 }

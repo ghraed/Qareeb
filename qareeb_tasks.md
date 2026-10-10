@@ -74,7 +74,7 @@ Dependencies: seeker tasks require Q03; Q04 requires Q05; Q08 builds on Q07; Q06
 | Q05 | Seeker profile editing | New | Done |
 | Q06 | Seeker dashboard | New | Pending |
 | Q07 | Category search/provider directory | New | Done |
-| Q08 | Location search | New | Pending |
+| Q08 | Location search | New | Done |
 | Q09 | Complaint survey | New | Pending |
 | Q10 | Provider login | Implemented; verify | Done |
 | Q11 | Provider completion percentage | Implemented; adjust/verify | Done |
@@ -248,9 +248,9 @@ For each task append:
 - Next eligible task
 
 ## Resume checkpoint
-- Current task: Q08
-- Last completed task/commit: Q07 (hash below after commit)
-- Next action: Inspect and execute Q08 following task specification; preserve user edits and use isolated commit index.
+- Current task: Q09
+- Last completed task/commit: Q08 (hash below after commit)
+- Next action: Inspect and execute Q09 following task specification; preserve user edits and use isolated commit index.
 
 
 ## Initial repository evidence
@@ -418,5 +418,13 @@ For each task append:
 - Integrates Photography filtering, rejected retired labels, legacy Moving→Transportation links, shared #Hiring badge and unavailable state. Files: directory request/controller/view/routes, BusinessProfile selection scope, navigation, ProviderDirectoryTest.
 - Checks: SQLite directory/category/hiring group: 6 tests / 76 assertions passed; exact/legacy matches, all restricted states/non-provider/missing-profile exclusion, 13-result pagination and empty/invalid filters. Pint/diff check passed.
 - Database membership uses bound values with guarded JSON parsing; repository MySQL deployment and SQLite verification supported. JSON expression compiler error resolved. Location composition follows Q08.
-- Commit: pending recording immediately after commit.
+- Commit: `f45424f25acf514ca46dd46da4242838d7611bfd`.
 - Next: Q08.
+
+### Q08 — Location search — Done
+- Added composable district/city service-coverage filters using existing Lebanese definitions and exact JSON/legacy storage matching. City requires supported district and valid relationship; invalid query redirects to filter form with field errors/submitted input. Native selects disable unrelated city groups and district changes clear selected city.
+- Files: directory request/controller/view, ProviderDirectoryTest.
+- Checks: SQLite directory/profile-location group: 6 tests / 99 assertions passed; multi-district/city and legacy coverage, category composition, mismatches/invalid arrays/missing district, combined pagination query persistence and reset/empty copy verified. Pint/diff check passed.
+- Matching uses selected service coverage only; does not infer entire-district coverage from missing cities. No maps/GPS/geocoding/distance search.
+- Commit: pending recording immediately after commit.
+- Next: Q09.

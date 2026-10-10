@@ -20,6 +20,12 @@ class ProviderDirectoryController extends Controller
             $providers->containingSelection('categories', $request->string('category')->toString());
         }
 
+        foreach (['district' => 'state', 'city' => 'city'] as $filter => $column) {
+            if ($request->filled($filter)) {
+                $providers->containingSelection($column, $request->string($filter)->toString());
+            }
+        }
+
         return view('providers.index', ['providers' => $providers->orderBy('id')->paginate(12)->appends($filters), 'filters' => $filters]);
     }
 }

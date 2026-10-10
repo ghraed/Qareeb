@@ -50,4 +50,27 @@ class ProviderDirectoryTest extends TestCase
         $this->get(route('providers.index', ['category' => 'Electrician']))->assertOk()->assertSee('No providers match your filters');
         $this->get(route('providers.index'))->assertOk()->assertSee('Clear filters');
     }
+
+    public function test_district_and_city_coverage_compose_with_categories_and_legacy_storage(): void
+    {
+        $match = $this->provider('Combined match', ['Photography']);
+        $match->businessProfile->update(['state' => ['Beirut', 'Keserwan'], 'city' => ['Achrafieh', 'Jounieh']]);
+        $legacy = $this->provider('Legacy coverage', ['Photography']);
+        DB::table('business_profiles')->where('user_id', $legacy->id)->update(['state' => 'Beirut', 'city' => 'Achrafieh']);
+        $differentCity = $this->provider('Different city', ['Photography']);
+        $differentCity->businessProfile->update(['city' => ['Ras Beirut']]);
+        $this->provider('Different category', ['Electrician']);
+        $filters = ['category' => 'Photography', 'district' => 'Beirut', 'city' => 'Achrafieh'];
+        $this->get(route('providers.index', $filters))->assertOk()->assertSee('Combined match')->assertSee('Legacy coverage')->assertSee('2 providers found')->assertDontSee('Different city')->assertDontSee('Different category');
+        $this->get(route('providers.index', ['district' => 'Keserwan', 'city' => 'Jounieh']))->assertOk()->assertSee('Combined match')->assertSee('1 provider found');
+        $this->get(route('providers.index', ['district' => 'Beirut', 'city' => 'Jounieh']))->assertSessionHasErrors('city');
+        $this->get(route('providers.index', ['city' => 'Achrafieh']))->assertSessionHasErrors(['district', 'city']);
+        $this->get(route('providers.index', ['district' => 'Unknown']))->assertSessionHasErrors('district');
+        $this->get(route('providers.index', ['district' => ['Beirut']]))->assertSessionHasErrors('district');
+        foreach (range(1, 12) as $number) {
+            $this->provider('Extra match '.$number, ['Photography']);
+        }
+        $response = $this->get(route('providers.index', $filters));
+        $response->assertOk()->assertSee('district=Beirut', false)->assertSee('city=Achrafieh', false)->assertSee('category=Photography', false)->assertSee('page=2', false);
+    }
 }
