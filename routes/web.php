@@ -10,6 +10,7 @@ use App\Http\Controllers\BusinessProfileController;
 use App\Http\Controllers\ProviderReviewController;
 use App\Http\Controllers\PublicServiceProviderController;
 use App\Http\Controllers\SeekerAuthController;
+use App\Http\Controllers\SeekerProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -72,4 +73,6 @@ Route::middleware('guest')->prefix('seeker')->name('seeker.')->group(function ()
 Route::middleware(['auth', 'seeker'])->prefix('seeker')->name('seeker.')->group(function (): void {
     Route::get('/dashboard', [SeekerAuthController::class, 'dashboard'])->name('dashboard');
     Route::post('/logout', [SeekerAuthController::class, 'logout'])->name('logout');
+    Route::get('/profile', [SeekerProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [SeekerProfileController::class, 'update'])->name('profile.update');
 });

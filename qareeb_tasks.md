@@ -71,7 +71,7 @@ Dependencies: seeker tasks require Q03; Q04 requires Q05; Q08 builds on Q07; Q06
 | Q02 | Accept/reject providers | Implemented; verify | Done |
 | Q03 | Seeker registration/login | New | Done |
 | Q04 | Seeker completion percentage | New | Pending |
-| Q05 | Seeker profile editing | New | Pending |
+| Q05 | Seeker profile editing | New | Done |
 | Q06 | Seeker dashboard | New | Pending |
 | Q07 | Category search/provider directory | New | Pending |
 | Q08 | Location search | New | Pending |
@@ -248,9 +248,9 @@ For each task append:
 - Next eligible task
 
 ## Resume checkpoint
-- Current task: Q05
-- Last completed task/commit: Q03 (hash below after commit)
-- Next action: Inspect and execute Q05 following task specification; preserve user edits and use isolated commit index.
+- Current task: Q04
+- Last completed task/commit: Q05 (hash below after commit)
+- Next action: Inspect and execute Q04 following task specification; preserve user edits and use isolated commit index.
 
 
 ## Initial repository evidence
@@ -394,5 +394,13 @@ For each task append:
 - Files: seeker auth controller/middleware/views/routes, User/UserRole, shared layout/welcome navigation, SeekerAuthenticationTest.
 - Checks: complete SQLite suite: 82 tests / 694 assertions passed; registration/login/logout/remember/session rotation, role isolation, safe redirects, duplicate identities and password confirmation verified. Pint/diff check passed.
 - Minimal dashboard is intentionally functional before Q06; signup/sign-in rate-limited at 10 requests/minute. Q22 email-less seeker UI integration verified.
-- Commit: pending recording immediately after commit.
+- Commit: `c064a49272154894cbe8929a5a25429a4892cb84`.
 - Next: Q05.
+
+### Q05 — Seeker profile editing — Done
+- Added owner-only private Seeker editor for name/phone/district/city using Lebanese definitions and dependent server validation; retains values/errors and save feedback. Contact/location fields excluded from User serialization/public discovery/reviews.
+- Optional username/email edits reuse normalized unique identity rules ignoring only current owner; require current password, clear email verification on change, preserve legacy no-username accounts, and never flash password values. Failed saves show feedback without changing persisted profile.
+- Files: private profile migration, User/AccountIdentity, SeekerProfileRequest/controller/view/routes/dashboard link, SeekerProfileTest.
+- Checks: focused seeker/identity SQLite tests: 13 tests / 137 assertions passed; ownership/role/status, invalid combinations, private review exposure, identity changes/password/duplicates and injected-save failure verified. Pint/diff check passed. No public seeker profile route.
+- Commit: pending recording immediately after commit.
+- Next: Q04.
