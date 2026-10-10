@@ -83,7 +83,7 @@ Dependencies: seeker tasks require Q03; Q04 requires Q05; Q08 builds on Q07; Q06
 | Q14 | Provider location | Implemented; verify | Done |
 | Q15 | Provider availability | Implemented; verify | Done |
 | Q16 | Provider pictures | Implemented; verify | Done |
-| Q17 | #Hiring banner | Partial; refine | Pending |
+| Q17 | #Hiring banner | Partial; refine | Done |
 | Q18 | Add Photography | Change | Done |
 | Q19 | Remove three categories | Change | Done |
 | Q20 | Moving → Transportation | Change | Done |
@@ -248,9 +248,9 @@ For each task append:
 - Next eligible task
 
 ## Resume checkpoint
-- Current task: Q17
-- Last completed task/commit: Q24 (hash below after commit)
-- Next action: Inspect and execute Q17 following task specification; preserve user edits and use isolated commit index.
+- Current task: Q03
+- Last completed task/commit: Q17 (hash below after commit)
+- Next action: Inspect and execute Q03 following task specification; preserve user edits and use isolated commit index.
 
 
 ## Initial repository evidence
@@ -378,5 +378,13 @@ For each task append:
 - Files: PublicServiceProviderController, hiring card, provider-contact component, public profile test assertions, DirectProviderContactTest.
 - Checks: complete SQLite suite: 78 tests / 638 assertions passed; case-insensitive source audit for booking/payment/Hire Now/coming soon/request workflow found none in active views/controllers; diff check passed. Both availability states retain working contacts; missing email/phone yields no empty action.
 - Baseline seven failures are now resolved through Q12/Q14/Q24; no booking/payment system or data changes.
-- Commit: pending recording immediately after commit.
+- Commit: `adb8ff4c9b5e1d7cf4ed88c24490f2755af97fbf`.
 - Next: Q17.
+
+### Q17 — #Hiring banner — Done
+- Added clear accessible #Hiring badge only for available providers through existing availability component; replaced oversized purple decorative avatar ribbon with subtle brand-colored outline. Direct enquiry/contact copy and tel/mailto actions preserved. Shared badge is reusable by directory Q07.
+- Files: availability-badge/provider-avatar, HiringBadgeTest, isolated UI fixture renderer.
+- Checks: SQLite hiring/availability/contact group: 4 tests / 55 assertions passed; npm run build passed; headless Chrome at 390×844 available and 1280×900 unavailable: no horizontal overflow, badge correctly present/absent. Screenshots manually inspected at /tmp/qareeb-ui-q17/mobile.png and desktop.png; legible wrapped title/badge and correct brand layout.
+- Browser launch sandbox error resolved by disposable-profile escalation; fixture probe/assets corrected and rechecked. No public deployment or production database access. Directory reuse tested in Q07.
+- Commit: pending recording immediately after commit.
+- Next: Q03.

@@ -10,6 +10,9 @@
         : 'border-[#e6dcc7] bg-[#f7f3ea] text-[#746a57]';
 @endphp
 
-<span {{ $attributes->class("inline-flex items-center rounded-full border px-4 py-2 text-sm font-semibold {$classes}") }}>
-    {{ $text }}
+<span {{ $attributes->class("inline-flex flex-wrap items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold {$classes}") }}>
+    @if ($available)
+        <span aria-label="Available for work">#Hiring</span>
+    @endif
+    <span>{{ $text }}</span>
 </span>
