@@ -240,7 +240,7 @@ class BusinessProfileFeatureTest extends TestCase
             'is_available_for_hire' => 1,
         ]);
 
-        $response->assertRedirect(route('business.profile.show'));
+        $response->assertRedirect(route('business.profile.edit'));
 
         $provider->businessProfile->refresh();
 
@@ -257,7 +257,7 @@ class BusinessProfileFeatureTest extends TestCase
             'categories' => ['Electrician', 'Technical & Repair Services'],
         ]);
 
-        $response->assertRedirect(route('business.profile.show'));
+        $response->assertRedirect(route('business.profile.edit'));
 
         $provider->businessProfile->refresh();
 
@@ -275,7 +275,7 @@ class BusinessProfileFeatureTest extends TestCase
             'is_available_for_hire' => 1,
         ]);
 
-        $response->assertRedirect(route('business.profile.show'));
+        $response->assertRedirect(route('business.profile.edit'));
 
         $provider->businessProfile->refresh();
 
@@ -292,7 +292,7 @@ class BusinessProfileFeatureTest extends TestCase
             'is_available_for_hire' => 1,
         ]);
 
-        $response->assertRedirect(route('business.profile.show'));
+        $response->assertRedirect(route('business.profile.edit'));
 
         $provider->businessProfile->refresh();
 

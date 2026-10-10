@@ -78,7 +78,7 @@ Dependencies: seeker tasks require Q03; Q04 requires Q05; Q08 builds on Q07; Q06
 | Q09 | Complaint survey | New | Pending |
 | Q10 | Provider login | Implemented; verify | Done |
 | Q11 | Provider completion percentage | Implemented; adjust/verify | Pending |
-| Q12 | Provider profile editing | Implemented; verify | Pending |
+| Q12 | Provider profile editing | Implemented; verify | Done |
 | Q13 | Provider dashboard | Implemented; fix/verify | Pending |
 | Q14 | Provider location | Implemented; verify | Pending |
 | Q15 | Provider availability | Implemented; verify | Pending |
@@ -248,9 +248,9 @@ For each task append:
 - Next eligible task
 
 ## Resume checkpoint
-- Current task: Q12
-- Last completed task/commit: Q20 (hash below after commit)
-- Next action: Inspect and execute Q12 following task specification; preserve user edits and use isolated commit index.
+- Current task: Q14
+- Last completed task/commit: Q12 (hash below after commit)
+- Next action: Inspect and execute Q14 following task specification; preserve user edits and use isolated commit index.
 
 
 ## Initial repository evidence
@@ -319,7 +319,15 @@ For each task append:
 
 ### Q20 — Moving → Transportation — Done
 - Renamed the central category to Transportation; idempotent migration preserves old assignments and deduplicates profiles containing both labels without changing other categories. Shared filter normalization maps legacy Moving links to Transportation for Q07.
-- Files: BusinessProfile, rename migration, CategoryChangesTest. Checks: SQLite category tests: 3 tests / 38 assertions passed; rename run twice and exact persistence/public render verified; old label rejected on profile save; Pint/diff check passed.
+- Files: BusinessProfile, rename migration, CategoryChangesTest. Checks: SQLite category tests: 3 tests / 35 assertions passed; rename run twice and exact persistence/public render verified; old label rejected on profile save; Pint/diff check passed.
 - No production data touched; migration logs deployment affected counts. Rollback cannot reliably distinguish pre-existing Transportation from migrated assignments and preserves data.
-- Commit: pending recording immediately after commit.
+- Commit: `2c041f69b9eb3dbb44d1f8d352bbe69a7279ab6b`.
 - Next: Q12.
+
+### Q12 — Provider profile editing — Done
+- Verified owner-only active-provider editing, multi-category/location persistence, public rendering, identity immutability, upload endpoints/previews and save feedback. Added phone validation and explicit request authorization. Fixed standalone gallery component error bag and public postal-code display. Updated stale save-redirect tests to current editor destination.
+- Files: UpdateBusinessProfileRequest, gallery component, public location partial, profile tests, ProviderProfileEditingTest.
+- Checks: SQLite focused editor/profile/upload group: 11 tests / 74 assertions passed; saved/input/error/public HTTP rendering tested; other account IDs ignored, non-provider/admin writes forbidden, nonexistent cross-account URL 404; Pint/diff check passed.
+- Image concurrency/cleanup depth follows Q16; location select-all/removal depth follows Q14. Existing provider email stays read-only; supplied spoofed email/username never updates account.
+- Commit: pending recording immediately after commit.
+- Next: Q14.

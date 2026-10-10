@@ -5,6 +5,7 @@
 ])
 
 @php
+    $errors = $errors ?? new \Illuminate\Support\ViewErrorBag();
     $samplePaths = $profile->work_samples;
     $sampleUrls = $profile->workSampleUrls();
     $remainingSlots = \App\Models\BusinessProfile::MAX_WORK_SAMPLES - count($samplePaths);

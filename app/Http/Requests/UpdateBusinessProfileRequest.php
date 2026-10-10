@@ -10,7 +10,7 @@ class UpdateBusinessProfileRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true;
+        return $this->user()?->hasActiveProviderAccount() && $this->user()->businessProfile !== null;
     }
 
     /**
@@ -20,7 +20,7 @@ class UpdateBusinessProfileRequest extends FormRequest
     {
         return [
             'business_name' => ['nullable', 'string', 'max:255'],
-            'phone' => ['nullable', 'string', 'max:50'],
+            'phone' => ['nullable', 'string', 'max:50', 'regex:/\A\+?[0-9][0-9 ()-]{5,48}\z/'],
             'description' => ['nullable', 'string', 'max:3000'],
             'categories' => ['nullable', 'array'],
             'categories.*' => ['string', Rule::in(BusinessProfile::WORK_CATEGORIES)],

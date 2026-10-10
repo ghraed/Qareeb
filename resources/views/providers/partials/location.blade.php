@@ -1,7 +1,7 @@
 <section class="q-section">
     <h2 class="q-heading text-2xl">Location</h2>
     <div class="mt-5 q-panel p-5">
-        @if ($profile->address || $profile->formattedDistricts() || $profile->formattedCities())
+        @if ($profile->address || $profile->formattedDistricts() || $profile->formattedCities() || $profile->postal_code)
             @if ($profile->address)
                 <div>
                     <p class="text-sm font-medium text-[#6b6b6b]">Address</p>
@@ -18,6 +18,12 @@
                     @if ($profile->formattedCities())
                         <p class="mt-2 text-base font-semibold text-[#1f3b2e]">Cities: {{ $profile->formattedCities() }}</p>
                     @endif
+                </div>
+            @endif
+            @if ($profile->postal_code)
+                <div class="mt-5">
+                    <p class="text-sm font-medium text-[#6b6b6b]">Postal code</p>
+                    <p class="mt-2 text-base font-semibold text-[#1f3b2e]">{{ $profile->postal_code }}</p>
                 </div>
             @endif
         @else
