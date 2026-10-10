@@ -9,7 +9,7 @@
                 <div>
                     <p class="text-sm font-semibold tracking-[0.25em] text-[#6c8a5b] uppercase">Welcome back</p>
                     <h1 class="mt-3 font-serif text-4xl font-semibold tracking-tight text-[#1f3b2e] sm:text-5xl">{{ $user->name }}</h1>
-                    <p class="mt-3 text-base text-[#6b6b6b]">{{ $user->email }}</p>
+                    <p class="mt-3 text-base text-[#6b6b6b]">{{ $user->email ?: ($user->username ?: 'Email not provided') }}</p>
                 </div>
 
                 <div class="flex flex-wrap gap-3">

@@ -5,7 +5,9 @@ namespace App\Models;
 use App\Enums\AccountStatus;
 use App\Enums\UserRole;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Support\AccountIdentity;
 use Database\Factories\UserFactory;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -25,6 +27,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'username',
         'email',
         'password',
         'role',
@@ -65,6 +68,20 @@ class User extends Authenticatable
             'rejected_at' => 'datetime',
             'suspended_at' => 'datetime',
         ];
+    }
+
+    protected function email(): Attribute
+    {
+        return Attribute::make(
+            set: fn (?string $value): ?string => AccountIdentity::normalize($value),
+        );
+    }
+
+    protected function username(): Attribute
+    {
+        return Attribute::make(
+            set: fn (?string $value): ?string => AccountIdentity::normalize($value),
+        );
     }
 
     /**

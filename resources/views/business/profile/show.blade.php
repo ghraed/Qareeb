@@ -27,7 +27,7 @@
                     <div>
                         <p class="q-eyebrow">Private business profile</p>
                         <h2 class="q-heading mt-3 text-4xl">{{ $profile->business_name ?: $user->name }}</h2>
-                        <p class="q-copy mt-2 text-base">{{ $user->email }}</p>
+                        <p class="q-copy mt-2 text-base">{{ $user->email ?: ($user->username ?: 'Email not provided') }}</p>
                         <div class="mt-4 flex flex-wrap items-center gap-3">
                             <x-rating-stars :rating="$profile->average_rating" :count="$profile->reviews_count" />
                             <span class="q-badge">{{ $profile->is_available_for_hire ? 'Available for hire' : 'Unavailable' }}</span>

@@ -188,7 +188,6 @@ class BusinessProfile extends Model
     {
         $fields = [
             $this->business_name,
-            $this->business_email,
             $this->phone,
             $this->description,
             $this->categories,

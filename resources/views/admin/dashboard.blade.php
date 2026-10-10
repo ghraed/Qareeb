@@ -59,7 +59,7 @@
                                 <h3 class="font-serif text-3xl font-semibold text-[#1f3b2e]">{{ $provider->businessProfile?->business_name ?: $provider->name }}</h3>
                                 <span class="rounded-full bg-[#ece4d0] px-4 py-2 text-sm font-semibold text-[#1f3b2e]">{{ $provider->account_status->label() }}</span>
                             </div>
-                            <p class="mt-2 text-sm text-[#6b6b6b]">{{ $provider->email }} · Registered {{ $provider->created_at->diffForHumans() }}</p>
+                            <p class="mt-2 text-sm text-[#6b6b6b]">{{ $provider->email ?: ($provider->username ?: 'Email not provided') }} · Registered {{ $provider->created_at->diffForHumans() }}</p>
                             <p class="mt-4 text-sm leading-7 text-[#5f625d]">{{ $provider->businessProfile?->description ?: 'No business description has been added yet.' }}</p>
                         </div>
 
@@ -106,7 +106,7 @@
                                     <h3 class="font-serif text-2xl font-semibold text-[#1f3b2e]">{{ $provider->businessProfile?->business_name ?: $provider->name }}</h3>
                                     <span class="rounded-full bg-[#e1efe3] px-4 py-2 text-sm font-semibold text-[#2e583b]">{{ $provider->account_status->label() }}</span>
                                 </div>
-                                <p class="mt-2 text-sm text-[#6b6b6b]">{{ $provider->email }}</p>
+                                <p class="mt-2 text-sm text-[#6b6b6b]">{{ $provider->email ?: ($provider->username ?: 'Email not provided') }}</p>
                                 <p class="mt-3 text-sm text-[#5f625d]">Approved {{ optional($provider->approved_at)->diffForHumans() ?: 'just now' }}</p>
                             </div>
 
@@ -148,7 +148,7 @@
                                         'bg-amber-100 text-amber-800' => $provider->account_status === AccountStatus::Suspended,
                                     ])>{{ $provider->account_status->label() }}</span>
                                 </div>
-                                <p class="mt-2 text-sm text-[#6b6b6b]">{{ $provider->email }}</p>
+                                <p class="mt-2 text-sm text-[#6b6b6b]">{{ $provider->email ?: ($provider->username ?: 'Email not provided') }}</p>
                                 @if ($provider->account_status === AccountStatus::Rejected && $provider->rejection_reason)
                                     <p class="mt-3 text-sm leading-7 text-rose-700">{{ $provider->rejection_reason }}</p>
                                 @endif

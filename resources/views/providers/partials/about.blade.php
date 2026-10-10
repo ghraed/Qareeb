@@ -5,7 +5,11 @@
     <div class="mt-6 grid gap-4 sm:grid-cols-2">
         <div class="q-panel p-5">
             <p class="text-sm font-medium text-[#6b6b6b]">Business email</p>
+            @if ($provider->email)
             <a href="https://mail.google.com/mail/?view=cm&fs=1&to={{ rawurlencode($provider->email) }}" target="_blank" rel="noopener noreferrer" class="mt-2 block text-lg font-semibold text-[#1f3b2e] hover:text-[#6c8a5b]">{{ $provider->email }}</a>
+            @else
+                <p class="mt-2 text-lg font-semibold text-[#1f3b2e]">Not publicly listed</p>
+            @endif
         </div>
         <div class="q-panel p-5">
             <p class="text-sm font-medium text-[#6b6b6b]">Phone</p>

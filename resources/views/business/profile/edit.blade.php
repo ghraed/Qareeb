@@ -277,7 +277,7 @@
                             <div>
                                 <p class="q-eyebrow">Marketplace preview</p>
                                 <h3 class="q-heading mt-2 break-words text-2xl sm:text-3xl" data-business-name-preview>{{ old('business_name', $profile->business_name ?: $user->name) }}</h3>
-                                <p class="q-copy mt-2 text-sm" x-ref="businessEmailPreview">{{ $user->email }}</p>
+                                <p class="q-copy mt-2 text-sm" x-ref="businessEmailPreview">{{ $user->email ?: ($user->username ?: 'Email not provided') }}</p>
                             </div>
                             <span class="q-badge text-xs" x-text="available ? 'Available for hire' : 'Unavailable'"></span>
                         </div>

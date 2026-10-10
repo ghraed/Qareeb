@@ -47,7 +47,9 @@
                 @csrf
 
                 <x-form-input label="Full name" name="name" placeholder="Jordan Lee" autocomplete="name" />
-                <x-form-input label="Email" name="email" type="email" placeholder="owner@business.com" autocomplete="email" />
+                <x-form-input label="Username (required without email)" name="username" autocomplete="username" placeholder="your.username" />
+                <p class="q-copy text-sm">Use letters, numbers, dots, underscores or hyphens. Sign in with your username or email. Password recovery is not currently available.</p>
+                <x-form-input label="Email (optional)" name="email" type="email" placeholder="owner@business.com" autocomplete="email" />
 
                 <div class="space-y-2">
                     <label for="password" class="block text-sm font-medium text-[#314236]">Password</label>

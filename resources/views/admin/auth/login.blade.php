@@ -18,7 +18,7 @@
             <form method="POST" action="{{ route('admin.login.store') }}" class="space-y-5" x-data="{ showPassword: false }">
                 @csrf
 
-                <x-form-input label="Email" name="email" type="email" placeholder="admin@example.com" autocomplete="email" />
+                <x-form-input label="Username or email" name="email" type="text" placeholder="admin@example.com" autocomplete="username" />
 
                 <div class="space-y-2">
                     <label for="password" class="block text-sm font-medium text-[#314236]">Password</label>

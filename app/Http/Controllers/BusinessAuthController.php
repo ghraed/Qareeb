@@ -7,6 +7,7 @@ use App\Enums\UserRole;
 use App\Http\Requests\BusinessLoginRequest;
 use App\Http\Requests\BusinessRegisterRequest;
 use App\Models\User;
+use App\Support\AccountIdentity;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -24,7 +25,8 @@ class BusinessAuthController extends Controller
         $user = DB::transaction(function () use ($request): User {
             $user = User::create([
                 'name' => $request->string('name')->toString(),
-                'email' => $request->string('email')->toString(),
+                'email' => $request->input('email'),
+                'username' => $request->input('username'),
                 'password' => $request->string('password')->toString(),
                 'role' => UserRole::ServiceProvider,
                 'account_status' => AccountStatus::Pending,
@@ -53,17 +55,15 @@ class BusinessAuthController extends Controller
 
     public function login(BusinessLoginRequest $request): RedirectResponse
     {
-        $credentials = $request->safe()->only(['email', 'password']);
+        $user = AccountIdentity::authenticate($request->string('email')->toString(), $request->string('password')->toString());
 
-        if (! Auth::validate($credentials)) {
+        if (! $user) {
             return back()
                 ->withInput($request->except('password'))
                 ->withErrors([
                     'email' => 'The provided credentials are incorrect.',
                 ]);
         }
-
-        $user = User::query()->where('email', $request->string('email'))->first();
 
         if (! $user || $user->role !== UserRole::ServiceProvider) {
             return back()

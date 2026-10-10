@@ -49,7 +49,7 @@
 
                     <nav class="flex w-full items-center gap-3 text-sm text-[#6b6b6b] sm:w-auto">
                         @auth
-                            <span class="max-w-full truncate rounded-full border border-[#eadfc7] bg-white/85 px-4 py-2 shadow-sm">{{ auth()->user()->email }}</span>
+                            <span class="max-w-full truncate rounded-full border border-[#eadfc7] bg-white/85 px-4 py-2 shadow-sm">{{ auth()->user()->email ?: auth()->user()->username }}</span>
                         @endauth
                     </nav>
                 </header>

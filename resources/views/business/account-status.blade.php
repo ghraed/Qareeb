@@ -29,7 +29,7 @@
                 <div class="mt-6 space-y-4">
                     <div class="q-panel p-5">
                         <p class="text-sm font-medium text-[#6b6b6b]">Account email</p>
-                        <p class="mt-2 text-xl font-semibold text-[#1f3b2e]">{{ $user->email }}</p>
+                        <p class="mt-2 text-xl font-semibold text-[#1f3b2e]">{{ $user->email ?: ($user->username ?: 'Email not provided') }}</p>
                     </div>
                     <div class="rounded-[1.75rem] border p-5 {{ $content['panelClass'] }}">
                         <p class="text-sm font-medium text-[#6b6b6b]">Current access</p>

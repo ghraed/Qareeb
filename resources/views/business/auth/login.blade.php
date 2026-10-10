@@ -18,7 +18,7 @@
             <form method="POST" action="{{ route('business.login.store') }}" class="space-y-5" x-data="{ showPassword: false }">
                 @csrf
 
-                <x-form-input label="Email" name="email" type="email" placeholder="owner@business.com" autocomplete="email" />
+                <x-form-input label="Username or email" name="email" type="text" placeholder="owner@business.com" autocomplete="username" />
 
                 <div class="space-y-2">
                     <label for="password" class="block text-sm font-medium text-[#314236]">Password</label>
@@ -45,7 +45,7 @@
                         <input type="checkbox" name="remember" value="1" class="h-4 w-4 rounded border-[#cdbf9f] text-[#1f3b2e] focus:ring-[#6c8a5b]" @checked(old('remember'))>
                         Remember me
                     </label>
-                    <a href="#" class="text-sm font-medium text-[#6c8a5b] transition hover:text-[#1f3b2e]">Forgot password?</a>
+
                 </div>
 
                 <button type="submit" class="q-button-primary w-full">
