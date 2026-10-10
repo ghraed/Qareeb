@@ -67,7 +67,7 @@ Dependencies: seeker tasks require Q03; Q04 requires Q05; Q08 builds on Q07; Q06
 ## Task tracker
 | ID | Task | Initial state | Execution status |
 | --- | --- | --- | --- |
-| Q01 | Admin login | Implemented; verify | Pending |
+| Q01 | Admin login | Implemented; verify | Done |
 | Q02 | Accept/reject providers | Implemented; verify | Pending |
 | Q03 | Seeker registration/login | New | Pending |
 | Q04 | Seeker completion percentage | New | Pending |
@@ -248,9 +248,9 @@ For each task append:
 - Next eligible task
 
 ## Resume checkpoint
-- Current task: Q01 — Admin login
-- Last completed task/commit: Q22 (hash recorded below after commit)
-- Next action: Verify both admin portals and direct-route/session restrictions.
+- Current task: Q02 — Accept/reject providers
+- Last completed task/commit: Q01 (hash below after commit)
+- Next action: Repair restricted-provider public review access and verify admin account decisions.
 
 
 ## Initial repository evidence
@@ -266,5 +266,13 @@ For each task append:
 - Files: AccountIdentity, User, identity migration, registration/login requests/controllers, identity-related Blade views, OptionalIdentityTest.
 - Checks: SQLite `php artisan test --filter='OptionalIdentityTest|BusinessAuthTest'`: 20 passed / 98 assertions; `npm run build`: passed; targeted Pint: passed; `git diff --check`: passed. HTTP-rendered email-less public profile/editor/dashboard verified by tests. Baseline unrelated profile failures remain assigned to Q12/Q14/Q24.
 - Decisions: disjoint email/username syntax avoids cross-namespace ambiguity; unique normalized new writes; destructive rollback refused pending reviewed data conversion. Database migrated only in test memory.
-- Commit: pending recording immediately after commit.
+- Commit: `f4560742796bbe52876f0ee2d489d5672fb26bd0`.
 - Next: Q01.
+
+### Q01 — Admin login — Done
+- Both portals now share authorized admin sign-in; fixed unsafe intended redirects, guaranteed administrator dashboard destination, remember token and session rotation. Provider/seeker direct admin requests denied, logout invalidates session.
+- Files: AdminAuthController, task-only BusinessAuthController hunk, AdminAuthenticationTest. Existing user controller/test changes remain uncommitted and preserved.
+- Checks: SQLite focused AdminAuthenticationTest|BusinessAuthTest|OptionalIdentityTest: 23 tests / 138 assertions passed; Pint on changed PHP passed. Isolated commit snapshot rechecked before commit without pre-existing user edits.
+- Decision: admin destination fixed rather than following potentially stale/provider/external intended URL.
+- Commit: pending recording immediately after commit.
+- Next: Q02.

@@ -65,6 +65,10 @@ class BusinessAuthController extends Controller
                 ]);
         }
 
+        if ($user->isAdmin()) {
+            return app(AdminAuthController::class)->signIn($user, $request);
+        }
+
         if (! $user || $user->role !== UserRole::ServiceProvider) {
             return back()
                 ->withInput($request->except('password'))

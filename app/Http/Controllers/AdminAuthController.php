@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Enums\UserRole;
 use App\Http\Requests\AdminLoginRequest;
+use App\Models\User;
 use App\Support\AccountIdentity;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
@@ -40,11 +42,17 @@ class AdminAuthController extends Controller
                 ]);
         }
 
+        return $this->signIn($user, $request);
+    }
+
+    public function signIn(User $user, Request $request): RedirectResponse
+    {
+        abort_unless($user->isAdmin(), 403);
         Auth::login($user, $request->boolean('remember'));
         $request->session()->regenerate();
+        $request->session()->forget('url.intended');
 
-        return redirect()
-            ->intended(route('admin.dashboard'))
+        return redirect()->route('admin.dashboard')
             ->with('status', 'Welcome back to the administrator workspace.');
     }
 
