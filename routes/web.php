@@ -7,6 +7,7 @@ use App\Http\Controllers\BusinessAccountStatusController;
 use App\Http\Controllers\BusinessAuthController;
 use App\Http\Controllers\BusinessDashboardController;
 use App\Http\Controllers\BusinessProfileController;
+use App\Http\Controllers\ProviderDirectoryController;
 use App\Http\Controllers\ProviderReviewController;
 use App\Http\Controllers\PublicServiceProviderController;
 use App\Http\Controllers\SeekerAuthController;
@@ -55,6 +56,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::patch('/providers/{provider}/activate', [AdminProviderAccountController::class, 'activate'])->name('providers.activate');
 });
 
+Route::get('/providers', ProviderDirectoryController::class)->name('providers.index');
 Route::get('/providers/{provider}', [PublicServiceProviderController::class, 'show'])->name('providers.show');
 Route::get('/providers/{provider}/reviews', [ProviderReviewController::class, 'index'])->middleware('public-provider')->name('providers.reviews.index');
 

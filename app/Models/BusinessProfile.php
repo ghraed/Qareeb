@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -171,6 +172,24 @@ class BusinessProfile extends Model
     /**
      * @return BelongsTo<User, BusinessProfile>
      */
+    public function scopeContainingSelection(Builder $query, string $column, string $value): void
+    {
+        if (! in_array($column, ['categories', 'state', 'city'], true)) {
+            throw new \InvalidArgumentException('Unsupported selection column.');
+        }
+        // Supports canonical JSON arrays and the legacy single-label storage format.
+        $query->where(function ($query) use ($column, $value): void {
+            $wrapped = $query->getQuery()->getGrammar()->wrap($column);
+            $safeJson = "CASE WHEN JSON_VALID({$wrapped}) THEN {$wrapped} ELSE '[]' END";
+            $query->where($column, $value);
+            if ($query->getConnection()->getDriverName() === 'sqlite') {
+                $query->orWhereRaw("EXISTS (SELECT 1 FROM json_each({$safeJson}) WHERE json_each.value = ?)", [$value]);
+            } else {
+                $query->orWhereRaw("JSON_CONTAINS({$safeJson}, ?)", [json_encode($value, JSON_UNESCAPED_UNICODE)]);
+            }
+        });
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

@@ -73,7 +73,7 @@ Dependencies: seeker tasks require Q03; Q04 requires Q05; Q08 builds on Q07; Q06
 | Q04 | Seeker completion percentage | New | Done |
 | Q05 | Seeker profile editing | New | Done |
 | Q06 | Seeker dashboard | New | Pending |
-| Q07 | Category search/provider directory | New | Pending |
+| Q07 | Category search/provider directory | New | Done |
 | Q08 | Location search | New | Pending |
 | Q09 | Complaint survey | New | Pending |
 | Q10 | Provider login | Implemented; verify | Done |
@@ -248,9 +248,9 @@ For each task append:
 - Next eligible task
 
 ## Resume checkpoint
-- Current task: Q07
-- Last completed task/commit: Q04 (hash below after commit)
-- Next action: Inspect and execute Q07 following task specification; preserve user edits and use isolated commit index.
+- Current task: Q08
+- Last completed task/commit: Q07 (hash below after commit)
+- Next action: Inspect and execute Q08 following task specification; preserve user edits and use isolated commit index.
 
 
 ## Initial repository evidence
@@ -410,5 +410,13 @@ For each task append:
 - Files: User, SeekerProfileRequest, shared completion component, seeker views, SeekerCompletionTest.
 - Checks: SQLite seeker completion/profile/provider completion group: 6 tests / 84 assertions passed; edits progress from 25 to 100 without email, removing phone yields 75, invalid persisted city yields 50; both views agree. Pint/diff check passed.
 - Rules use valid persisted profile fields; proposed four-field default matches repository.
-- Commit: pending recording immediately after commit.
+- Commit: `e733d5d2e7a2010364cee619492de66fc90499d0`.
 - Next: Q07.
+
+### Q07 — Category search/provider directory — Done
+- Added public paginated provider directory (12/page), exact category membership for JSON arrays and legacy single labels, active service-provider/business-profile restriction, query-preserving links/reset/empty states, cards with identity/location/rating/availability/public links. Linked seeker dashboard and welcome navigation.
+- Integrates Photography filtering, rejected retired labels, legacy Moving→Transportation links, shared #Hiring badge and unavailable state. Files: directory request/controller/view/routes, BusinessProfile selection scope, navigation, ProviderDirectoryTest.
+- Checks: SQLite directory/category/hiring group: 6 tests / 76 assertions passed; exact/legacy matches, all restricted states/non-provider/missing-profile exclusion, 13-result pagination and empty/invalid filters. Pint/diff check passed.
+- Database membership uses bound values with guarded JSON parsing; repository MySQL deployment and SQLite verification supported. JSON expression compiler error resolved. Location composition follows Q08.
+- Commit: pending recording immediately after commit.
+- Next: Q08.
