@@ -91,6 +91,7 @@
                     @enderror
                 </div>
 
+                <x-terms-acceptance />
                 <button type="submit" class="q-button-primary w-full">
                     Create business account
                 </button>

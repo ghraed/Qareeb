@@ -26,6 +26,7 @@ class SeekerAuthController extends Controller
             ...$request->safe()->only(['name', 'email', 'username', 'password']),
             'role' => UserRole::Customer,
             'account_status' => AccountStatus::Active,
+            ...$request->termsConsent(),
         ]);
         Auth::login($user);
         $request->session()->regenerate();

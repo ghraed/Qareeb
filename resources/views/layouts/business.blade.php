@@ -61,6 +61,7 @@
 
                     @yield('content')
                 </main>
+                <footer class="mt-8 py-4 text-sm"><a class="font-semibold underline" href="{{ route('terms.show') }}">Terms and Conditions</a></footer>
             </div>
         </div>
     </body>

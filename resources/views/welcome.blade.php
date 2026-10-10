@@ -61,6 +61,7 @@
                         </section>
                     </div>
                 </main>
+                <footer class="py-4 text-sm"><a class="font-semibold underline" href="{{ route('terms.show') }}">Terms and Conditions</a></footer>
             </div>
         </div>
     </body>

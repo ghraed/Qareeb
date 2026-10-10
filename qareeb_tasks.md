@@ -89,7 +89,7 @@ Dependencies: seeker tasks require Q03; Q04 requires Q05; Q08 builds on Q07; Q06
 | Q20 | Moving → Transportation | Change | Done |
 | Q21 | Provider preregistration | Existing flow; clarify/verify | Done |
 | Q22 | Optional email | Change | Done |
-| Q23 | Terms and Conditions | New/change | Pending |
+| Q23 | Terms and Conditions | New/change | Done |
 | Q24 | No bookings on site | Scope/UI change | Done |
 | Q25 | Image privacy reporting | New | Done |
 
@@ -248,9 +248,9 @@ For each task append:
 - Next eligible task
 
 ## Resume checkpoint
-- Current task: Q23
-- Last completed task/commit: Q25 (hash below after commit)
-- Next action: Inspect and execute Q23 following task specification; preserve user edits and use isolated commit index.
+- Current task: All 25 tasks completed; Q23 commit/checkpoint finalization
+- Last completed task/commit: Q25 / 542cecdc51bd2c4fbd841adb94bc6dffefadec36
+- Next action: Finalize Q23 isolated commit, record hash, inspect preserved user changes and final goal completion audit.
 
 
 ## Initial repository evidence
@@ -452,5 +452,75 @@ For each task append:
 - Files: ImagePrivacyReport/PublicProviderImage, migration, report/admin controllers/routes/views/action component, hero/gallery/admin navigation, BusinessPhotoService, ImagePrivacyReportTest.
 - Checks: full SQLite suite: 100 tests / 981 assertions passed; all image types, public/private role guards, forged path/reference inputs, duplicates, validation/429, exact removal and replacement metadata, failure-audit safety verified. python3 tests/integration/image-concurrency.py passed again; Pint/diff check passed.
 - No raw IP retained: anonymous actor keyed by session HMAC, authenticated actor by user HMAC. Original filename/size/MIME retained where available; concurrent missing file metadata handled safely. No duplicate image storage.
-- Commit: pending recording immediately after commit.
+- Commit: `542cecdc51bd2c4fbd841adb94bc6dffefadec36`.
 - Next: Q23.
+
+### Q23 — Terms and Conditions — Needs Verification
+- No approved Terms content found in repository (searched Terms/conditions in resources/app/README). Added clearly identified product-based draft in resources/views/legal/terms.blade.php, config version 2026-10-10-draft-1 with approved=false, readable public Terms page and registration/footer links.
+- Both new registration flows require affirmative unchecked-by-default acceptance and current version; server records acceptance timestamp/version. Existing users remain null; login/profile edits do not fabricate consent.
+- Technical checks: full SQLite suite: 103 tests / 1025 assertions passed; TermsAcceptanceTest covers both roles, omitted/false consent, obsolete version, forged timestamp, unchecked forms, working links and unchanged legacy consent. Targeted Pint and diff checks pass. Build/browser review recorded below.
+- Status blocker: owner/legal approval of drafted content still required by Q23 acceptance criteria. No completed Q23 commit permitted until approval. All draft code/test/tracker changes remain uncommitted and isolated from successful Q01–Q25 task commits.
+- Affected paths: terms config/migration/page/component/routes, User, registration request/controllers/views, layout/welcome footer, explicit signup test fixtures, TermsAcceptanceTest, UI renderer. Pre-existing user edits in BusinessAuthController/BusinessAuthTest still preserved.
+- Next: obtain owner/legal approval or specific wording edits; then set approved version, recheck exact isolated snapshot and create Q23 commit excluding original user hunks.
+
+### Final technical validation / resume checkpoint evidence
+- Q23 complete candidate excluding original user hunks: 101 tests / 1012 assertions passed in `/tmp/qareeb-q23-verify-ndz_8ubo`; working tree including original user tests: 103 tests / 1025 assertions passed.
+- `npm run build`, targeted Q23 Pint, `git diff --check`, and provider-location Node regression passed. Image concurrency check passed after Q25.
+- Terms mobile screenshot manually reviewed at `/tmp/qareeb-ui-q23/terms-mobile.png`; readable 390×1000 layout with clear draft/version/approval notice. Rendered review artifact: `/tmp/qareeb-ui-q23/terms.html`; temporary static preview currently `http://127.0.0.1:8767/terms.html` (PID recorded below).
+- Approval request submitted through user-input tool; no approval received yet. Do not infer approval from elapsed time or checkbox acceptance in test fixtures.
+- Only incomplete task: Q23. All execution errors recorded in conditional report are resolved; content review remains outstanding. No staged files.
+- For Q23 commit after approval: `/tmp/qareeb_commit.py` creates isolated index, excludes original controller additions and reverses `/tmp/qareeb-user-tests.patch` from staged test snapshot. Run with `QAREEB_VERIFY_FILTER=.` and explicit Q23 paths; do not stage error report or unrelated user changes. Inspect commit and record hash afterward.
+- If approved: finalize `config/terms.php` version/approved flag, retain approved body, rerun full suite/build/isolated snapshot, mark Q23 Done only with completed approved-content review, and make exactly one Q23 local commit. If edits requested: update draft, validate and request review of revised wording.
+- Preserve `/tmp/qareeb-user-controller.patch`, `/tmp/qareeb-user-tests.patch`, `/tmp/qareeb-initial-staged.patch`; initial staged patch is empty and current index remains empty.
+- Remaining uncommitted state (all Q23 changes except original user hunks and tracker/error history):
+```text
+ M app/Http/Controllers/BusinessAuthController.php
+ M app/Http/Controllers/SeekerAuthController.php
+ M app/Http/Requests/BusinessRegisterRequest.php
+ M app/Models/User.php
+ M qareeb_tasks.md
+ M resources/views/business/auth/register.blade.php
+ M resources/views/layouts/business.blade.php
+ M resources/views/seeker/auth/register.blade.php
+ M resources/views/welcome.blade.php
+ M routes/web.php
+ M tests/Feature/BusinessAuthTest.php
+ M tests/Feature/OptionalIdentityTest.php
+ M tests/Feature/ProviderPreregistrationTest.php
+ M tests/Feature/SeekerAuthenticationTest.php
+ M tests/integration/render-ui.php
+?? config/terms.php
+?? database/migrations/2026_10_10_000007_add_terms_consent_to_users.php
+?? qareeb_not_finished_taks.md
+?? resources/views/components/terms-acceptance.blade.php
+?? resources/views/legal/
+?? tests/Feature/TermsAcceptanceTest.php
+```
+
+### Continuation blocker audit — turn 2
+- Revalidated current Git state, 24 task commits/tracker completion entries and approved=false in config/terms.php. Only Q23 remains incomplete.
+- No owner/legal content approval has arrived; the existing approval request remains pending. The automatic continuation instruction is not content approval.
+- No independent task remains eligible. This continuation makes no implementation progress and does not rerun already-passing checks without a change. Goal remains active until the required three-turn blocker audit is satisfied or approval arrives.
+- Terms static preview session 41419 was polled and confirmed live; the approval itself is not a process wait.
+- Resume: obtain explicit wording approval/edits, then follow the existing Q23 checkpoint. User changes and empty staged index remain preserved.
+
+### Continuation blocker audit — turn 3
+- Previous continuation classified as no progress: it confirmed the same missing owner/legal Terms approval, with no independent eligible work left.
+- Current revalidation: all 25 tracker entries present; Q01–Q22/Q24/Q25 Done in 24 task commits; Q23 Needs Verification; config/terms.php approved=false; no approval message received; staged index empty.
+- Same blocker has now recurred across the original execution turn and two consecutive continuations. Goal is blocked awaiting explicit approval of the prepared Terms wording or requested revisions. Q23 remains uncommitted as required; it is not Done.
+- Resume action: review resources/views/legal/terms.blade.php (rendered /tmp/qareeb-ui-q23/terms.html), supply approval or edits, then finalize version/flag and re-run full suite/build/isolated snapshot before a Q23-only local commit. Original user controller/test hunks must remain excluded.
+- Existing precise path/checkpoint/error history above remains authoritative. No further code changes or repeated verification runs made this turn.
+
+### Q23 approval received
+- On 2026-10-10 (Asia/Beirut), user explicitly answered “Approve wording as final” to the prepared Terms draft review question.
+- Approved wording retained; finalized version 2026-10-10-v1 with approved=true. Historical approval-pending checkpoints above are superseded.
+- Next: rerun full suite/build/checks and commit Q23 with original user controller/test hunks excluded.
+
+### Q23 — Terms and Conditions — Done (approved final version)
+- User explicitly approved prepared wording as final on 2026-10-10 (Asia/Beirut). Approved substantive text retained; version `2026-10-10-v1`, approved=true, draft/review notices removed from rendering. Earlier Needs Verification entries are historical and superseded.
+- Readable Terms page linked from provider/seeker registration and shared/welcome footers. Both registrations require affirmative unchecked-by-default acceptance and the current version; server timestamps/version stored. Existing accounts are not assigned historical consent.
+- Files: config/terms.php; terms-consent migration; Terms page/acceptance component; registration request/controllers/User; registration/footer views/routes; explicit signup fixtures; TermsAcceptanceTest/UI renderer; task tracker/resolved conditional report.
+- Final checks: full working-tree SQLite suite 103 tests / 1026 assertions passed; npm run build passed; targeted Q23 Pint passed; provider-location Node check passed; overlapping image-upload verification passed; git diff --check passed. Approved rendered Terms regenerated at /tmp/qareeb-ui-q23/terms.html. Exact isolated commit snapshot tested before commit without original user hunks.
+- Content approval requirement satisfied by explicit user response; no remaining acceptance criteria or manual review outstanding. No push/deploy/production data operations.
+- Commit: pending recording immediately after commit.
+- Next: final commit inspection, preserved-index/user-change audit, and goal completion.

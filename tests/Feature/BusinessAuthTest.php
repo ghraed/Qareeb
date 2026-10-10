@@ -19,6 +19,7 @@ class BusinessAuthTest extends TestCase
             'email' => 'provider@example.com',
             'password' => 'password',
             'password_confirmation' => 'password',
+            'terms_accepted' => true, 'terms_version' => config('terms.version'),
         ]);
 
         $response->assertRedirect(route('business.account.status'));
@@ -39,6 +40,7 @@ class BusinessAuthTest extends TestCase
             'email' => 'provider@example.com',
             'password' => 'password',
             'password_confirmation' => 'password',
+            'terms_accepted' => true, 'terms_version' => config('terms.version'),
             'role' => UserRole::Admin->value,
         ]);
 
@@ -54,6 +56,7 @@ class BusinessAuthTest extends TestCase
             'email' => 'provider@example.com',
             'password' => 'password',
             'password_confirmation' => 'password',
+            'terms_accepted' => true, 'terms_version' => config('terms.version'),
         ]);
 
         $user = User::query()->where('email', 'provider@example.com')->firstOrFail();
@@ -80,6 +83,7 @@ class BusinessAuthTest extends TestCase
             'email' => 'provider@example.com',
             'password' => 'password',
             'password_confirmation' => 'password',
+            'terms_accepted' => true, 'terms_version' => config('terms.version'),
         ]);
 
         $response->assertRedirect(route('business.register'));
@@ -93,6 +97,7 @@ class BusinessAuthTest extends TestCase
             'email' => 'provider@example.com',
             'password' => 'password',
             'password_confirmation' => 'different-password',
+            'terms_accepted' => true, 'terms_version' => config('terms.version'),
         ]);
 
         $response->assertRedirect(route('business.register'));

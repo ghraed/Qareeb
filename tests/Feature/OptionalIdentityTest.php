@@ -19,6 +19,7 @@ class OptionalIdentityTest extends TestCase
         $this->post(route('business.register.store'), [
             'name' => 'Provider', 'username' => '  PHOTO.Pro  ',
             'password' => 'password', 'password_confirmation' => 'password',
+            'terms_accepted' => true, 'terms_version' => config('terms.version'),
         ])->assertRedirect(route('business.account.status'))->assertSessionHasNoErrors();
         $user = User::where('username', 'photo.pro')->firstOrFail();
         $this->assertNull($user->email);
@@ -52,6 +53,7 @@ class OptionalIdentityTest extends TestCase
             $this->post(route('business.register.store'), [
                 'name' => 'Provider', ...$identity,
                 'password' => 'password', 'password_confirmation' => 'password',
+                'terms_accepted' => true, 'terms_version' => config('terms.version'),
             ])->assertSessionHasErrors($error);
         }
     }

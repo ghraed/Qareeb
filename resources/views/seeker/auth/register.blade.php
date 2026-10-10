@@ -12,6 +12,7 @@
         <x-form-input label="Password" name="password" type="password" autocomplete="new-password" required />
         <x-form-input label="Confirm password" name="password_confirmation" type="password" autocomplete="new-password" required />
         <p class="q-copy text-sm">Password recovery is not currently available.</p>
+        <x-terms-acceptance />
         <button class="q-button-primary w-full" type="submit">Create Seeker account</button>
     </form>
     <p class="q-copy">Already registered? <a class="font-semibold underline" href="{{ route('seeker.login') }}">Seeker sign in</a>.</p>

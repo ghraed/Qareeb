@@ -38,6 +38,11 @@ foreach ([false, true] as $complete) {
     $html = str_replace('</body>', '<script>window.addEventListener("load",()=>{let result=document.createElement("output");result.id="ui-check";result.dataset.overflow=String(document.documentElement.scrollWidth>innerWidth);document.body.append(result);});</script></body>', $html);
     file_put_contents($root.'/seeker-'.($complete ? 'complete' : 'incomplete').'.html', $html);
 }
+Illuminate\Support\Facades\Auth::logout();
+$html = view('legal.terms')->render();
+$html = preg_replace('#<link[^>]+(?:fonts\.bunny|preconnect)[^>]*>#', '', $html);
+$html = str_replace(['http://localhost/build/', 'http://localhost/images/'], ['/build/', '/images/'], $html);
+file_put_contents($root.'/terms.html', $html);
 foreach (['build', 'images'] as $folder) {
     if (! is_link($root.'/'.$folder)) {
         symlink(public_path($folder), $root.'/'.$folder);

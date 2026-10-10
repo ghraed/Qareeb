@@ -16,7 +16,7 @@ class SeekerAuthenticationTest extends TestCase
         $this->get(route('seeker.register'))->assertOk();
         $this->get(route('seeker.login'))->assertOk();
         $this->post(route('seeker.register.store'), ['name' => 'Real Seeker', 'username' => ' SEEKER.One ',
-            'password' => 'password', 'password_confirmation' => 'password', 'role' => 'admin'])
+            'password' => 'password', 'terms_accepted' => true, 'terms_version' => config('terms.version'), 'password_confirmation' => 'password', 'role' => 'admin'])
             ->assertRedirect(route('seeker.dashboard'))->assertSessionHasNoErrors();
         $seeker = User::where('username', 'seeker.one')->firstOrFail();
         $this->assertSame(UserRole::Customer, $seeker->role);
@@ -58,8 +58,8 @@ class SeekerAuthenticationTest extends TestCase
     public function test_registration_enforces_shared_identity_uniqueness_and_confirmation(): void
     {
         User::factory()->create(['username' => 'taken']);
-        $this->post(route('seeker.register.store'), ['name' => 'Seeker', 'username' => 'TAKEN', 'password' => 'password', 'password_confirmation' => 'different'])->assertSessionHasErrors(['username', 'password']);
-        $this->post(route('seeker.register.store'), ['name' => 'Seeker', 'password' => 'password', 'password_confirmation' => 'password'])->assertSessionHasErrors('username');
+        $this->post(route('seeker.register.store'), ['name' => 'Seeker', 'username' => 'TAKEN', 'password' => 'password', 'terms_accepted' => true, 'terms_version' => config('terms.version'), 'password_confirmation' => 'different'])->assertSessionHasErrors(['username', 'password']);
+        $this->post(route('seeker.register.store'), ['name' => 'Seeker', 'password' => 'password', 'terms_accepted' => true, 'terms_version' => config('terms.version'), 'password_confirmation' => 'password'])->assertSessionHasErrors('username');
         $this->assertGuest();
     }
 }

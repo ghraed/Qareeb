@@ -18,6 +18,8 @@ use App\Http\Controllers\SeekerComplaintController;
 use App\Http\Controllers\SeekerProfileController;
 use Illuminate\Support\Facades\Route;
 
+Route::view('/terms', 'legal.terms')->name('terms.show');
+
 Route::get('/', function () {
     return view('welcome');
 });

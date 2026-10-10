@@ -17,6 +17,7 @@ class ProviderPreregistrationTest extends TestCase
         $this->post(route('business.register.store'), [
             'name' => 'Early Provider', 'username' => 'early.provider',
             'password' => 'password', 'password_confirmation' => 'password',
+            'terms_accepted' => true, 'terms_version' => config('terms.version'),
             'role' => 'admin', 'account_status' => 'active',
         ])->assertRedirect(route('business.account.status'));
         $provider = User::where('username', 'early.provider')->firstOrFail();

@@ -30,6 +30,7 @@ class BusinessAuthController extends Controller
                 'password' => $request->string('password')->toString(),
                 'role' => UserRole::ServiceProvider,
                 'account_status' => AccountStatus::Pending,
+                ...$request->termsConsent(),
             ]);
 
             $user->businessProfile()->create([
