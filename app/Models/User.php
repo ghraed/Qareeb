@@ -14,6 +14,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class User extends Authenticatable
 {
@@ -133,6 +135,37 @@ class User extends Authenticatable
     public function isAdmin(): bool
     {
         return $this->role === UserRole::Admin;
+    }
+
+    public const SEEKER_COMPLETION_FIELDS = ['name' => 'Name', 'phone' => 'Phone', 'district' => 'District', 'city' => 'City'];
+
+    public static function seekerProfileRules(mixed $district): array
+    {
+        return [
+            'name' => ['required', 'string', 'max:255'],
+            'phone' => BusinessProfile::editableRules([])['phone'],
+            'district' => ['nullable', 'string', Rule::in(BusinessProfile::LEBANON_DISTRICTS)],
+            'city' => ['nullable', 'string', Rule::in(BusinessProfile::citiesForDistricts(is_string($district) ? [$district] : []))],
+        ];
+    }
+
+    public function missingSeekerCompletionFields(): array
+    {
+        $rules = self::seekerProfileRules($this->district);
+        $missing = [];
+        foreach (self::SEEKER_COMPLETION_FIELDS as $field => $label) {
+            $requiredRules = ['required', ...array_filter($rules[$field], fn ($rule) => $rule !== 'nullable')];
+            if (Validator::make([$field => $this->{$field}], [$field => $requiredRules])->fails()) {
+                $missing[] = $label;
+            }
+        }
+
+        return $missing;
+    }
+
+    public function seekerCompletionPercentage(): int
+    {
+        return (int) round((1 - count($this->missingSeekerCompletionFields()) / count(self::SEEKER_COMPLETION_FIELDS)) * 100);
     }
 
     public function isSeeker(): bool
