@@ -15,6 +15,7 @@ class BusinessProfile extends Model
     public const MAX_WORK_SAMPLES = 6;
 
     public const WORK_CATEGORIES = [
+        'Photography',
         'Home Maintenance',
         'Agriculture and Seasonal Work',
         'Private Tutoring',

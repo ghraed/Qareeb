@@ -84,7 +84,7 @@ Dependencies: seeker tasks require Q03; Q04 requires Q05; Q08 builds on Q07; Q06
 | Q15 | Provider availability | Implemented; verify | Pending |
 | Q16 | Provider pictures | Implemented; verify | Pending |
 | Q17 | #Hiring banner | Partial; refine | Pending |
-| Q18 | Add Photography | Change | Pending |
+| Q18 | Add Photography | Change | Done |
 | Q19 | Remove three categories | Change | Pending |
 | Q20 | Moving → Transportation | Change | Pending |
 | Q21 | Provider preregistration | Existing flow; clarify/verify | Done |
@@ -248,9 +248,9 @@ For each task append:
 - Next eligible task
 
 ## Resume checkpoint
-- Current task: Q18
-- Last completed task/commit: Q21 (hash below after commit)
-- Next action: Inspect and execute Q18 following task specification; preserve user edits and use isolated commit index.
+- Current task: Q19
+- Last completed task/commit: Q18 (hash below after commit)
+- Next action: Inspect and execute Q19 following task specification; preserve user edits and use isolated commit index.
 
 
 ## Initial repository evidence
@@ -299,5 +299,12 @@ For each task append:
 - Clarified registration and account-status copy, added working status refresh link and next steps. Files: provider registration/status Blade views, ProviderPreregistrationTest.
 - Checks: SQLite preregistration/auth/moderation group: 19 tests / 230 assertions passed; diff check passed. HTTP lifecycle covers registration → blocked/public-hidden → approval → edit → public render.
 - Proposed interpretation matches repository; no separate waiting list.
-- Commit: pending recording immediately after commit.
+- Commit: `d1f4e76a5e931dcd29c2cbe43ebfc7eff55b0a8c`.
 - Next: Q18.
+
+### Q18 — Add Photography — Done
+- Added Photography to the single BusinessProfile WORK_CATEGORIES definition used by validation, editor options, preview and public display; no duplicate list. Directory integration uses this same definition in Q07.
+- Files: BusinessProfile, CategoryChangesTest. Checks: SQLite CategoryChangesTest: 1 test / 7 assertions passed; editor/public HTTP rendering and mixed-category persistence verified; diff check passed.
+- Dependency clarification: category definition tasks establish accepted filter labels; directory UI/filter integration follows Q03/Q07, avoiding premature seeker implementation.
+- Commit: pending recording immediately after commit.
+- Next: Q19.
