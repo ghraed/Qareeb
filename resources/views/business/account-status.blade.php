@@ -28,7 +28,7 @@
 
                 <div class="mt-6 space-y-4">
                     <div class="q-panel p-5">
-                        <p class="text-sm font-medium text-[#6b6b6b]">Account email</p>
+                        <p class="text-sm font-medium text-[#6b6b6b]">Sign-in identity</p>
                         <p class="mt-2 text-xl font-semibold text-[#1f3b2e]">{{ $user->email ?: ($user->username ?: 'Email not provided') }}</p>
                     </div>
                     <div class="rounded-[1.75rem] border p-5 {{ $content['panelClass'] }}">
@@ -48,7 +48,8 @@
                 <div class="overflow-hidden rounded-[2rem] bg-[#1f3b2e] p-8 text-white shadow-[0_35px_80px_-30px_rgba(31,59,46,0.95)]">
                     <p class="text-sm font-semibold tracking-[0.25em] text-[#d9e4d0] uppercase">What happens next</p>
                     <h2 class="mt-4 font-serif text-3xl font-semibold tracking-tight">The provider portal unlocks automatically once the business account is active.</h2>
-                    <p class="mt-4 text-base leading-7 text-[#ecf1e7]">After approval, the same login session can continue into the business dashboard without creating a new account.</p>
+                    <a href="{{ route('business.account.status') }}" class="q-button-secondary mt-5">Check account status</a>
+                    <p class="mt-4 text-base leading-7 text-[#ecf1e7]">After approval, use the same account to complete your business profile, choose service categories and coverage areas, and add pictures. You start as unavailable for work until you switch availability on.</p>
                 </div>
 
                 <div class="q-panel p-6">

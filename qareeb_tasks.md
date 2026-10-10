@@ -87,7 +87,7 @@ Dependencies: seeker tasks require Q03; Q04 requires Q05; Q08 builds on Q07; Q06
 | Q18 | Add Photography | Change | Pending |
 | Q19 | Remove three categories | Change | Pending |
 | Q20 | Moving → Transportation | Change | Pending |
-| Q21 | Provider preregistration | Existing flow; clarify/verify | Pending |
+| Q21 | Provider preregistration | Existing flow; clarify/verify | Done |
 | Q22 | Optional email | Change | Done |
 | Q23 | Terms and Conditions | New/change | Pending |
 | Q24 | No bookings on site | Scope/UI change | Pending |
@@ -248,9 +248,9 @@ For each task append:
 - Next eligible task
 
 ## Resume checkpoint
-- Current task: Q21
-- Last completed task/commit: Q10 (hash below after commit)
-- Next action: Inspect and execute Q21 following task specification; preserve user edits and use isolated commit index.
+- Current task: Q18
+- Last completed task/commit: Q21 (hash below after commit)
+- Next action: Inspect and execute Q18 following task specification; preserve user edits and use isolated commit index.
 
 
 ## Initial repository evidence
@@ -291,5 +291,13 @@ For each task append:
 - Files: BusinessAuthController task-only redirect hunk; ProviderAuthenticationTest.
 - Checks: focused authentication tests: 24 tests / 231 assertions passed; direct mutation/upload/delete restrictions tested for pending/rejected/suspended; remember tokens, session rotation, bad passwords (existing tests), logout and guest redirects verified. Diff check passed.
 - Existing admin/customer login behavior preserved; pre-existing user changes excluded from commits.
-- Commit: pending recording immediately after commit.
+- Commit: `df8ea4e07e39a665036aecfb7ea31df45d560664`.
 - Next: Q21.
+
+### Q21 — Provider preregistration — Done
+- Confirmed early provider registration is the existing pending-account flow; creates linked empty profile atomically, rejects role/status spoofing, stays private, and unlocks editor after admin approval without another account.
+- Clarified registration and account-status copy, added working status refresh link and next steps. Files: provider registration/status Blade views, ProviderPreregistrationTest.
+- Checks: SQLite preregistration/auth/moderation group: 19 tests / 230 assertions passed; diff check passed. HTTP lifecycle covers registration → blocked/public-hidden → approval → edit → public render.
+- Proposed interpretation matches repository; no separate waiting list.
+- Commit: pending recording immediately after commit.
+- Next: Q18.

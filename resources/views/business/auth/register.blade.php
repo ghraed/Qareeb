@@ -7,8 +7,8 @@
         <section class="space-y-7">
             <span class="inline-flex rounded-full border border-[#d7ccb6] bg-[#f6f2e6] px-4 py-2 text-sm font-semibold text-[#1f3b2e]">Business onboarding</span>
             <div class="space-y-4">
-                <h1 class="max-w-2xl font-serif text-4xl leading-tight font-semibold tracking-tight text-[#1f3b2e] sm:text-6xl">Open your provider account with the Qareeb brand language customers already trust.</h1>
-                <p class="max-w-2xl text-base leading-7 text-[#5f625d] sm:text-lg sm:leading-8">A calm, high-trust onboarding flow for service businesses. Create your account now, then complete your public presence from a private dashboard.</p>
+                <h1 class="max-w-2xl font-serif text-4xl leading-tight font-semibold tracking-tight text-[#1f3b2e] sm:text-6xl">Register as a Qareeb service provider.</h1>
+                <p class="max-w-2xl text-base leading-7 text-[#5f625d] sm:text-lg sm:leading-8">Create your account for administrator review. After approval, add your services, coverage areas and pictures in your private provider dashboard. Your profile stays hidden while your account is pending.</p>
             </div>
             {{-- <div class="grid gap-4 sm:grid-cols-3">
                 <div class="q-panel p-5">
