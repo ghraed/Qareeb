@@ -82,7 +82,7 @@ Dependencies: seeker tasks require Q03; Q04 requires Q05; Q08 builds on Q07; Q06
 | Q13 | Provider dashboard | Implemented; fix/verify | Pending |
 | Q14 | Provider location | Implemented; verify | Done |
 | Q15 | Provider availability | Implemented; verify | Pending |
-| Q16 | Provider pictures | Implemented; verify | Pending |
+| Q16 | Provider pictures | Implemented; verify | Verified / Commit Blocked |
 | Q17 | #Hiring banner | Partial; refine | Pending |
 | Q18 | Add Photography | Change | Done |
 | Q19 | Remove three categories | Change | Done |
@@ -248,9 +248,9 @@ For each task append:
 - Next eligible task
 
 ## Resume checkpoint
-- Current task: Q16
-- Last completed task/commit: Q14 (hash below after commit)
-- Next action: Inspect and execute Q16 following task specification; preserve user edits and use isolated commit index.
+- Current task: Q11
+- Last completed task/commit: Q16 (hash below after commit)
+- Next action: Inspect and execute Q11 following task specification; preserve user edits and use isolated commit index.
 
 
 ## Initial repository evidence
@@ -337,5 +337,14 @@ For each task append:
 - Files: profile feature/editor tests plus tests/js/provider-location.test.mjs.
 - Checks: SQLite location/profile group: 7 tests / 59 assertions passed; node --test tests/js/provider-location.test.mjs: passed, exercises actual editor JS district removal and select-all; diff check passed.
 - Coverage storage uses existing decoded arrays; directory matching integration follows Q07/Q08. No maps/GPS or geocoding.
-- Commit: pending recording immediately after commit.
+- Commit: `0e877891630888929ca8a64b8faba18e20df0e1b`.
 - Next: Q16.
+
+### Q16 — Provider pictures — Verified / Commit Blocked
+- Hardened uploads/replacement/deletion with fresh row locks, transactional capacity checks, MIME-derived filenames, failed-save cleanup and visible save errors. Gallery form sends stable image fingerprint to reject stale-index deletion. Cleanup only touches owning managed paths and refuses files referenced by another profile.
+- Advertise/accept only verified JPG/PNG/WEBP: profile/brand 10 MB, gallery 5 MB each, maximum six. Unverified HEIC/HEIF/AVIF claims removed.
+- Files: BusinessPhotoService/controller/upload requests, image/gallery components, ProviderImageSafetyTest, standalone concurrency verification.
+- Checks: SQLite image/profile/auth group: 18 tests / 212 assertions passed; python3 tests/integration/image-concurrency.py: two overlapping temporary-SQLite requests, one saved/one blocked, six references and no orphan files. Supported formats, preview URLs, oversize/SVG rejection, stale models, failed save recovery, cross-owner/arbitrary/shared file safety verified. Pint and diff check passed.
+- Legacy gallery delete requests without fingerprint retained; rendered forms use fingerprint. Storage and database concurrency verification uses disposable /tmp only.
+- Commit: pending recording immediately after commit.
+- Next: Q11.

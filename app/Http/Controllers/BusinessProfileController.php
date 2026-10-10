@@ -9,7 +9,9 @@ use App\Models\BusinessProfile;
 use App\Services\BusinessPhotoService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class BusinessProfileController extends Controller
 {
@@ -37,7 +39,7 @@ class BusinessProfileController extends Controller
             ->map(fn (string $district): string => trim($district))
             ->values()
             ->all();
-        $availableCities = \App\Models\BusinessProfile::citiesForDistricts($districts);
+        $availableCities = BusinessProfile::citiesForDistricts($districts);
         $cities = collect($request->input('city', []))
             ->filter(fn (mixed $city): bool => is_string($city) && filled(trim($city)))
             ->map(fn (string $city): string => trim($city))
@@ -96,45 +98,50 @@ class BusinessProfileController extends Controller
 
     public function updateProfilePhoto(UploadBusinessPhotoRequest $request, BusinessPhotoService $photoService): RedirectResponse
     {
-        $photoService->updateProfilePhoto($request->user()->businessProfile, $request->file('photo'));
-
-        return back()->with('status', 'Profile photo updated.');
+        return $this->saveImages(fn () => $photoService->updateProfilePhoto($request->user()->businessProfile, $request->file('photo')), 'Profile photo updated.', 'photo');
     }
 
     public function updateBrandPhoto(UploadBusinessPhotoRequest $request, BusinessPhotoService $photoService): RedirectResponse
     {
-        $photoService->updateBrandPhoto($request->user()->businessProfile, $request->file('photo'));
-
-        return back()->with('status', 'Brand photo updated.');
+        return $this->saveImages(fn () => $photoService->updateBrandPhoto($request->user()->businessProfile, $request->file('photo')), 'Brand photo updated.', 'photo');
     }
 
     public function deleteProfilePhoto(BusinessPhotoService $photoService): RedirectResponse
     {
-        $photoService->deleteProfilePhoto(request()->user()->businessProfile);
-
-        return back()->with('status', 'Profile photo removed.');
+        return $this->saveImages(fn () => $photoService->deleteProfilePhoto(request()->user()->businessProfile), 'Profile photo removed.', 'photo');
     }
 
     public function deleteBrandPhoto(BusinessPhotoService $photoService): RedirectResponse
     {
-        $photoService->deleteBrandPhoto(request()->user()->businessProfile);
-
-        return back()->with('status', 'Brand photo removed.');
+        return $this->saveImages(fn () => $photoService->deleteBrandPhoto(request()->user()->businessProfile), 'Brand photo removed.', 'photo');
     }
 
     public function addWorkSample(UploadBusinessWorkSampleRequest $request, BusinessPhotoService $photoService): RedirectResponse
     {
-        $photoService->addWorkSamples($request->user()->businessProfile, $request->file('photos', []));
-
-        return back()->with('status', 'Work sample images uploaded.');
+        return $this->saveImages(fn () => $photoService->addWorkSamples($request->user()->businessProfile, $request->file('photos', [])), 'Work sample images uploaded.', 'photos');
     }
 
     public function deleteWorkSample(Request $request, BusinessPhotoService $photoService, int $index): RedirectResponse
     {
         abort_unless($index >= 0 && $index < BusinessProfile::MAX_WORK_SAMPLES, 404);
 
-        $photoService->deleteWorkSample($request->user()->businessProfile, $index);
+        $request->validate(['image_ref' => ['nullable', 'string', 'size:64', 'regex:/\A[a-f0-9]+\z/']]);
 
-        return back()->with('status', 'Work sample image removed.');
+        return $this->saveImages(fn () => $photoService->deleteWorkSample($request->user()->businessProfile, $index, $request->input('image_ref')), 'Work sample image removed.', 'photos');
+    }
+
+    private function saveImages(callable $operation, string $message, string $field): RedirectResponse
+    {
+        try {
+            $operation();
+        } catch (ValidationException|HttpException $exception) {
+            throw $exception;
+        } catch (\Throwable $exception) {
+            report($exception);
+
+            return back()->withErrors([$field => 'The image change could not be saved. Please try again.']);
+        }
+
+        return back()->with('status', $message);
     }
 }

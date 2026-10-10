@@ -7,6 +7,8 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
+use RuntimeException;
 use Throwable;
 
 class BusinessPhotoService
@@ -31,97 +33,108 @@ class BusinessPhotoService
         $this->deletePhoto($profile, 'brand_photo');
     }
 
-    /**
-     * @param  array<int, UploadedFile>  $files
-     */
     public function addWorkSamples(BusinessProfile $profile, array $files): void
     {
-        $existingSamples = $profile->work_samples;
-        $remainingSlots = BusinessProfile::MAX_WORK_SAMPLES - count($existingSamples);
-
-        if ($remainingSlots <= 0) {
-            abort(422, 'You can upload up to 6 work sample images.');
-        }
-
-        if (count($files) > $remainingSlots) {
-            abort(422, "You can upload up to {$remainingSlots} more work sample image(s).");
-        }
-
-        $disk = Storage::disk('public');
-        $directory = "businesses/{$profile->user_id}/work-samples";
         $newPaths = [];
-
-        foreach ($files as $file) {
-            $filename = Str::uuid()->toString().'.'.$file->getClientOriginalExtension();
-            $newPaths[] = $file->storeAs($directory, $filename, 'public');
-        }
-
         try {
-            DB::transaction(function () use ($profile, $existingSamples, $newPaths): void {
-                $profile->forceFill([
-                    'work_samples' => [...$existingSamples, ...$newPaths],
-                ])->save();
+            DB::transaction(function () use ($profile, $files, &$newPaths): void {
+                $current = BusinessProfile::query()->lockForUpdate()->findOrFail($profile->id);
+                if (count($current->work_samples) + count($files) > BusinessProfile::MAX_WORK_SAMPLES) {
+                    throw ValidationException::withMessages(['photos' => 'You can upload up to 6 work sample images.']);
+                }
+                foreach ($files as $file) {
+                    $newPaths[] = $this->store($current, $file, 'work-samples');
+                }
+                if (! $current->forceFill(['work_samples' => [...$current->work_samples, ...$newPaths]])->save()) {
+                    throw new RuntimeException('Image persistence failed.');
+                }
             });
         } catch (Throwable $exception) {
-            $disk->delete($newPaths);
-
+            foreach ($newPaths as $path) {
+                $this->cleanup($profile, $path);
+            }
             throw $exception;
         }
+        $profile->refresh();
     }
 
-    public function deleteWorkSample(BusinessProfile $profile, int $index): void
+    public function deleteWorkSample(BusinessProfile $profile, int $index, ?string $imageRef = null): void
     {
-        $samples = $profile->work_samples;
-        $oldPath = $samples[$index] ?? null;
+        $oldPath = DB::transaction(function () use ($profile, $index, $imageRef): string {
+            $current = BusinessProfile::query()->lockForUpdate()->findOrFail($profile->id);
+            $samples = $current->work_samples;
+            $oldPath = $samples[$index] ?? null;
+            abort_unless($oldPath, 404);
+            if ($imageRef !== null && ! hash_equals(hash('sha256', $oldPath), $imageRef)) {
+                throw ValidationException::withMessages(['photos' => 'The gallery changed. Refresh and select the image again.']);
+            }
+            unset($samples[$index]);
+            if (! $current->forceFill(['work_samples' => array_values($samples)])->save()) {
+                throw new RuntimeException('Image persistence failed.');
+            }
 
-        if (! $oldPath) {
-            abort(404);
-        }
-
-        unset($samples[$index]);
-        $samples = array_values($samples);
-
-        DB::transaction(function () use ($profile, $samples): void {
-            $profile->forceFill(['work_samples' => $samples])->save();
+            return $oldPath;
         });
-
-        Storage::disk('public')->delete($oldPath);
+        $this->cleanup($profile, $oldPath);
+        $profile->refresh();
     }
 
     private function replacePhoto(BusinessProfile $profile, UploadedFile $file, string $column, string $folder): void
     {
-        $disk = Storage::disk('public');
-        $directory = "businesses/{$profile->user_id}/{$folder}";
-        $filename = Str::uuid()->toString().'.'.$file->getClientOriginalExtension();
-        $newPath = $file->storeAs($directory, $filename, 'public');
-        $oldPath = $profile->{$column};
-
+        $newPath = $this->store($profile, $file, $folder);
         try {
-            DB::transaction(function () use ($profile, $column, $newPath): void {
-                $profile->forceFill([$column => $newPath])->save();
+            $oldPath = DB::transaction(function () use ($profile, $column, $newPath): ?string {
+                $current = BusinessProfile::query()->lockForUpdate()->findOrFail($profile->id);
+                $oldPath = $current->{$column};
+                if (! $current->forceFill([$column => $newPath])->save()) {
+                    throw new RuntimeException('Image persistence failed.');
+                }
+
+                return $oldPath;
             });
         } catch (Throwable $exception) {
-            $disk->delete($newPath);
-
+            $this->cleanup($profile, $newPath);
             throw $exception;
         }
-
-        if ($oldPath) {
-            $disk->delete($oldPath);
-        }
+        $this->cleanup($profile, $oldPath);
+        $profile->refresh();
     }
 
     private function deletePhoto(BusinessProfile $profile, string $column): void
     {
-        $disk = Storage::disk('public');
-        $oldPath = $profile->{$column};
+        $oldPath = DB::transaction(function () use ($profile, $column): ?string {
+            $current = BusinessProfile::query()->lockForUpdate()->findOrFail($profile->id);
+            $oldPath = $current->{$column};
+            if (! $current->forceFill([$column => null])->save()) {
+                throw new RuntimeException('Image persistence failed.');
+            }
 
-        DB::transaction(function () use ($profile, $column): void {
-            $profile->forceFill([$column => null])->save();
+            return $oldPath;
         });
+        $this->cleanup($profile, $oldPath);
+        $profile->refresh();
+    }
 
-        if ($oldPath) {
-            $disk->delete($oldPath);
+    private function store(BusinessProfile $profile, UploadedFile $file, string $folder): string
+    {
+        $path = $file->storeAs("businesses/{$profile->user_id}/{$folder}", Str::uuid().'.'.$file->extension(), 'public');
+        if (! is_string($path) || $path === '') {
+            throw new RuntimeException('Image storage failed.');
+        }
+
+        return $path;
+    }
+
+    private function cleanup(BusinessProfile $profile, ?string $path): void
+    {
+        if (! $path || ! preg_match('#\Abusinesses/'.preg_quote((string) $profile->user_id, '#').'/(profile|brand|work-samples)/[a-zA-Z0-9_-]+\.(jpg|jpeg|png|webp|heic|heif|avif|gif)\z#', $path)) {
+            return;
+        }
+        // Keep files still referenced by any profile; never trust arbitrary stored paths.
+        $referenced = BusinessProfile::query()->where('profile_photo', $path)->orWhere('brand_photo', $path)
+            ->orWhere('work_samples', $path)->orWhere('work_samples', 'like', '%'.json_encode($path).'%')->exists();
+        if (! $referenced) {
+            Storage::disk('public')->delete($path);
         }
     }
 }

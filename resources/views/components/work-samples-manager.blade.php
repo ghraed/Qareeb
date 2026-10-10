@@ -16,7 +16,7 @@
         <div>
             <h3 class="q-heading text-xl">Work sample gallery</h3>
             <p class="q-copy mt-1 text-sm">Show up to {{ \App\Models\BusinessProfile::MAX_WORK_SAMPLES }} images of completed work or services.</p>
-            <p class="mt-1 text-xs font-medium text-[#8f5b28]">Images only. Up to 5 MB each.</p>
+            <p class="mt-1 text-xs font-medium text-[#8f5b28]">JPG, PNG or WEBP. Up to 5 MB each.</p>
         </div>
         <span class="q-badge text-xs">{{ count($samplePaths) }}/{{ \App\Models\BusinessProfile::MAX_WORK_SAMPLES }} uploaded</span>
     </div>
@@ -30,6 +30,7 @@
                     <form method="POST" action="{{ route($deleteRouteName, $index) }}">
                         @csrf
                         @method('DELETE')
+                        <input type="hidden" name="image_ref" value="{{ hash('sha256', $samplePaths[$index]) }}">
                         <button type="submit" class="rounded-full border border-[#eadfc7] bg-white px-3 py-1.5 text-xs font-semibold text-[#8f5b28] transition hover:bg-[#f7ecdb]">Delete</button>
                     </form>
                 </div>
@@ -56,7 +57,7 @@
             <input
                 type="file"
                 name="photos[]"
-                accept="image/*"
+                accept="image/jpeg,image/png,image/webp"
                 multiple
                 x-on:change="
                     selectionError = '';

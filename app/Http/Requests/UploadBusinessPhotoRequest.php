@@ -20,7 +20,8 @@ class UploadBusinessPhotoRequest extends FormRequest
         return [
             'photo' => [
                 'required',
-                File::types(['jpg', 'jpeg', 'png', 'webp', 'heic', 'heif', 'avif'])->max(10240),
+                File::image()->max(10240),
+                'mimes:jpg,jpeg,png,webp',
             ],
         ];
     }
@@ -33,7 +34,7 @@ class UploadBusinessPhotoRequest extends FormRequest
         return [
             'photo.required' => 'Please choose an image to upload.',
             'photo.max' => 'The image must be 10 MB or smaller.',
-            'photo.types' => 'Please upload a JPG, PNG, WEBP, HEIC, HEIF, or AVIF image.',
+            'photo.mimes' => 'Please upload a JPG, PNG, or WEBP image.',
         ];
     }
 }

@@ -16,7 +16,7 @@
         <div>
             <h3 class="q-heading text-xl">{{ $label }}</h3>
             <p class="q-copy mt-1 text-sm">{{ $emptyLabel }}</p>
-            <p class="mt-1 text-xs font-medium text-[#8f5b28]">Accepted: JPG, PNG, WEBP, HEIC, HEIF, AVIF up to 10 MB.</p>
+            <p class="mt-1 text-xs font-medium text-[#8f5b28]">Accepted: JPG, PNG, WEBP up to 10 MB.</p>
         </div>
         @if ($deleteAction && $currentUrl)
             <form method="POST" action="{{ $deleteAction }}">
@@ -46,7 +46,7 @@
             type="file"
             name="{{ $name }}"
             x-ref="fileInput"
-            accept="image/jpeg,image/png,image/webp,image/heic,image/heif,image/avif,.jpg,.jpeg,.png,.webp,.heic,.heif,.avif"
+            accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
             x-on:change="
                 preview = $event.target.files[0] ? URL.createObjectURL($event.target.files[0]) : null;
                 fileName = $event.target.files[0] ? $event.target.files[0].name : '';

@@ -28,6 +28,7 @@ class UploadBusinessWorkSampleRequest extends FormRequest
             'photos.*' => [
                 'required',
                 File::image()->max(5120),
+                'mimes:jpg,jpeg,png,webp',
             ],
         ];
     }
@@ -35,6 +36,10 @@ class UploadBusinessWorkSampleRequest extends FormRequest
     public function withValidator(Validator $validator): void
     {
         $validator->after(function (Validator $validator): void {
+            if ($validator->errors()->isNotEmpty()) {
+                return;
+            }
+
             $profile = $this->user()?->businessProfile;
 
             if (! $profile instanceof BusinessProfile) {
