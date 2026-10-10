@@ -30,23 +30,13 @@ class PublicServiceProviderController extends Controller
         $location = $profile->locationLine() ?: 'Location not provided';
         $hasReviews = $profile->reviews_count > 0;
 
-        $hiring = $profile->is_available_for_hire
-            ? [
-                'is_available' => true,
-                'status' => 'Available for hire',
-                'message' => 'This service provider is currently accepting new hiring requests.',
-                'button_label' => 'Hire Now',
-                'button_enabled' => true,
-                'supporting_text' => 'Response tools and request management will be available soon.',
-            ]
-            : [
-                'is_available' => false,
-                'status' => 'Currently unavailable',
-                'message' => 'This service provider is not accepting new hiring requests right now.',
-                'button_label' => 'Unavailable',
-                'button_enabled' => false,
-                'supporting_text' => 'Check back later for updated availability.',
-            ];
+        $hiring = [
+            'is_available' => $profile->is_available_for_hire,
+            'status' => $profile->is_available_for_hire ? 'Available for hire' : 'Currently unavailable',
+            'message' => $profile->is_available_for_hire
+                ? 'This provider is accepting enquiries for work. Contact them directly to discuss your needs.'
+                : 'This provider is not accepting new work enquiries right now.',
+        ];
 
         $seo = [
             'title' => $businessName,

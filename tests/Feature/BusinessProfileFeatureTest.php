@@ -466,8 +466,10 @@ class BusinessProfileFeatureTest extends TestCase
 
         $response->assertOk();
         $response->assertSee('Available for hire');
-        $response->assertSee('Hire Now');
-        $response->assertSee('Achrafieh, Beirut');
+        $response->assertSee('Email provider');
+        $response->assertDontSee('Hire Now');
+        $response->assertSee('Districts: Beirut');
+        $response->assertSee('Cities: Achrafieh');
     }
 
     public function test_public_profile_shows_unavailable_hiring_card(): void
@@ -482,7 +484,8 @@ class BusinessProfileFeatureTest extends TestCase
 
         $response->assertOk();
         $response->assertSee('Currently unavailable');
-        $response->assertSee('Unavailable');
+        $response->assertSee('Email provider');
+        $response->assertDontSee('Hire Now');
     }
 
     public function test_public_profile_uses_public_meta_data(): void

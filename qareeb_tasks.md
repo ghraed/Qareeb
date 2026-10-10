@@ -90,7 +90,7 @@ Dependencies: seeker tasks require Q03; Q04 requires Q05; Q08 builds on Q07; Q06
 | Q21 | Provider preregistration | Existing flow; clarify/verify | Done |
 | Q22 | Optional email | Change | Done |
 | Q23 | Terms and Conditions | New/change | Pending |
-| Q24 | No bookings on site | Scope/UI change | Pending |
+| Q24 | No bookings on site | Scope/UI change | Done |
 | Q25 | Image privacy reporting | New | Pending |
 
 ## Task specifications
@@ -248,9 +248,9 @@ For each task append:
 - Next eligible task
 
 ## Resume checkpoint
-- Current task: Q24
-- Last completed task/commit: Q13 (hash below after commit)
-- Next action: Inspect and execute Q24 following task specification; preserve user edits and use isolated commit index.
+- Current task: Q17
+- Last completed task/commit: Q24 (hash below after commit)
+- Next action: Inspect and execute Q17 following task specification; preserve user edits and use isolated commit index.
 
 
 ## Initial repository evidence
@@ -368,7 +368,15 @@ For each task append:
 ### Q13 — Provider dashboard — Done
 - Replaced fictitious upcoming tools with persisted business summary; fixed misleading empty/active wording. Dashboard/editor load current profile state and safely recover a missing legacy active-provider profile with unavailable default. Q15 already corrected the is_available mismatch.
 - Files: dashboard, dashboard/profile controllers, ProviderDashboardTest.
-- Checks: SQLite dashboard/completion/availability/auth group: 6 tests / 164 assertions passed; identity/details/location/category/phone, completion, working links and availability agree across views; empty legacy profile recovers once. Diff check passed.
+- Checks: SQLite dashboard/completion/availability/auth group: 6 tests / 160 assertions passed; identity/details/location/category/phone, completion, working links and availability agree across views; empty legacy profile recovers once. Diff check passed.
 - No fabricated metrics, bookings or payment activity; profile creation checked only in isolated test databases.
-- Commit: pending recording immediately after commit.
+- Commit: `62d5dcea29c486e84b71b9e65db202727cf32d29`.
 - Next: Q24.
+
+### Q24 — No bookings on site — Done
+- Audited active Blade/controller UI; removed public Hire Now/coming-soon request modal and future-workflow promises. Added reusable working tel/mailto contact actions with missing-contact state, preserving enquiry availability and public discovery/reviews. Dashboard fictitious booking tools were removed in Q13.
+- Files: PublicServiceProviderController, hiring card, provider-contact component, public profile test assertions, DirectProviderContactTest.
+- Checks: complete SQLite suite: 78 tests / 638 assertions passed; case-insensitive source audit for booking/payment/Hire Now/coming soon/request workflow found none in active views/controllers; diff check passed. Both availability states retain working contacts; missing email/phone yields no empty action.
+- Baseline seven failures are now resolved through Q12/Q14/Q24; no booking/payment system or data changes.
+- Commit: pending recording immediately after commit.
+- Next: Q17.
