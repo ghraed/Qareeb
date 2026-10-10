@@ -69,7 +69,7 @@ Dependencies: seeker tasks require Q03; Q04 requires Q05; Q08 builds on Q07; Q06
 | --- | --- | --- | --- |
 | Q01 | Admin login | Implemented; verify | Done |
 | Q02 | Accept/reject providers | Implemented; verify | Done |
-| Q03 | Seeker registration/login | New | Pending |
+| Q03 | Seeker registration/login | New | Done |
 | Q04 | Seeker completion percentage | New | Pending |
 | Q05 | Seeker profile editing | New | Pending |
 | Q06 | Seeker dashboard | New | Pending |
@@ -248,9 +248,9 @@ For each task append:
 - Next eligible task
 
 ## Resume checkpoint
-- Current task: Q03
-- Last completed task/commit: Q17 (hash below after commit)
-- Next action: Inspect and execute Q03 following task specification; preserve user edits and use isolated commit index.
+- Current task: Q05
+- Last completed task/commit: Q03 (hash below after commit)
+- Next action: Inspect and execute Q05 following task specification; preserve user edits and use isolated commit index.
 
 
 ## Initial repository evidence
@@ -386,5 +386,13 @@ For each task append:
 - Files: availability-badge/provider-avatar, HiringBadgeTest, isolated UI fixture renderer.
 - Checks: SQLite hiring/availability/contact group: 4 tests / 55 assertions passed; npm run build passed; headless Chrome at 390×844 available and 1280×900 unavailable: no horizontal overflow, badge correctly present/absent. Screenshots manually inspected at /tmp/qareeb-ui-q17/mobile.png and desktop.png; legible wrapped title/badge and correct brand layout.
 - Browser launch sandbox error resolved by disposable-profile escalation; fixture probe/assets corrected and rechecked. No public deployment or production database access. Directory reuse tested in Q07.
-- Commit: pending recording immediately after commit.
+- Commit: `34e9e78d7467d803620d49a0563363438cece57a`.
 - Next: Q03.
+
+### Q03 — Seeker registration/login — Done
+- Added separate seeker registration/login/logout and protected minimal dashboard using existing customer role, now labeled Seeker. Reused normalized optional identities; no business profile created; spoofed roles ignored. Role-aware guest/auth redirects preserve admin/provider portals; seeker account cannot access provider/admin routes.
+- Files: seeker auth controller/middleware/views/routes, User/UserRole, shared layout/welcome navigation, SeekerAuthenticationTest.
+- Checks: complete SQLite suite: 82 tests / 694 assertions passed; registration/login/logout/remember/session rotation, role isolation, safe redirects, duplicate identities and password confirmation verified. Pint/diff check passed.
+- Minimal dashboard is intentionally functional before Q06; signup/sign-in rate-limited at 10 requests/minute. Q22 email-less seeker UI integration verified.
+- Commit: pending recording immediately after commit.
+- Next: Q05.

@@ -23,7 +23,7 @@
             if (auth()->check()) {
                 $homeRoute = auth()->user()->isAdmin()
                     ? route('admin.dashboard')
-                    : (auth()->user()->hasActiveProviderAccount() ? route('business.dashboard') : route('business.account.status'));
+                    : (auth()->user()->isSeeker() ? route('seeker.dashboard') : (auth()->user()->hasActiveProviderAccount() ? route('business.dashboard') : route('business.account.status')));
             }
         @endphp
         <div class="relative isolate min-h-screen overflow-hidden">

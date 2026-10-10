@@ -29,6 +29,8 @@
                     </a>
 
                     <nav class="flex flex-wrap items-center justify-end gap-3">
+                        <a href="{{ route('seeker.login') }}" class="q-button-secondary">Seeker sign in</a>
+                        <a href="{{ route('seeker.register') }}" class="q-button-primary">Join as a Seeker</a>
                         <a href="{{ route('business.login') }}" class="q-button-secondary">Business login</a>
                         <a href="{{ route('business.register') }}" class="q-button-primary">Register</a>
                         <a href="{{ route('admin.login') }}" class="q-button-secondary">Admin</a>

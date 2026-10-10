@@ -9,6 +9,7 @@ use App\Http\Controllers\BusinessDashboardController;
 use App\Http\Controllers\BusinessProfileController;
 use App\Http\Controllers\ProviderReviewController;
 use App\Http\Controllers\PublicServiceProviderController;
+use App\Http\Controllers\SeekerAuthController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -60,4 +61,15 @@ Route::middleware('auth')->group(function (): void {
     Route::post('/providers/{provider}/reviews', [ProviderReviewController::class, 'store'])->middleware('public-provider')->name('providers.reviews.store');
     Route::put('/providers/{provider}/reviews/{review}', [ProviderReviewController::class, 'update'])->middleware('public-provider')->name('providers.reviews.update');
     Route::delete('/providers/{provider}/reviews/{review}', [ProviderReviewController::class, 'destroy'])->middleware('public-provider')->name('providers.reviews.destroy');
+});
+
+Route::middleware('guest')->prefix('seeker')->name('seeker.')->group(function (): void {
+    Route::get('/register', [SeekerAuthController::class, 'registrationForm'])->name('register');
+    Route::post('/register', [SeekerAuthController::class, 'register'])->middleware('throttle:10,1')->name('register.store');
+    Route::get('/login', [SeekerAuthController::class, 'loginForm'])->name('login');
+    Route::post('/login', [SeekerAuthController::class, 'login'])->middleware('throttle:10,1')->name('login.store');
+});
+Route::middleware(['auth', 'seeker'])->prefix('seeker')->name('seeker.')->group(function (): void {
+    Route::get('/dashboard', [SeekerAuthController::class, 'dashboard'])->name('dashboard');
+    Route::post('/logout', [SeekerAuthController::class, 'logout'])->name('logout');
 });
