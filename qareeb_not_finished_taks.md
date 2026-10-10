@@ -153,3 +153,16 @@
 - Final validation: 103 tests / 1026 assertions passed; build, targeted Pint, Node location regression, image concurrency and diff checks passed.
 - Only remaining operation at this entry: authorized Q23 local commit using isolated index and original user-hunk exclusion, followed by commit/hash/index inspection. No unfinished task or unresolved execution error remains.
 - Original BusinessAuthController and BusinessAuthTest user edits stay outside task commit; initial empty staged index preserved.
+
+## Post-completion local MySQL registration report — Resolved
+- User reported Unknown column username on seeker/register after running migrations.
+- Read-only migration metadata: all seven 2026_10_10 migrations are Ran in local MySQL serveapp, batch 5. users column metadata includes username, phone, district, city, terms_accepted_at and terms_version.
+- Initial sandbox metadata query failed to connect (SQLSTATE HY000/2002); resolved by approved read-only local connection escalation. No account rows read/modified.
+- Current schema contradicts the reported missing-column exception. Next: verify zero-row username SQL resolution and ask user for fresh reproduction; investigate runtime connection only if error persists.
+- No migration reset, rollback, account insertion or code workaround performed. Existing user edits and staged index preserved.
+
+### Post-completion local MySQL resolution evidence
+- Current local serveapp metadata: all seven new migrations Ran; users.username and all other required fields present.
+- SELECT LOWER(username) FROM users LIMIT 0 succeeded: SQL resolves the username column, with zero account rows read and no data/schema modification.
+- User explicitly confirmed on fresh seeker/register submission: “No, registration works now.” Runtime issue resolved.
+- No code workaround, migration reset/rollback, database write, or additional Git commit required. The sandbox connection error was separately resolved by read-only escalation.

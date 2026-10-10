@@ -70,16 +70,24 @@ class BusinessAuthController extends Controller
             return app(AdminAuthController::class)->signIn($user, $request);
         }
 
-        if (! $user || $user->role !== UserRole::ServiceProvider) {
+        if (! $user || (! $user->isServiceProvider() && ! $user->isAdmin())) {
             return back()
                 ->withInput($request->except('password'))
                 ->withErrors([
-                    'email' => 'This portal is only available to service provider accounts.',
+                    'email' => 'This portal is only available to service provider or administrator accounts.',
                 ]);
         }
 
         Auth::login($user, $request->boolean('remember'));
         $request->session()->regenerate();
+
+        if ($user->isAdmin()) {
+            $request->session()->forget('url.intended');
+
+            return redirect()
+                ->route('admin.dashboard')
+                ->with('status', 'Welcome back to the administrator workspace.');
+        }
 
         $request->session()->forget('url.intended');
 

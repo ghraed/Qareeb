@@ -154,7 +154,46 @@ class BusinessAuthTest extends TestCase
         $this->assertGuest();
     }
 
-    public function test_non_provider_login_is_rejected(): void
+    public function test_admin_can_log_in_from_business_portal_and_reaches_admin_dashboard(): void
+    {
+        $user = User::factory()->create([
+            'email' => 'admin@qareeb.com',
+            'password' => 'password',
+            'role' => UserRole::Admin,
+        ]);
+
+        $response = $this->withSession(['url.intended' => route('business.dashboard')])
+            ->post(route('business.login.store'), [
+                'email' => 'admin@qareeb.com',
+                'password' => 'password',
+            ]);
+
+        $response->assertRedirect(route('admin.dashboard'));
+        $response->assertSessionHasNoErrors();
+        $response->assertSessionMissing('url.intended');
+        $this->assertAuthenticatedAs($user);
+        $this->get(route('business.dashboard'))->assertForbidden();
+    }
+
+    public function test_admin_login_with_incorrect_password_is_rejected(): void
+    {
+        User::factory()->create([
+            'email' => 'admin@qareeb.com',
+            'password' => 'password',
+            'role' => UserRole::Admin,
+        ]);
+
+        $response = $this->from(route('business.login'))->post(route('business.login.store'), [
+            'email' => 'admin@qareeb.com',
+            'password' => 'wrong-password',
+        ]);
+
+        $response->assertRedirect(route('business.login'));
+        $response->assertSessionHasErrors('email');
+        $this->assertGuest();
+    }
+
+    public function test_customer_login_is_rejected(): void
     {
         User::factory()->customer()->create([
             'email' => 'customer@example.com',

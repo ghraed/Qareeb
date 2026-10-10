@@ -248,9 +248,9 @@ For each task append:
 - Next eligible task
 
 ## Resume checkpoint
-- Current task: All 25 tasks completed; Q23 commit/checkpoint finalization
-- Last completed task/commit: Q25 / 542cecdc51bd2c4fbd841adb94bc6dffefadec36
-- Next action: Finalize Q23 isolated commit, record hash, inspect preserved user changes and final goal completion audit.
+- Current task: None — all Q01–Q25 tasks completed and committed
+- Last completed task/commit: Q23 / 02736dc9801f89a0d70249e5414df7abfdc27b7f
+- Next action: None; goal complete. No push/deploy/production action authorized.
 
 
 ## Initial repository evidence
@@ -522,5 +522,51 @@ For each task append:
 - Files: config/terms.php; terms-consent migration; Terms page/acceptance component; registration request/controllers/User; registration/footer views/routes; explicit signup fixtures; TermsAcceptanceTest/UI renderer; task tracker/resolved conditional report.
 - Final checks: full working-tree SQLite suite 103 tests / 1026 assertions passed; npm run build passed; targeted Q23 Pint passed; provider-location Node check passed; overlapping image-upload verification passed; git diff --check passed. Approved rendered Terms regenerated at /tmp/qareeb-ui-q23/terms.html. Exact isolated commit snapshot tested before commit without original user hunks.
 - Content approval requirement satisfied by explicit user response; no remaining acceptance criteria or manual review outstanding. No push/deploy/production data operations.
-- Commit: pending recording immediately after commit.
+- Commit: `02736dc9801f89a0d70249e5414df7abfdc27b7f`.
 - Next: final commit inspection, preserved-index/user-change audit, and goal completion.
+
+### Final completion audit
+- All 25 tracker entries Done; exactly 25 task-specific local commits with unique Q01–Q25 IDs. Q23 final approved version and explicit owner approval recorded.
+- Q23 exact committed snapshot: 101 tests / 1013 assertions passed, excluding original user edits; complete working-tree suite: 103 tests / 1026 assertions passed. Build, targeted Pint, Node location test, image concurrency test and diff checks passed.
+- Commit contents inspected; Q23 includes only related code/tests/completed evidence and resolved conditional report. No secrets or generated build files committed.
+- Original user addition/deletion hunks in BusinessAuthController and BusinessAuthTest verified byte-for-byte against initial patches after excluding diff context/line offsets. No staged files; initial index state preserved.
+- Conditional report is committed and all errors/blockers resolved; no unfinished tasks. Historical blocked/draft checkpoints are superseded by approved completion.
+- Remaining uncommitted paths: original user changes in app/Http/Controllers/BusinessAuthController.php and tests/Feature/BusinessAuthTest.php; this tracker final commit hash/audit entry (allowed final documentation change). No untracked files or unfinished task code.
+- No push, deployment, production database reads/migrations/writes performed. Temporary Terms review preview session 41419 can be closed after review.
+- Completed commits:
+  - f4560742796bbe52876f0ee2d489d5672fb26bd0 Qareeb Q22: support optional email and normalized username login
+  - 7213c6102ca7b95413ab0929b4e763ef60df62df Qareeb Q01: verify and secure administrator sign-in across portals
+  - 4eea6c35ea1bcd547cc79ec7717009b00449d151 Qareeb Q02: enforce provider moderation visibility on reviews
+  - df8ea4e07e39a665036aecfb7ea31df45d560664 Qareeb Q10: enforce provider state destinations and verify session access
+  - d1f4e76a5e931dcd29c2cbe43ebfc7eff55b0a8c Qareeb Q21: clarify and verify pending provider preregistration
+  - e27f88904ab799be2af01e1b06907ed14ece805a Qareeb Q18: add Photography to centralized provider categories
+  - 54e211e3fbc1485651711c06835d9cc0622659a6 Qareeb Q19: retire obsolete categories with safe data cleanup
+  - 2c041f69b9eb3dbb44d1f8d352bbe69a7279ab6b Qareeb Q20: rename Moving to Transportation preserving assignments
+  - ec0f5902c6afd33deb4aeab7262135f60c52e059 Qareeb Q12: verify owned profile edits and fix feedback and postal display
+  - 0e877891630888929ca8a64b8faba18e20df0e1b Qareeb Q14: verify dependent provider coverage and location controls
+  - e18cd12dfe6ebdb2a072e6ed810398bbf2751f2b Qareeb Q16: make provider image writes transactional and cleanup safe
+  - 0c7380ed47609d75db157a67f179d094ff42146e Qareeb Q11: centralize valid profile completion and missing-field guidance
+  - ab36d04aa4429b461ce09ed3481629d7894030ab Qareeb Q15: preserve availability during profile saves and verify toggles
+  - 62d5dcea29c486e84b71b9e65db202727cf32d29 Qareeb Q13: show real provider dashboard details and recover empty profiles
+  - adb8ff4c9b5e1d7cf4ed88c24490f2755af97fbf Qareeb Q24: replace booking placeholders with direct provider contacts
+  - 34e9e78d7467d803620d49a0563363438cece57a Qareeb Q17: refine accessible hiring badge and responsive provider identity
+  - c064a49272154894cbe8929a5a25429a4892cb84 Qareeb Q03: add separate seeker session authentication and protected dashboard
+  - 575a1e15cd24a23a397c07bf7fd4a2fb65498d8c Qareeb Q05: add private owned seeker profile and protected identity edits
+  - e733d5d2e7a2010364cee619492de66fc90499d0 Qareeb Q04: calculate seeker completion from private validated profile fields
+  - f45424f25acf514ca46dd46da4242838d7611bfd Qareeb Q07: add exact-category active provider directory with pagination
+  - 444b855bc930acd7789cdf4a7dc512d7d72423de Qareeb Q08: filter provider discovery by validated service coverage
+  - 55417a9548be6c4fcd9b282a174bdea24365e3c0 Qareeb Q09: add private seeker complaints and administrator review workflow
+  - 36d368af0748e3dc5b47ca894b2e3df4c7c643e0 Qareeb Q06: integrate responsive seeker dashboard with real profile guidance
+  - 542cecdc51bd2c4fbd841adb94bc6dffefadec36 Qareeb Q25: add private image reporting and audited exact-image removal
+  - 02736dc9801f89a0d70249e5414df7abfdc27b7f Qareeb Q23: require approved versioned Terms consent for registrations
+
+### Post-completion Q22 local database investigation
+- User reported missing username column after migration. Current read-only MySQL serveapp metadata shows all seven new migrations Ran and every required users column present.
+- The three visible source-control Changes entries are uncommitted differences; the 109 task files are tracked in the 25 task commits.
+- Next: verify current SQL column resolution without account data, then obtain fresh error reproduction if it persists. No schema/data changes authorized or performed during diagnosis.
+
+### Post-completion Q22 runtime report — Resolved
+- Read-only local MySQL metadata confirms every new migration Ran and users.username exists. Zero-row LOWER(username) query succeeds.
+- User confirmed a fresh seeker/register submission works. No code/schema/data changes or reset required. All Q01–Q25 completion statuses remain Done.
+- Source Control Changes lists uncommitted work; the 109 implementation/test/document files are already tracked in the 25 task commits.
+- Remaining uncommitted files are original user controller/test edits plus final tracker and diagnostic report documentation. Staged index remains empty.
