@@ -16,6 +16,7 @@
                     <p class="mt-3 max-w-3xl text-base leading-7 text-[#6b6b6b]">Review newly registered service providers, approve trusted businesses, reject incomplete applications, or suspend live accounts when access must be restricted.</p>
                 </div>
 
+                <a class="q-button-secondary" href="{{ route('admin.complaints.index') }}">Review private complaints</a>
                 <form method="POST" action="{{ route('admin.logout') }}">
                     @csrf
                     <button type="submit" class="inline-flex items-center justify-center rounded-[1.15rem] border border-[#eadfc7] bg-[#fff7ef] px-5 py-3 text-sm font-semibold text-[#8f5b28] transition hover:bg-[#f7ecdb]">Logout</button>

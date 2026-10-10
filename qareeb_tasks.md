@@ -75,7 +75,7 @@ Dependencies: seeker tasks require Q03; Q04 requires Q05; Q08 builds on Q07; Q06
 | Q06 | Seeker dashboard | New | Pending |
 | Q07 | Category search/provider directory | New | Done |
 | Q08 | Location search | New | Done |
-| Q09 | Complaint survey | New | Pending |
+| Q09 | Complaint survey | New | Done |
 | Q10 | Provider login | Implemented; verify | Done |
 | Q11 | Provider completion percentage | Implemented; adjust/verify | Done |
 | Q12 | Provider profile editing | Implemented; verify | Done |
@@ -248,9 +248,9 @@ For each task append:
 - Next eligible task
 
 ## Resume checkpoint
-- Current task: Q09
-- Last completed task/commit: Q08 (hash below after commit)
-- Next action: Inspect and execute Q09 following task specification; preserve user edits and use isolated commit index.
+- Current task: Q06
+- Last completed task/commit: Q09 (hash below after commit)
+- Next action: Inspect and execute Q06 following task specification; preserve user edits and use isolated commit index.
 
 
 ## Initial repository evidence
@@ -426,5 +426,14 @@ For each task append:
 - Files: directory request/controller/view, ProviderDirectoryTest.
 - Checks: SQLite directory/profile-location group: 6 tests / 99 assertions passed; multi-district/city and legacy coverage, category composition, mismatches/invalid arrays/missing district, combined pagination query persistence and reset/empty copy verified. Pint/diff check passed.
 - Matching uses selected service coverage only; does not infer entire-district coverage from missing cities. No maps/GPS/geocoding/distance search.
-- Commit: pending recording immediately after commit.
+- Commit: `444b855bc930acd7789cdf4a7dc512d7d72423de`.
 - Next: Q09.
+
+### Q09 — Complaint survey — Done
+- Added private structured complaint survey (type/description/optional listed provider), seeker-owned list/detail/status pages, and administrator-only review queue with Open/In Review/Resolved, internal notes and reviewer/timestamp. Complaints never enter public reviews or discovery; notes/private metadata hidden from serialization.
+- Duplicate submissions reuse owner-scoped UUID tokens; identical owner/type/provider/content within 10 minutes is deduplicated under owner-row lock. Submission limit 5/minute; references accept active listed providers only.
+- Files: Complaint/ReportStatus, migration, complaint request/controllers/seeker/admin views/routes/navigation, PrivateComplaintTest.
+- Checks: whole SQLite suite: 93 tests / 863 assertions passed; private status transitions, ownership/role/guest checks, forged user/status/notes ignored, inactive/non-provider references rejected, token/content duplicates and 429 limit verified. Pint/diff check passed.
+- Proposed private-survey interpretation matches repository; no public complaint content or administrator notes.
+- Commit: pending recording immediately after commit.
+- Next: Q06.

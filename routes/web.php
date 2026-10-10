@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminAuthController;
+use App\Http\Controllers\AdminComplaintController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AdminProviderAccountController;
 use App\Http\Controllers\BusinessAccountStatusController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\ProviderDirectoryController;
 use App\Http\Controllers\ProviderReviewController;
 use App\Http\Controllers\PublicServiceProviderController;
 use App\Http\Controllers\SeekerAuthController;
+use App\Http\Controllers\SeekerComplaintController;
 use App\Http\Controllers\SeekerProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -50,6 +52,8 @@ Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('admin.
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function (): void {
     Route::post('/logout', [AdminAuthController::class, 'logout'])->name('logout');
     Route::get('/dashboard', AdminDashboardController::class)->name('dashboard');
+    Route::get('/complaints', [AdminComplaintController::class, 'index'])->name('complaints.index');
+    Route::patch('/complaints/{complaint}', [AdminComplaintController::class, 'update'])->name('complaints.update');
     Route::patch('/providers/{provider}/approve', [AdminProviderAccountController::class, 'approve'])->name('providers.approve');
     Route::patch('/providers/{provider}/reject', [AdminProviderAccountController::class, 'reject'])->name('providers.reject');
     Route::patch('/providers/{provider}/suspend', [AdminProviderAccountController::class, 'suspend'])->name('providers.suspend');
@@ -77,4 +81,8 @@ Route::middleware(['auth', 'seeker'])->prefix('seeker')->name('seeker.')->group(
     Route::post('/logout', [SeekerAuthController::class, 'logout'])->name('logout');
     Route::get('/profile', [SeekerProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [SeekerProfileController::class, 'update'])->name('profile.update');
+    Route::get('/complaints', [SeekerComplaintController::class, 'index'])->name('complaints.index');
+    Route::get('/complaints/create', [SeekerComplaintController::class, 'create'])->name('complaints.create');
+    Route::post('/complaints', [SeekerComplaintController::class, 'store'])->middleware('throttle:5,1')->name('complaints.store');
+    Route::get('/complaints/{complaint}', [SeekerComplaintController::class, 'show'])->name('complaints.show');
 });
