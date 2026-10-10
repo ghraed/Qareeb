@@ -32,9 +32,7 @@
                     </div>
                     <span class="rounded-full bg-[#f3f0e5] px-4 py-2 text-sm font-semibold text-[#1f3b2e]">{{ $profileCompletion }}% complete</span>
                 </div>
-                <div class="mt-6 h-3 overflow-hidden rounded-full bg-[#ede7d7]">
-                    <div class="h-full rounded-full bg-linear-to-r from-[#6c8a5b] to-[#1f3b2e]" style="width: {{ $profileCompletion }}%"></div>
-                </div>
+                <x-profile-completion :profile="$profile" />
                 <div class="mt-6 grid gap-4 sm:grid-cols-2">
                     <div class="q-panel p-5">
                         <p class="text-sm font-medium text-[#6b6b6b]">Availability status</p>

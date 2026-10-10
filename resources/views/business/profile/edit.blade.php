@@ -43,6 +43,7 @@
                 </div>
                 <span class="q-badge">{{ $profileCompletion }}% complete</span>
             </div>
+            <x-profile-completion :profile="$profile" />
         </section>
 
         <div class="grid min-w-0 gap-6 xl:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">

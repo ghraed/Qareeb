@@ -81,9 +81,9 @@ class OptionalIdentityTest extends TestCase
     public function test_email_is_excluded_from_completion(): void
     {
         $profile = new BusinessProfile([
-            'business_name' => 'Provider', 'phone' => '+96170000000', 'description' => 'Services',
+            'user_id' => 1, 'business_name' => 'Provider', 'phone' => '+96170000000', 'description' => 'Services',
             'categories' => ['Electrician'], 'address' => 'Street', 'state' => ['Beirut'],
-            'city' => ['Achrafieh'], 'profile_photo' => 'profile.png', 'brand_photo' => 'brand.png',
+            'city' => ['Achrafieh'], 'profile_photo' => 'businesses/1/profile/profile.png', 'brand_photo' => 'businesses/1/brand/brand.png',
         ]);
         $this->assertSame(100, $profile->completionPercentage());
         $profile->business_email = 'optional@example.com';
