@@ -115,6 +115,42 @@ class BusinessPhotoService
         $profile->refresh();
     }
 
+    public function removeReportedImage(BusinessProfile $profile, string $type, string $path): bool
+    {
+        if (! PublicProviderImage::isOwnedPath($profile, $type, $path)) {
+            throw ValidationException::withMessages(['removal_reason' => 'The image is not an owning managed image.']);
+        }
+        $removedCurrent = DB::transaction(function () use ($profile, $type, $path): bool {
+            $current = BusinessProfile::query()->lockForUpdate()->findOrFail($profile->id);
+            if (BusinessProfile::query()->whereKeyNot($current->id)->where(fn ($query) => $query
+                ->where('profile_photo', $path)->orWhere('brand_photo', $path)->orWhere('work_samples', $path)
+                ->orWhere('work_samples', 'like', '%'.json_encode($path).'%'))->exists()) {
+                throw ValidationException::withMessages(['removal_reason' => 'This file is referenced by another profile.']);
+            }
+            if ($type === 'gallery') {
+                if (! in_array($path, $current->work_samples, true)) {
+                    return false;
+                }
+                $current->work_samples = array_values(array_diff($current->work_samples, [$path]));
+            } else {
+                $column = $type === 'profile' ? 'profile_photo' : 'brand_photo';
+                if ($current->{$column} !== $path) {
+                    return false;
+                }
+                $current->{$column} = null;
+            }
+            if (! $current->save()) {
+                throw new RuntimeException('Reported image removal could not be saved.');
+            }
+
+            return true;
+        });
+        $this->cleanup($profile, $path);
+        $profile->refresh();
+
+        return $removedCurrent;
+    }
+
     private function store(BusinessProfile $profile, UploadedFile $file, string $folder): string
     {
         $path = $file->storeAs("businesses/{$profile->user_id}/{$folder}", Str::uuid().'.'.$file->extension(), 'public');
@@ -134,7 +170,9 @@ class BusinessPhotoService
         $referenced = BusinessProfile::query()->where('profile_photo', $path)->orWhere('brand_photo', $path)
             ->orWhere('work_samples', $path)->orWhere('work_samples', 'like', '%'.json_encode($path).'%')->exists();
         if (! $referenced) {
-            Storage::disk('public')->delete($path);
+            if (! Storage::disk('public')->delete($path)) {
+                throw new RuntimeException('Managed image cleanup failed.');
+            }
         }
     }
 }

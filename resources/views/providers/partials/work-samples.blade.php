@@ -21,6 +21,7 @@
             @foreach ($workSampleUrls as $index => $workSampleUrl)
                 <div class="overflow-hidden rounded-[1.75rem] border border-[#eadfc7] bg-white shadow-sm">
                     <img src="{{ $workSampleUrl }}" alt="{{ $profile->business_name ?: $provider->name }} work sample {{ $index + 1 }}" class="h-52 w-full object-cover">
+                    <div class="p-3"><x-image-report-action :provider="$provider" type="gallery" :path="$profile->work_samples[$index]" /></div>
                 </div>
             @endforeach
         </div>

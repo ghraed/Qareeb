@@ -3,11 +3,13 @@
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\AdminComplaintController;
 use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\AdminImagePrivacyReportController;
 use App\Http\Controllers\AdminProviderAccountController;
 use App\Http\Controllers\BusinessAccountStatusController;
 use App\Http\Controllers\BusinessAuthController;
 use App\Http\Controllers\BusinessDashboardController;
 use App\Http\Controllers\BusinessProfileController;
+use App\Http\Controllers\ImagePrivacyReportController;
 use App\Http\Controllers\ProviderDirectoryController;
 use App\Http\Controllers\ProviderReviewController;
 use App\Http\Controllers\PublicServiceProviderController;
@@ -53,6 +55,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('/logout', [AdminAuthController::class, 'logout'])->name('logout');
     Route::get('/dashboard', AdminDashboardController::class)->name('dashboard');
     Route::get('/complaints', [AdminComplaintController::class, 'index'])->name('complaints.index');
+    Route::get('/image-reports', [AdminImagePrivacyReportController::class, 'index'])->name('image-reports.index');
+    Route::patch('/image-reports/{report}', [AdminImagePrivacyReportController::class, 'update'])->name('image-reports.update');
+    Route::patch('/image-reports/{report}/remove-image', [AdminImagePrivacyReportController::class, 'removeImage'])->name('image-reports.remove');
     Route::patch('/complaints/{complaint}', [AdminComplaintController::class, 'update'])->name('complaints.update');
     Route::patch('/providers/{provider}/approve', [AdminProviderAccountController::class, 'approve'])->name('providers.approve');
     Route::patch('/providers/{provider}/reject', [AdminProviderAccountController::class, 'reject'])->name('providers.reject');
@@ -85,4 +90,11 @@ Route::middleware(['auth', 'seeker'])->prefix('seeker')->name('seeker.')->group(
     Route::get('/complaints/create', [SeekerComplaintController::class, 'create'])->name('complaints.create');
     Route::post('/complaints', [SeekerComplaintController::class, 'store'])->middleware('throttle:5,1')->name('complaints.store');
     Route::get('/complaints/{complaint}', [SeekerComplaintController::class, 'show'])->name('complaints.show');
+});
+
+Route::middleware('public-provider')->group(function (): void {
+    Route::get('/providers/{provider}/images/{imageType}/{imageRef}/report', [ImagePrivacyReportController::class, 'create'])
+        ->where('imageType', 'profile|brand|gallery')->where('imageRef', '[a-f0-9]{64}')->name('providers.images.report');
+    Route::post('/providers/{provider}/images/{imageType}/{imageRef}/report', [ImagePrivacyReportController::class, 'store'])
+        ->where('imageType', 'profile|brand|gallery')->where('imageRef', '[a-f0-9]{64}')->middleware('throttle:5,1')->name('providers.images.report.store');
 });

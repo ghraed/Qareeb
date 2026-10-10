@@ -91,7 +91,7 @@ Dependencies: seeker tasks require Q03; Q04 requires Q05; Q08 builds on Q07; Q06
 | Q22 | Optional email | Change | Done |
 | Q23 | Terms and Conditions | New/change | Pending |
 | Q24 | No bookings on site | Scope/UI change | Done |
-| Q25 | Image privacy reporting | New | Pending |
+| Q25 | Image privacy reporting | New | Done |
 
 ## Task specifications
 
@@ -248,9 +248,9 @@ For each task append:
 - Next eligible task
 
 ## Resume checkpoint
-- Current task: Q25
-- Last completed task/commit: Q06 (hash below after commit)
-- Next action: Inspect and execute Q25 following task specification; preserve user edits and use isolated commit index.
+- Current task: Q23
+- Last completed task/commit: Q25 (hash below after commit)
+- Next action: Inspect and execute Q23 following task specification; preserve user edits and use isolated commit index.
 
 
 ## Initial repository evidence
@@ -443,5 +443,14 @@ For each task append:
 - Files: seeker dashboard, shared completion component/CSS, SeekerDashboardTest and isolated UI fixture renderer.
 - Checks: focused dashboard/seeker/provider completion/auth SQLite group: 6 tests / 103 assertions passed; all destination routes return successful owned pages; non-seeker access forbidden. npm run build passed. Headless Chrome 390×1000 incomplete and 1280×1100 complete: no horizontal overflow; screenshots manually inspected at /tmp/qareeb-ui-q06/mobile.png and desktop.png. Diff check passed.
 - A browser screenshot paint artifact was resolved by compositor-complete capture; profile/contact privacy and established UI conventions preserved.
-- Commit: pending recording immediately after commit.
+- Commit: `36d368af0748e3dc5b47ca894b2e3df4c7c643e0`.
 - Next: Q25.
+
+### Q25 — Image privacy reporting — Done
+- Added visitor report actions/forms for profile/cover/gallery images, server-resolved type/hash targets, private reason/description/optional contact, metadata retained after replacement without image copies, duplicate token/content keys and 5/minute limit. No report content/contact appears publicly; no automatic removal.
+- Administrator-only queue uses Open/In Review/Resolved, internal notes/reviewer timestamps and explicit removal reason. Audit persists before removal; service locks fresh profile, matches original path/hash/type, refuses cross-owner/shared/arbitrary paths and never removes replacement/unrelated images. Failed audit performs no deletion; failed removal stays in review.
+- Files: ImagePrivacyReport/PublicProviderImage, migration, report/admin controllers/routes/views/action component, hero/gallery/admin navigation, BusinessPhotoService, ImagePrivacyReportTest.
+- Checks: full SQLite suite: 100 tests / 981 assertions passed; all image types, public/private role guards, forged path/reference inputs, duplicates, validation/429, exact removal and replacement metadata, failure-audit safety verified. python3 tests/integration/image-concurrency.py passed again; Pint/diff check passed.
+- No raw IP retained: anonymous actor keyed by session HMAC, authenticated actor by user HMAC. Original filename/size/MIME retained where available; concurrent missing file metadata handled safely. No duplicate image storage.
+- Commit: pending recording immediately after commit.
+- Next: Q23.

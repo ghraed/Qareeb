@@ -2,6 +2,7 @@
     <div class="relative h-56 bg-[#f1e8d4] sm:h-80 lg:h-96">
         @if ($profile->brandPhotoUrl())
             <img src="{{ $profile->brandPhotoUrl() }}" alt="{{ $businessName }} cover photo" class="h-full w-full object-cover">
+            <div class="absolute right-3 top-3 z-10"><x-image-report-action :provider="$provider" type="brand" :path="$profile->brand_photo" /></div>
             <div class="absolute inset-0 bg-linear-to-t from-[#1f3b2e]/70 via-[#1f3b2e]/20 to-transparent"></div>
         @else
             <div class="flex h-full items-center justify-center bg-linear-to-r from-[#1f3b2e] via-[#6c8a5b] to-[#e8dcc2]">
@@ -31,6 +32,7 @@
             @if (Route::has('providers.reviews.index'))
                 <div class="flex flex-wrap gap-3">
                     <a href="{{ route('providers.reviews.index', $provider) }}" class="q-button-secondary">View all reviews</a>
+                    <x-image-report-action :provider="$provider" type="profile" :path="$profile->profile_photo" />
                 </div>
             @endif
         </div>
