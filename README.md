@@ -66,3 +66,42 @@ php artisan db:seed --class=AdminUserSeeder
 ```
 
 The seeder reads `ADMIN_NAME`, `ADMIN_EMAIL`, and `ADMIN_PASSWORD` from the environment.
+
+## Provider testing data
+
+To remove existing providers except `rozer@qareeb.com`, and admins except
+`admin@qareeb.com`, run the explicit cleanup once. Both retained accounts must
+already exist with the correct roles; their passwords and profiles are preserved.
+Seekers are preserved. Other providers/admins, their sessions and API tokens,
+associated profiles/reviews, and their uploaded business images are deleted.
+
+```bash
+php artisan db:seed --class=ResetProviderAccountsSeeder
+php artisan db:seed --class=ProviderSeeder
+php artisan storage:link
+```
+
+`ProviderSeeder` creates 30 approved providers: 10 each in Photography, Gardening,
+and Interior Design across Beirut, Matn, Keserwan, Byblos, Batroun, Tripoli, Zahlé,
+Sidon, Tyre, and Chouf. Other categories receive no demo providers, so empty
+category results can be tested (a retained provider may still belong to one).
+Profiles include valid district/city pairs, coordinates, Lebanese sample phone
+numbers, service descriptions, availability variations, local profile/cover
+photos, and 2–3 shuffled gallery photos matching their category. Four demo seekers
+provide 0–4 reviews per business; rating summaries match the actual reviews.
+All identities, contact details and reviews are fictional testing data.
+
+Demo provider emails follow `demo.photography.1@example.test`,
+`demo.gardening.1@example.test`, and `demo.interior-design.1@example.test` through
+number 10. Demo seekers use `demo.seeker.1@example.test` through number 4.
+All demo accounts initially use password `QareebTest2026!`. Rerunning
+`ProviderSeeder` refreshes demo profiles and reviews without duplicating accounts,
+files or reviews, or resetting existing passwords. It preserves other accounts.
+The cleanup seeder deletes demo providers too, so run it before reseeding.
+
+Normal `php artisan db:seed` runs `AdminUserSeeder` and `ProviderSeeder`; it does
+not perform destructive cleanup. Use these seeders only for development/testing.
+
+Photos are bundled in `database/seeders/assets/providers` so seeding works offline.
+The source URLs are listed in that folder's `SOURCES.md`. They are illustrative
+samples, not evidence of work performed by any real business.
