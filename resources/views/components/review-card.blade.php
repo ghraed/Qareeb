@@ -5,11 +5,11 @@
 ])
 
 <article class="q-panel p-5">
-    <div class="flex items-start justify-between gap-4">
-        <div class="flex items-center gap-3">
+    <div class="flex flex-col items-start justify-between gap-4 sm:flex-row sm:flex-wrap">
+        <div class="flex min-w-0 items-center gap-3">
             <x-profile-avatar :profile="$review->reviewer->businessProfile ?? null" :name="$review->reviewer->name" size="sm" />
-            <div>
-                <p class="font-semibold text-[#1f3b2e]">{{ $review->reviewer->name }}</p>
+            <div class="min-w-0">
+                <p class="break-words font-semibold text-[#1f3b2e]">{{ $review->reviewer->name }}</p>
                 <p class="text-xs text-[#6b6b6b]">{{ $review->created_at->diffForHumans() }}</p>
             </div>
         </div>
@@ -17,7 +17,7 @@
     </div>
 
     @if ($review->comment)
-        <p class="q-copy mt-4 text-sm leading-6">{{ $review->comment }}</p>
+        <p class="q-copy mt-4 break-words text-sm leading-6">{{ $review->comment }}</p>
     @endif
 
     @if ($editable)

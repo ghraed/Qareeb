@@ -9,18 +9,21 @@
         <x-form-input label="Full name" name="name" :value="$user->name" autocomplete="name" required />
         <x-form-input label="Phone" name="phone" :value="$user->phone" autocomplete="tel" />
         <div class="space-y-2">
-            <label class="block font-medium" for="district">District</label>
-            <select class="q-input" id="district" name="district" x-model="district" x-on:change="city = ''">
+            <label id="district-label" class="block font-medium" for="district" x-bind:for="'district-control'">District</label>
+            <x-provider-filter id="district">
+            <select class="q-input" id="district" name="district" x-ref="select" x-show="!enhanced" x-model="district" x-on:change="city = ''">
                 <option value="">Choose a district</option>
                 @foreach (\App\Models\BusinessProfile::LEBANON_DISTRICTS as $district)
                     <option value="{{ $district }}" @selected(old('district', $user->district) === $district)>{{ $district }}</option>
                 @endforeach
             </select>
+            </x-provider-filter>
             @error('district')<p class="text-sm text-rose-700" role="alert">{{ $message }}</p>@enderror
         </div>
         <div class="space-y-2">
-            <label class="block font-medium" for="city">City</label>
-            <select class="q-input" id="city" name="city" x-model="city">
+            <label id="city-label" class="block font-medium" for="city" x-bind:for="'city-control'">City</label>
+            <x-provider-filter id="city">
+            <select class="q-input" id="city" name="city" x-ref="select" x-show="!enhanced" x-model="city" x-effect="district; $nextTick(() => refreshOptions())">
                 <option value="">Choose a city</option>
                 @foreach (\App\Models\BusinessProfile::LEBANON_DISTRICT_CITIES as $district => $cities)
                     <optgroup label="{{ $district }}" x-bind:disabled="district !== @js($district)">
@@ -30,6 +33,7 @@
                     </optgroup>
                 @endforeach
             </select>
+            </x-provider-filter>
             @error('city')<p class="text-sm text-rose-700" role="alert">{{ $message }}</p>@enderror
         </div>
         <div class="q-panel space-y-4 p-5">

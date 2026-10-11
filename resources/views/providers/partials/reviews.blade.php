@@ -1,6 +1,6 @@
 <section class="q-section">
-    <div class="flex items-center justify-between gap-4">
-        <div>
+    <div class="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+        <div class="min-w-0">
             <h2 class="q-heading text-2xl">Recent reviews</h2>
             <p class="q-copy mt-1 text-sm">Recent public feedback from customers and community members.</p>
         </div>

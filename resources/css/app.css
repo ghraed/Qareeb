@@ -19,6 +19,10 @@
 }
 
 @layer base {
+    [x-cloak] {
+        display: none !important;
+    }
+
     body {
         background:
             radial-gradient(circle at top left, rgba(232, 220, 194, 0.55), transparent 32%),

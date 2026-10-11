@@ -2,33 +2,38 @@
 @section('title', 'Find a provider')
 @section('content')
 <div class="space-y-6">
-    <section class="q-card space-y-5 p-6 sm:p-8">
+    <section class="q-card relative z-10 space-y-5 p-6 sm:p-8">
         <div><p class="q-eyebrow">Provider discovery</p><h1 class="q-heading mt-3 text-3xl sm:text-4xl">Find trusted help nearby.</h1><p class="q-copy mt-3">Browse approved providers and contact them directly.</p></div>
         <form method="GET" action="{{ route('providers.index') }}" class="grid gap-4 md:grid-cols-2 xl:grid-cols-3" x-data="{ district: @js(old('district', $filters['district'] ?? '')), city: @js(old('city', $filters['city'] ?? '')) }">
             <div class="min-w-0 flex-1 space-y-2">
-                <label for="category" class="block font-medium">Work category</label>
-                <select id="category" name="category" class="q-input">
+                <label id="category-label" for="category" x-bind:for="'category-control'" class="block font-medium">Work category</label>
+                <x-provider-filter id="category">
+                <select id="category" name="category" class="q-input" x-ref="select" x-show="!enhanced">
                     <option value="">All categories</option>
                     @foreach (\App\Models\BusinessProfile::WORK_CATEGORIES as $category)
                         <option value="{{ $category }}" @selected(old('category', $filters['category'] ?? '') === $category)>{{ $category }}</option>
                     @endforeach
                 </select>
+                </x-provider-filter>
                 @error('category')<p class="text-sm text-rose-700" role="alert">{{ $message }}</p>@enderror
                 @error('page')<p class="text-sm text-rose-700" role="alert">{{ $message }}</p>@enderror
             </div>
             <div class="space-y-2">
-                <label for="district" class="block font-medium">Service district</label>
-                <select id="district" name="district" class="q-input" x-model="district" x-on:change="city = ''">
+                <label id="district-label" for="district" x-bind:for="'district-control'" class="block font-medium">Service district</label>
+                <x-provider-filter id="district">
+                <select id="district" name="district" class="q-input" x-ref="select" x-show="!enhanced" x-model="district" x-on:change="city = ''">
                     <option value="">All districts</option>
                     @foreach (\App\Models\BusinessProfile::LEBANON_DISTRICTS as $district)
                         <option value="{{ $district }}" @selected(old('district', $filters['district'] ?? '') === $district)>{{ $district }}</option>
                     @endforeach
                 </select>
+                </x-provider-filter>
                 @error('district')<p class="text-sm text-rose-700" role="alert">{{ $message }}</p>@enderror
             </div>
             <div class="space-y-2">
-                <label for="city" class="block font-medium">Service city</label>
-                <select id="city" name="city" class="q-input" x-model="city">
+                <label id="city-label" for="city" x-bind:for="'city-control'" class="block font-medium">Service city</label>
+                <x-provider-filter id="city">
+                <select id="city" name="city" class="q-input" x-ref="select" x-show="!enhanced" x-model="city" x-effect="district; $nextTick(() => refreshOptions())">
                     <option value="">All cities in district</option>
                     @foreach (\App\Models\BusinessProfile::LEBANON_DISTRICT_CITIES as $district => $cities)
                         <optgroup label="{{ $district }}" x-bind:disabled="district !== @js($district)">
@@ -38,6 +43,7 @@
                         </optgroup>
                     @endforeach
                 </select>
+                </x-provider-filter>
                 <p class="q-copy text-sm">Choose a district before filtering by city.</p>
                 @error('city')<p class="text-sm text-rose-700" role="alert">{{ $message }}</p>@enderror
             </div>

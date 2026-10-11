@@ -8,7 +8,6 @@
             <h2 class="q-heading text-2xl">Work samples</h2>
             <p class="q-copy mt-1 text-sm">Recent visuals from this provider's work and service quality.</p>
         </div>
-        <span class="q-badge text-xs">{{ count($workSampleUrls) }} image{{ count($workSampleUrls) === 1 ? '' : 's' }}</span>
     </div>
 
     @if ($workSampleUrls === [])

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\LebanonLocations;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -39,64 +40,12 @@ class BusinessProfile extends Model
         'Security Systems',
     ];
 
-    public const LEBANON_DISTRICTS = [
-        'Akkar',
-        'Aley',
-        'Baalbek',
-        'Batroun',
-        'Becharré',
-        'Beirut',
-        'Bint Jbeil',
-        'Byblos',
-        'Chouf',
-        'Hasbaya',
-        'Hermel',
-        'Jezzine',
-        'Keserwan',
-        'Koura',
-        'Marjeyoun',
-        'Matn',
-        'Miniyeh-Danniyeh',
-        'Nabatieh',
-        'Rashaya',
-        'Sidon',
-        'Tripoli',
-        'Tyre',
-        'West Bekaa',
-        'Zahlé',
-        'Zgharta',
-    ];
+    public const LEBANON_DISTRICTS = LebanonLocations::DISTRICTS;
 
     /**
      * @var array<string, list<string>>
      */
-    public const LEBANON_DISTRICT_CITIES = [
-        'Akkar' => ['Halba', 'Bebnine', 'Qoubaiyat', 'Bireh', 'Miniara', 'Fnideq', 'Mishmish', 'Rahbe'],
-        'Aley' => ['Aley', 'Bhamdoun', 'Souk El Gharb', 'Kahhale', 'Ain Dara', 'Baysour', 'Ainab', 'Choueifat'],
-        'Baalbek' => ['Baalbek', 'Douris', 'Iaat', 'Brital', 'Yammoune', 'Chmestar', 'Temnine El Faouqa', 'Boudeh'],
-        'Batroun' => ['Batroun', 'Chekka', 'Douma', 'Tannourine', 'Kfar Aabida', 'Rachkida', 'Aabdelali', 'Smar Jbeil'],
-        'Becharré' => ['Bcharre', 'Hadath El Jebbeh', 'Diman', 'Bqaa Kafra', 'Hasroun', 'Bane', 'Hadchit', 'Tourza'],
-        'Beirut' => ['Achrafieh', 'Bachoura', 'Mazraa', 'Moussaitbeh', 'Minet El Hosn', 'Ras Beirut', 'Rmeil', 'Zuqaq El Blat'],
-        'Bint Jbeil' => ['Bint Jbeil', 'Ain Ebel', 'Rmeich', 'Tebnine', 'Haris', 'Yaroun', 'Maroun El Ras', 'Aitaroun'],
-        'Byblos' => ['Byblos', 'Amchit', 'Blat', 'Halat', 'Aannaya', 'Eddeh', 'Aalma El Jbeil', 'Aqoura'],
-        'Chouf' => ['Beiteddine', 'Deir El Qamar', 'Barja', 'Damour', 'Semqaniyeh', 'Moukhtara', 'Jiyeh', 'Mazboud'],
-        'Hasbaya' => ['Hasbaya', 'Chebaa', 'Kawkaba', 'Marj El Zohour', 'Rachaya El Foukhar', 'Hebbariyeh', 'Fardis', 'Ain Qinia'],
-        'Hermel' => ['Hermel', 'Qasr', 'Zighrine El Hermel', 'Hawsh Al Sayyed Ali', 'Qanafez', 'Mansoura', 'Mrah El Hermel', 'Kouakh'],
-        'Jezzine' => ['Jezzine', 'Anane', 'Bkassine', 'Kfarfalous', 'Roum', 'Aaramta', 'Lebaa', 'Kfar Houna'],
-        'Keserwan' => ['Jounieh', 'Zouk Mikael', 'Adma', 'Ajaltoun', 'Ballouneh', 'Faqra', 'Faraya', 'Tabarja'],
-        'Koura' => ['Amioun', 'Kfar Hazir', 'Deddeh', 'Bziza', 'Ras Masqa', 'Enfeh', 'Kousba', 'Bterram'],
-        'Marjeyoun' => ['Marjeyoun', 'Khiam', 'Blida', 'Meiss El Jabal', 'Houla', 'Markaba', 'Qlayaa', 'Deir Mimas'],
-        'Matn' => ['Bourj Hammoud', 'Dbayeh', 'Jdeideh', 'Sin El Fil', 'Antelias', 'Baabdat', 'Bikfaya', 'Mansourieh'],
-        'Miniyeh-Danniyeh' => ['Miniyeh', 'Sfireh', 'Bqarsouna', 'Deir Ammar', 'Bhannine', 'Kfar Habou', 'Hazmiyeh', 'Izal'],
-        'Nabatieh' => ['Nabatieh', 'Kfar Roummane', 'Ansar', 'Yohmor', 'Adshit', 'Arnoun', 'Kfar Tibnit', 'Doueir'],
-        'Rashaya' => ['Rashaya', 'Aaqabet Rashaya', 'Ain Aata', 'Kfar Qouq', 'Bakka', 'Mdoukha', 'Bireh Rashaya', 'Tannoura'],
-        'Sidon' => ['Sidon', 'Ghaziyeh', 'Maghdoucheh', 'Miyeh w Miyeh', 'Abra', 'Haret Saida', 'Qraiyeh', 'Aadloun'],
-        'Tripoli' => ['Tripoli', 'Mina', 'Qalamoun', 'Beddaoui', 'Wadi El Nahleh', 'Abou Samra', 'Bab El Tebbaneh', 'Jabal Mohsen'],
-        'Tyre' => ['Tyre', 'Abbasiyeh', 'Borj El Chamali', 'Qana', 'Srifa', 'Ain Baal', 'Bazourieh', 'Naqoura'],
-        'West Bekaa' => ['Jeb Jennine', 'Saghbine', 'Machghara', 'Kamed El Loz', 'Sultan Yacoub', 'Lala', 'Ain Zebdeh', 'Baaloul'],
-        'Zahlé' => ['Zahlé', 'Chtaura', 'Taalabaya', 'Saadnayel', 'Qabb Elias', 'Riyaq', 'Ksara', 'Makseh'],
-        'Zgharta' => ['Zgharta', 'Ehden', 'Miziara', 'Ardeh', 'Kfar Hata', 'Sebaal', 'Aintourine', 'Mejdlaiya'],
-    ];
+    public const LEBANON_DISTRICT_CITIES = LebanonLocations::DISTRICT_CITIES;
 
     /**
      * @var list<string>
