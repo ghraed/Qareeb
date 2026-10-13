@@ -65,6 +65,110 @@
         @apply inline-flex items-center justify-center rounded-[1.15rem] border border-[#ddd1b8] bg-white px-5 py-3 text-sm font-semibold text-[#1f3b2e] transition hover:bg-[#faf5ea];
     }
 
+    .q-nav-link {
+        @apply relative inline-flex min-h-11 items-center justify-center rounded-xl px-3 py-3 text-sm font-semibold whitespace-nowrap text-qareeb-green transition-colors duration-200 hover:bg-qareeb-cream focus:bg-qareeb-cream focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-qareeb-green motion-reduce:transition-none;
+    }
+
+    .q-nav-link::after {
+        content: '';
+        position: absolute;
+        right: 0.75rem;
+        bottom: 0.35rem;
+        left: 0.75rem;
+        height: 2px;
+        border-radius: 999px;
+        background: var(--color-qareeb-olive);
+        transform: scaleX(0);
+        transition: transform 200ms ease-out;
+    }
+
+    .q-nav-link:hover::after,
+    .q-nav-link:focus::after {
+        transform: scaleX(1);
+    }
+
+    .q-menu-toggle {
+        @apply inline-flex size-12 shrink-0 cursor-pointer items-center justify-center rounded-xl border-0 bg-transparent p-0 text-qareeb-green shadow-none transition-colors duration-200 hover:text-qareeb-olive focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-qareeb-green;
+    }
+
+    .q-home-navigation {
+        @apply fixed inset-0 z-50 overflow-y-auto;
+        height: 100dvh;
+        background:
+            radial-gradient(circle at top left, rgba(232, 220, 194, 0.55), transparent 45%),
+            radial-gradient(circle at bottom right, rgba(108, 138, 91, 0.12), transparent 45%),
+            #fbfaf6;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-24px);
+        transition: opacity 300ms ease, transform 300ms ease, visibility 0s 300ms;
+    }
+
+    .q-home-navigation.is-open {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+        transition-delay: 0s;
+    }
+
+    .q-home-navigation-inner {
+        @apply mx-auto flex min-h-full max-w-6xl flex-col px-6;
+        padding-top: max(1rem, env(safe-area-inset-top));
+        padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+    }
+
+    .q-home-navigation-heading {
+        @apply flex shrink-0 items-center justify-between gap-3 border-b border-qareeb-sand pb-4;
+    }
+
+    .q-home-navigation-links {
+        @apply flex flex-1 flex-col justify-center gap-3 py-8;
+    }
+
+    .q-home-navigation .q-nav-link {
+        @apply min-h-16 justify-start rounded-none border-b border-qareeb-sand/70 px-0 py-4 font-serif text-3xl font-medium hover:bg-transparent focus:bg-transparent;
+    }
+
+    .q-home-navigation-footer {
+        @apply shrink-0 border-t border-qareeb-sand pt-5 text-sm text-qareeb-stone;
+    }
+
+    @media (min-width: 64rem) {
+        .q-home-navigation {
+            @apply static z-auto m-0 block h-auto overflow-visible rounded-none border-0 bg-transparent shadow-none;
+            background: transparent;
+            opacity: 1;
+            visibility: visible;
+            transform: none;
+            transition: none;
+        }
+
+        .q-home-navigation-inner {
+            @apply block min-h-0 p-0;
+        }
+
+        .q-home-navigation-heading,
+        .q-home-navigation-footer {
+            display: none;
+        }
+
+        .q-home-navigation-links {
+            @apply flex items-center gap-2 p-0;
+        }
+
+        .q-home-navigation .q-nav-link {
+            @apply min-h-11 justify-center rounded-xl border-0 px-3 py-3 font-sans text-sm font-semibold hover:bg-qareeb-cream focus:bg-qareeb-cream;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .q-nav-link::after,
+        .q-menu-toggle,
+        .q-home-navigation {
+            transition: none;
+        }
+    }
+
     .q-eyebrow {
         @apply text-sm font-semibold tracking-[0.25em] uppercase text-[#6c8a5b];
     }
