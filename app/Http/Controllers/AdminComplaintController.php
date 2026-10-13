@@ -13,7 +13,7 @@ class AdminComplaintController extends Controller
 {
     public function index(): View
     {
-        return view('admin.complaints', ['complaints' => Complaint::with(['user', 'provider'])->latest()->paginate(20)]);
+        return view('admin.complaints', ['complaints' => Complaint::with(['user', 'provider'])->latest()->orderByDesc('id')->simplePaginate(20)]);
     }
 
     public function update(Request $request, Complaint $complaint): RedirectResponse

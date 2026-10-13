@@ -54,7 +54,7 @@
         </form>
     </section>
     <p class="q-copy">{{ $providers->total() }} {{ Str::plural('provider', $providers->total()) }} found</p>
-    <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+    <x-infinite-scroll id="providers" :records="$providers" items-class="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
         @forelse ($providers as $profile)
             @php($provider = $profile->user)
             <article class="q-card min-w-0 space-y-4 p-6">
@@ -69,7 +69,6 @@
         @empty
             <div class="q-panel p-6 md:col-span-2 xl:col-span-3"><h2 class="q-heading text-xl">No providers match your filters.</h2><p class="q-copy mt-3">Try another category or service location, or clear your filters.</p></div>
         @endforelse
-    </div>
-    {{ $providers->links() }}
+    </x-infinite-scroll>
 </div>
 @endsection

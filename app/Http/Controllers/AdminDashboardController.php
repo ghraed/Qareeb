@@ -11,25 +11,24 @@ class AdminDashboardController extends Controller
 {
     public function __invoke(): View
     {
-        $providers = User::query()
-            ->where('role', UserRole::ServiceProvider->value)
-            ->with('businessProfile')
-            ->latest()
-            ->get();
+        $providers = User::query()->where('role', UserRole::ServiceProvider->value);
+        $counts = (clone $providers)->selectRaw('account_status, COUNT(*) as total')
+            ->groupBy('account_status')->pluck('total', 'account_status');
 
         return view('admin.dashboard', [
-            'providers' => $providers,
-            'pendingProviders' => $providers->where('account_status', AccountStatus::Pending),
-            'activeProviders' => $providers->where('account_status', AccountStatus::Active),
-            'restrictedProviders' => $providers->whereIn('account_status', [
-                AccountStatus::Rejected,
-                AccountStatus::Suspended,
-            ]),
+            'pendingProviders' => (clone $providers)->where('account_status', AccountStatus::Pending->value)
+                ->with('businessProfile')->latest()->orderByDesc('id')->paginate(12, ['*'], 'pending_page'),
+            'activeProviders' => (clone $providers)->where('account_status', AccountStatus::Active->value)
+                ->with('businessProfile')->latest()->orderByDesc('id')->paginate(12, ['*'], 'active_page'),
+            'restrictedProviders' => (clone $providers)->whereIn('account_status', [
+                AccountStatus::Rejected->value,
+                AccountStatus::Suspended->value,
+            ])->with('businessProfile')->latest()->orderByDesc('id')->paginate(12, ['*'], 'restricted_page'),
             'stats' => [
-                'pending' => $providers->where('account_status', AccountStatus::Pending)->count(),
-                'active' => $providers->where('account_status', AccountStatus::Active)->count(),
-                'rejected' => $providers->where('account_status', AccountStatus::Rejected)->count(),
-                'suspended' => $providers->where('account_status', AccountStatus::Suspended)->count(),
+                'pending' => $counts[AccountStatus::Pending->value] ?? 0,
+                'active' => $counts[AccountStatus::Active->value] ?? 0,
+                'rejected' => $counts[AccountStatus::Rejected->value] ?? 0,
+                'suspended' => $counts[AccountStatus::Suspended->value] ?? 0,
             ],
         ]);
     }

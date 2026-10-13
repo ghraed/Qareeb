@@ -13,7 +13,6 @@ class PublicServiceProviderController extends Controller
 
         $provider->load([
             'businessProfile',
-            'businessProfile.reviews.reviewer',
         ]);
 
         $profile = $provider->businessProfile;

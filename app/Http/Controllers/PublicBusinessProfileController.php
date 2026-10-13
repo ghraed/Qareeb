@@ -13,7 +13,7 @@ class PublicBusinessProfileController extends Controller
         abort_unless($provider->role === UserRole::ServiceProvider, 404);
 
         $provider->load([
-            'businessProfile.reviews.reviewer',
+            'businessProfile',
         ]);
 
         return view('providers.show', [

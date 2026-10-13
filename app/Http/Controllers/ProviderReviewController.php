@@ -17,13 +17,13 @@ class ProviderReviewController extends Controller
     public function index(User $provider): View
     {
         $provider->load([
-            'businessProfile.reviews.reviewer',
+            'businessProfile',
         ]);
 
         return view('providers.reviews.index', [
             'provider' => $provider,
             'profile' => $provider->businessProfile,
-            'reviews' => $provider->businessProfile->reviews()->with('reviewer')->latest()->paginate(10),
+            'reviews' => $provider->businessProfile->reviews()->with('reviewer')->latest()->orderByDesc('id')->simplePaginate(10),
         ]);
     }
 

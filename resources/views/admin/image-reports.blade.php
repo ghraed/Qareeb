@@ -4,6 +4,7 @@
 <section class="space-y-5">
     <h1 class="q-page-title">Private image privacy reports</h1><a class="q-button-secondary" href="{{ route('admin.dashboard') }}">Admin dashboard</a>
     @if ($errors->any())<div class="q-panel p-5" role="alert"><ul class="list-disc pl-5">@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>@endif
+    <x-infinite-scroll id="reports" :records="$reports">
     @forelse ($reports as $report)
         <article class="q-card space-y-4 p-6">
             <h2 class="q-heading text-xl">{{ $report->provider_name }} — {{ $report->image_type }} image</h2><p class="q-badge">{{ $report->status->label() }}</p>
@@ -31,6 +32,6 @@
             </form>
         </article>
     @empty<p class="q-panel p-6">No image reports to review.</p>@endforelse
-    {{ $reports->links() }}
+    </x-infinite-scroll>
 </section>
 @endsection

@@ -15,7 +15,7 @@ class SeekerComplaintController extends Controller
 {
     public function index(): View
     {
-        return view('seeker.complaints.index', ['complaints' => Complaint::where('user_id', request()->user()->id)->latest()->paginate(10)]);
+        return view('seeker.complaints.index', ['complaints' => Complaint::where('user_id', request()->user()->id)->latest()->orderByDesc('id')->simplePaginate(10)]);
     }
 
     public function create(): View

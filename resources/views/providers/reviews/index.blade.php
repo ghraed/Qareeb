@@ -22,7 +22,7 @@
         <section class="q-section">
             <h2 class="q-heading text-2xl">All reviews</h2>
 
-            <div class="mt-6 space-y-4">
+            <x-infinite-scroll id="reviews" :records="$reviews" class="mt-6" items-class="space-y-4">
                 @forelse ($reviews as $review)
                     <x-review-card :review="$review" :provider="$provider" :editable="auth()->id() === $review->reviewer_id" />
                 @empty
@@ -31,11 +31,7 @@
                         <p class="q-copy mt-2 text-sm">This provider does not have any public reviews yet.</p>
                     </div>
                 @endforelse
-            </div>
-
-            <div class="mt-6">
-                {{ $reviews->links() }}
-            </div>
+            </x-infinite-scroll>
         </section>
     </div>
 @endsection

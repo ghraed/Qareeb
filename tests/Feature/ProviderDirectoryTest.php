@@ -40,12 +40,12 @@ class ProviderDirectoryTest extends TestCase
         $this->get(route('providers.index', ['category' => ['Photography']]))->assertSessionHasErrors('category');
     }
 
-    public function test_pagination_preserves_filter_and_cards_link_to_profiles_and_empty_state_is_clear(): void
+    public function test_scroll_loading_preserves_filters_and_cards_link_to_profiles_and_empty_state_is_clear(): void
     {
         foreach (range(1, 13) as $number) {
             $this->provider('Photo '.$number, ['Photography']);
         }
-        $this->get(route('providers.index', ['category' => 'Photography']))->assertOk()->assertSee('Photo 1')->assertDontSee('Photo 13')->assertSee('category=Photography&amp;page=2', false);
+        $this->get(route('providers.index', ['category' => 'Photography']))->assertOk()->assertSee('Photo 1')->assertDontSee('Photo 13')->assertSee('category=Photography&amp;page=2', false)->assertSee('data-infinite-scroll="providers"', false)->assertSee('Load more')->assertDontSee('aria-label="Pagination Navigation"', false);
         $this->get(route('providers.index', ['category' => 'Photography', 'page' => 2]))->assertOk()->assertSee('Photo 13')->assertDontSee('Photo 1<');
         $this->get(route('providers.index', ['category' => 'Electrician']))->assertOk()->assertSee('No providers match your filters');
         $this->get(route('providers.index'))->assertOk()->assertSee('Clear filters');

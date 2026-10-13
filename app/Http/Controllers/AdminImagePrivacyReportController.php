@@ -15,7 +15,7 @@ class AdminImagePrivacyReportController extends Controller
 {
     public function index(): View
     {
-        return view('admin.image-reports', ['reports' => ImagePrivacyReport::with('provider.businessProfile')->latest()->paginate(20)]);
+        return view('admin.image-reports', ['reports' => ImagePrivacyReport::with('provider.businessProfile')->latest()->orderByDesc('id')->simplePaginate(20)]);
     }
 
     public function update(Request $request, ImagePrivacyReport $report): RedirectResponse
