@@ -5,14 +5,14 @@
 @section('content')
     <div class="space-y-6">
         <section class="q-section overflow-hidden p-0">
-            <div class="relative h-56 bg-[#f3ecdd] sm:h-72">
+            <div class="relative h-40 bg-[#f3ecdd] sm:h-56">
                 @if ($profile->brandPhotoUrl())
                     <img src="{{ $profile->brandPhotoUrl() }}" alt="{{ $profile->business_name ?: $user->name }} brand photo" class="h-full w-full object-cover">
                 @else
                     <div class="flex h-full items-center justify-center bg-linear-to-r from-[#1f3b2e] via-[#6c8a5b] to-[#e8dcc2] text-center text-white">
                         <div>
                             <p class="text-sm font-semibold tracking-[0.25em] uppercase text-white/80">Brand cover</p>
-                            <h1 class="mt-3 font-serif text-4xl">{{ $profile->business_name ?: $user->name }}</h1>
+                            <p class="mt-3 font-serif text-2xl font-semibold break-words sm:text-3xl">{{ $profile->business_name ?: $user->name }}</p>
                         </div>
                     </div>
                 @endif
@@ -26,7 +26,7 @@
                 <div class="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
                     <div>
                         <p class="q-eyebrow">Private business profile</p>
-                        <h2 class="q-heading mt-3 text-4xl">{{ $profile->business_name ?: $user->name }}</h2>
+                        <h1 class="q-page-title mt-3">{{ $profile->business_name ?: $user->name }}</h1>
                         <p class="q-copy mt-2 text-base">{{ $user->email ?: ($user->username ?: 'Email not provided') }}</p>
                         <div class="mt-4 flex flex-wrap items-center gap-3">
                             <x-rating-stars :rating="$profile->average_rating" :count="$profile->reviews_count" />

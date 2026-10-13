@@ -1,9 +1,9 @@
 @extends('layouts.business')
 @section('title', 'Create a Seeker account')
 @section('content')
-<section class="q-card mx-auto max-w-xl space-y-6 p-6 sm:p-8">
-    <div><p class="q-eyebrow">Seeker registration</p><h1 class="q-heading mt-3 text-3xl">Find trusted help nearby.</h1><p class="q-copy mt-3">Create an account to discover providers and contact them directly.</p></div>
-    <form method="POST" action="{{ route('seeker.register.store') }}" class="space-y-5">
+<section class="q-card mx-auto max-w-xl space-y-5 p-5 sm:p-6">
+    <div><p class="q-eyebrow">Seeker registration</p><h1 class="q-page-title mt-3">Find trusted help nearby.</h1><p class="q-copy mt-3">Create an account to discover providers and contact them directly.</p></div>
+    <form method="POST" action="{{ route('seeker.register.store') }}" class="space-y-4">
         @csrf
         <x-form-input label="Full name" name="name" autocomplete="name" required />
         <x-form-input label="Username (required without email)" name="username" autocomplete="username" />

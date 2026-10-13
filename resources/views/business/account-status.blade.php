@@ -8,14 +8,9 @@
             <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
                 <div>
                     <p class="q-eyebrow">{{ $content['eyebrow'] }}</p>
-                    <h1 class="mt-3 font-serif text-4xl font-semibold tracking-tight text-[#1f3b2e] sm:text-5xl">{{ $content['title'] }}</h1>
+                    <h1 class="q-page-title mt-3">{{ $content['title'] }}</h1>
                     <p class="mt-4 max-w-3xl text-base leading-7 text-[#6b6b6b]">{{ $content['description'] }}</p>
                 </div>
-
-                <form method="POST" action="{{ route('business.logout') }}">
-                    @csrf
-                    <button type="submit" class="inline-flex items-center justify-center rounded-[1.15rem] border border-[#eadfc7] bg-[#fff7ef] px-5 py-3 text-sm font-semibold text-[#8f5b28] transition hover:bg-[#f7ecdb]">Logout</button>
-                </form>
             </div>
         </section>
 

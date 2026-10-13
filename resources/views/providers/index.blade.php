@@ -3,7 +3,7 @@
 @section('content')
 <div class="space-y-6">
     <section class="q-card relative z-10 space-y-5 p-6 sm:p-8">
-        <div><p class="q-eyebrow">Provider discovery</p><h1 class="q-heading mt-3 text-3xl sm:text-4xl">Find trusted help nearby.</h1><p class="q-copy mt-3">Browse approved providers and contact them directly.</p></div>
+        <div><p class="q-eyebrow">Provider discovery</p><h1 class="q-page-title mt-3">Find trusted help nearby.</h1><p class="q-copy mt-3">Browse approved providers and contact them directly.</p></div>
         <form method="GET" action="{{ route('providers.index') }}" class="grid gap-4 md:grid-cols-2 xl:grid-cols-3" x-data="{ district: @js(old('district', $filters['district'] ?? '')), city: @js(old('city', $filters['city'] ?? '')) }">
             <div class="min-w-0 flex-1 space-y-2">
                 <label id="category-label" for="category" x-bind:for="'category-control'" class="block font-medium">Work category</label>

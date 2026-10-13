@@ -42,7 +42,7 @@
     }
 
     .q-section {
-        @apply w-full min-w-0 rounded-[2rem] border border-white/70 bg-white/90 p-6 shadow-[0_30px_80px_-35px_rgba(31,59,46,0.28)] backdrop-blur sm:p-8;
+        @apply w-full min-w-0 rounded-[2rem] border border-white/70 bg-white/90 p-5 shadow-[0_30px_80px_-35px_rgba(31,59,46,0.28)] backdrop-blur sm:p-6;
     }
 
     .q-panel {
@@ -54,15 +54,15 @@
     }
 
     .q-input {
-        @apply block w-full rounded-[1.15rem] border bg-[#fffdf8] px-4 py-3.5 text-base text-[#1f2b23] shadow-sm outline-hidden transition placeholder:text-[#8d8a7c] focus:ring-4;
+        @apply block min-h-12 w-full rounded-[1.15rem] border border-qareeb-sand bg-[#fffdf8] px-4 py-3 text-base text-[#1f2b23] shadow-sm outline-hidden transition placeholder:text-[#8d8a7c] focus:border-qareeb-olive focus:ring-4 focus:ring-qareeb-sand disabled:bg-qareeb-cream disabled:text-qareeb-stone motion-reduce:transition-none;
     }
 
     .q-button-primary {
-        @apply inline-flex items-center justify-center rounded-[1.15rem] bg-[#1f3b2e] px-5 py-4 text-sm font-semibold text-white shadow-[0_18px_40px_-18px_rgba(31,59,46,0.85)] transition hover:bg-[#294c3a] focus:outline-hidden focus:ring-4 focus:ring-[#d9ccb0];
+        @apply inline-flex min-h-12 cursor-pointer items-center justify-center rounded-[1.15rem] bg-[#1f3b2e] px-5 py-3 text-center text-sm font-semibold text-white shadow-[0_18px_40px_-18px_rgba(31,59,46,0.85)] transition hover:bg-[#294c3a] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-qareeb-green disabled:cursor-not-allowed disabled:opacity-60 motion-reduce:transition-none;
     }
 
     .q-button-secondary {
-        @apply inline-flex items-center justify-center rounded-[1.15rem] border border-[#ddd1b8] bg-white px-5 py-3 text-sm font-semibold text-[#1f3b2e] transition hover:bg-[#faf5ea];
+        @apply inline-flex min-h-12 cursor-pointer items-center justify-center rounded-[1.15rem] border border-[#ddd1b8] bg-white px-5 py-3 text-center text-sm font-semibold text-[#1f3b2e] transition hover:bg-[#faf5ea] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-qareeb-green disabled:cursor-not-allowed disabled:opacity-60 motion-reduce:transition-none;
     }
 
     .q-nav-link {
@@ -83,7 +83,8 @@
     }
 
     .q-nav-link:hover::after,
-    .q-nav-link:focus::after {
+    .q-nav-link:focus::after,
+    .q-nav-link.is-current::after {
         transform: scaleX(1);
     }
 
@@ -129,6 +130,14 @@
         @apply min-h-16 justify-start rounded-none border-b border-qareeb-sand/70 px-0 py-4 font-serif text-3xl font-medium hover:bg-transparent focus:bg-transparent;
     }
 
+    .q-navigation-logout {
+        @apply mt-3;
+    }
+
+    .q-home-navigation .q-navigation-logout .q-nav-link {
+        @apply min-h-11 border-0 font-sans text-base text-qareeb-stone;
+    }
+
     .q-home-navigation-footer {
         @apply shrink-0 border-t border-qareeb-sand pt-5 text-sm text-qareeb-stone;
     }
@@ -153,11 +162,19 @@
         }
 
         .q-home-navigation-links {
-            @apply flex items-center gap-2 p-0;
+            @apply flex flex-row items-center gap-2 p-0;
         }
 
         .q-home-navigation .q-nav-link {
             @apply min-h-11 justify-center rounded-xl border-0 px-3 py-3 font-sans text-sm font-semibold hover:bg-qareeb-cream focus:bg-qareeb-cream;
+        }
+
+        .q-navigation-logout {
+            @apply mt-0 ml-2 border-l border-qareeb-sand pl-2;
+        }
+
+        .q-home-navigation .q-navigation-logout .q-nav-link {
+            @apply text-sm;
         }
     }
 
@@ -170,7 +187,11 @@
     }
 
     .q-eyebrow {
-        @apply text-sm font-semibold tracking-[0.25em] uppercase text-[#6c8a5b];
+        @apply text-xs font-semibold tracking-[0.18em] uppercase text-qareeb-green/80;
+    }
+
+    .q-page-title {
+        @apply font-serif text-2xl leading-tight font-semibold tracking-tight break-words text-qareeb-green sm:text-3xl lg:text-[2rem];
     }
 
     .q-heading {

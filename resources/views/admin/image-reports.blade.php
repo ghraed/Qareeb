@@ -2,7 +2,7 @@
 @section('title', 'Private image privacy reports')
 @section('content')
 <section class="space-y-5">
-    <h1 class="q-heading text-3xl">Private image privacy reports</h1><a class="q-button-secondary" href="{{ route('admin.dashboard') }}">Admin dashboard</a>
+    <h1 class="q-page-title">Private image privacy reports</h1><a class="q-button-secondary" href="{{ route('admin.dashboard') }}">Admin dashboard</a>
     @if ($errors->any())<div class="q-panel p-5" role="alert"><ul class="list-disc pl-5">@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>@endif
     @forelse ($reports as $report)
         <article class="q-card space-y-4 p-6">

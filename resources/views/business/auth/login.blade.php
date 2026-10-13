@@ -3,19 +3,20 @@
 @section('title', 'Business Login')
 
 @section('content')
-    <div class="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
-        <section class="q-card p-6 sm:p-8">
+    <div class="mx-auto grid max-w-6xl gap-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+        <section class="q-card p-5 sm:p-6">
             <div class="mb-6">
-                <h1 class="font-serif text-4xl font-semibold tracking-tight text-[#1f3b2e] sm:text-5xl">Sign in to your provider workspace</h1>
-                <p class="mt-3 text-base leading-7 text-[#5f625d]">Use the dedicated business portal to manage your account, profile, and upcoming client-facing features.</p>
-                <p class="mt-3 rounded-[1.25rem] border border-[#e5dac1] bg-[#fbf8f1] px-4 py-3 text-sm leading-6 text-[#5f625d]">Pending, rejected, or suspended provider accounts can still sign in here to view their current approval status, but only active accounts can access dashboard features.</p>
+                <p class="q-eyebrow mb-3">Provider sign in</p>
+                <h1 class="q-page-title">Welcome back to Qareeb.</h1>
+                <p class="mt-3 text-base leading-7 text-[#5f625d]">Manage your services, update your profile, and let nearby Seekers know when you are available.</p>
+                <p class="mt-3 rounded-[1.25rem] border border-[#e5dac1] bg-[#fbf8f1] px-4 py-3 text-sm leading-6 text-[#5f625d]">Waiting for approval? Sign in to check your account status.</p>
             </div>
 
             @if ($errors->any())
                 <x-alert type="error" message="Login could not be completed. Review the form and try again." class="mb-5" />
             @endif
 
-            <form method="POST" action="{{ route('business.login.store') }}" class="space-y-5" x-data="{ showPassword: false }">
+            <form method="POST" action="{{ route('business.login.store') }}" class="space-y-4" x-data="{ showPassword: false }">
                 @csrf
 
                 <x-form-input label="Username or email" name="email" type="text" placeholder="owner@business.com" autocomplete="username" />
@@ -56,20 +57,20 @@
             <p class="mt-6 text-sm text-[#6b6b6b]">Need a provider account? <a href="{{ route('business.register') }}" class="font-semibold text-[#6c8a5b] transition hover:text-[#1f3b2e]">Register your business</a>.</p>
         </section>
 
-        <section class="space-y-5">
+        <section class="hidden space-y-4 lg:block">
             <div class="overflow-hidden rounded-[2rem] bg-[#1f3b2e] p-8 text-white shadow-[0_35px_80px_-30px_rgba(31,59,46,0.95)]">
-                <p class="text-sm font-semibold tracking-[0.25em] text-[#d9e4d0] uppercase">Business control center</p>
-                <h2 class="mt-4 font-serif text-4xl font-semibold tracking-tight">Manage your business profile from one provider workspace.</h2>
-                <p class="mt-4 max-w-xl text-base leading-7 text-[#ecf1e7]">Provider login is restricted to service-provider accounts, with session regeneration and role enforcement on every protected page.</p>
+                <p class="text-xs font-semibold tracking-[0.18em] text-[#d9e4d0] uppercase">Your services, nearby</p>
+                <h2 class="mt-4 font-serif text-2xl font-semibold tracking-tight sm:text-3xl">Help people discover what you do best.</h2>
+                <p class="mt-4 max-w-xl text-base leading-7 text-[#ecf1e7]">Share your services, add examples of your work, and keep your contact details up to date.</p>
             </div>
             <div class="grid gap-4 sm:grid-cols-2">
                 <div class="q-panel p-5">
-                    <p class="text-sm font-medium text-[#6b6b6b]">Protected area</p>
-                    <p class="mt-2 text-xl font-semibold text-[#1f3b2e]">Dashboard + profile</p>
+                    <p class="text-sm font-medium text-[#6b6b6b]">Your profile</p>
+                    <p class="mt-2 text-lg font-semibold text-[#1f3b2e]">Services and work samples</p>
                 </div>
                 <div class="q-panel p-5">
-                    <p class="text-sm font-medium text-[#6b6b6b]">Session security</p>
-                    <p class="mt-2 text-xl font-semibold text-[#1f3b2e]">Regenerated on login</p>
+                    <p class="text-sm font-medium text-[#6b6b6b]">Your availability</p>
+                    <p class="mt-2 text-lg font-semibold text-[#1f3b2e]">Choose when to accept enquiries</p>
                 </div>
             </div>
         </section>

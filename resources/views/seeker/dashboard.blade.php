@@ -4,8 +4,7 @@
 <div class="min-w-0 space-y-6">
     <section class="q-card min-w-0 p-6 sm:p-8">
         <div class="flex min-w-0 flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
-            <div class="min-w-0"><p class="q-eyebrow">Seeker dashboard</p><h1 class="q-heading mt-3 break-words text-3xl sm:text-4xl">Welcome, {{ $user->name }}.</h1><p class="q-copy mt-3">Discover approved providers and contact them directly.</p></div>
-            <form method="POST" action="{{ route('seeker.logout') }}">@csrf<button class="q-button-secondary" type="submit">Logout</button></form>
+            <div class="min-w-0"><p class="q-eyebrow">Seeker dashboard</p><h1 class="q-page-title mt-3">Welcome, {{ $user->name }}.</h1><p class="q-copy mt-3">Discover approved providers and contact them directly.</p></div>
         </div>
     </section>
     <section class="q-card space-y-4 p-6 sm:p-8">

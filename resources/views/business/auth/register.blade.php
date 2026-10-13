@@ -3,11 +3,11 @@
 @section('title', 'Business Registration')
 
 @section('content')
-    <div class="grid gap-10 lg:grid-cols-[1.08fr_0.92fr] lg:items-center">
+    <div class="grid gap-6 lg:grid-cols-[1.08fr_0.92fr] lg:items-center">
         <section class="space-y-7">
             <span class="inline-flex rounded-full border border-[#d7ccb6] bg-[#f6f2e6] px-4 py-2 text-sm font-semibold text-[#1f3b2e]">Business onboarding</span>
             <div class="space-y-4">
-                <h1 class="max-w-2xl font-serif text-4xl leading-tight font-semibold tracking-tight text-[#1f3b2e] sm:text-6xl">Register as a Qareeb service provider.</h1>
+                <h1 class="q-page-title max-w-2xl">Register as a Qareeb service provider.</h1>
                 <p class="max-w-2xl text-base leading-7 text-[#5f625d] sm:text-lg sm:leading-8">Create your account for administrator review. After approval, add your services, coverage areas and pictures in your private provider dashboard. Your profile stays hidden while your account is pending.</p>
             </div>
             {{-- <div class="grid gap-4 sm:grid-cols-3">
@@ -32,7 +32,7 @@
             </div> --}}
         </section>
 
-        <section class="q-card p-6 sm:p-8">
+        <section class="q-card p-5 sm:p-6">
             <div class="mb-6">
                 <h2 class="font-serif text-3xl font-semibold text-[#1f3b2e]">Business registration</h2>
                 <p class="mt-2 text-sm text-[#6b6b6b]">Already have an account? <a href="{{ route('business.login') }}" class="font-semibold text-[#6c8a5b] transition hover:text-[#1f3b2e]">Sign in here</a>.</p>
@@ -43,7 +43,7 @@
                 <x-alert type="error" message="Please correct the highlighted fields and try again." class="mb-5" />
             @endif
 
-            <form method="POST" action="{{ route('business.register.store') }}" class="space-y-5" x-data="{ showPassword: false, showConfirmPassword: false }">
+            <form method="POST" action="{{ route('business.register.store') }}" class="space-y-4" x-data="{ showPassword: false, showConfirmPassword: false }">
                 @csrf
 
                 <x-form-input label="Full name" name="name" placeholder="Jordan Lee" autocomplete="name" />

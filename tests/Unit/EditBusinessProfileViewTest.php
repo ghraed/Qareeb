@@ -36,7 +36,7 @@ class EditBusinessProfileViewTest extends TestCase
             'user' => $user,
             'profile' => $profile,
             'profileCompletion' => $profile->completionPercentage(),
-            'errors' => tap(new ViewErrorBag(), fn (ViewErrorBag $bag) => $bag->put('default', new MessageBag())),
+            'errors' => tap(new ViewErrorBag, fn (ViewErrorBag $bag) => $bag->put('default', new MessageBag)),
         ])->render();
 
         $this->assertStringContainsString('value="Qareeb Works"', $html);
@@ -56,5 +56,7 @@ class EditBusinessProfileViewTest extends TestCase
         $this->assertStringContainsString('All cities in selected districts', $html);
         $this->assertStringContainsString('value="1107"', $html);
         $this->assertStringNotContainsString('[object HTMLInputElement]', $html);
+        $this->assertStringNotContainsString('@js($user->name)', $html);
+        $this->assertStringContainsString('fallbackName)', $html);
     }
 }

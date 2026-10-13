@@ -2,7 +2,7 @@
 @section('title', 'Qareeb Terms and Conditions')
 @section('content')
 <article class="q-card mx-auto max-w-3xl space-y-7 p-6 sm:p-10">
-    <header class="space-y-3"><p class="q-eyebrow">Terms and Conditions</p><h1 class="q-heading text-3xl sm:text-4xl">Using Qareeb</h1><p class="q-copy text-sm">Version {{ config('terms.version') }}</p></header>
+    <header class="space-y-3"><p class="q-eyebrow">Terms and Conditions</p><h1 class="q-page-title">Using Qareeb</h1><p class="q-copy text-sm">Version {{ config('terms.version') }}</p></header>
     @unless (config('terms.approved'))
         <div class="q-panel space-y-2 p-5" role="note"><h2 class="q-heading text-xl">Draft for owner and legal review</h2><p class="q-copy">This content is not approved for public launch. It describes the current product and requires owner/legal review before it becomes final.</p></div>
     @endunless

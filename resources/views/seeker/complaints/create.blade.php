@@ -2,7 +2,7 @@
 @section('title', 'Submit a private complaint')
 @section('content')
 <section class="q-card mx-auto max-w-2xl space-y-5 p-6 sm:p-8">
-    <h1 class="q-heading text-3xl">Submit a private complaint</h1><p class="q-copy">This survey goes to administrators for review. It is separate from public reviews.</p>
+    <h1 class="q-page-title">Submit a private complaint</h1><p class="q-copy">This survey goes to administrators for review. It is separate from public reviews.</p>
     <form method="POST" action="{{ route('seeker.complaints.store') }}" class="space-y-5">
         @csrf
         <input type="hidden" name="submission_token" value="{{ old('submission_token', (string) Str::uuid()) }}">

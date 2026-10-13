@@ -2,7 +2,7 @@
 @section('title', 'Edit Seeker profile')
 @section('content')
 <section class="q-card mx-auto max-w-2xl space-y-6 p-6 sm:p-8">
-    <div><p class="q-eyebrow">Private profile</p><h1 class="q-heading mt-3 text-3xl">Your Seeker details</h1><p class="q-copy mt-3">Your phone and location are private. They are never listed in provider discovery or public reviews.</p></div>
+    <div><p class="q-eyebrow">Private profile</p><h1 class="q-page-title mt-3">Your Seeker details</h1><p class="q-copy mt-3">Your phone and location are private. They are never listed in provider discovery or public reviews.</p></div>
     <x-profile-completion :profile="$user" :seeker="true" />
     <form method="POST" action="{{ route('seeker.profile.update') }}" class="space-y-5" x-data="{ district: @js(old('district', $user->district)), city: @js(old('city', $user->city)) }">
         @csrf @method('PUT')

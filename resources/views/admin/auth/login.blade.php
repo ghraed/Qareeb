@@ -3,19 +3,19 @@
 @section('title', 'Admin Login')
 
 @section('content')
-    <div class="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
-        <section class="q-card p-6 sm:p-8">
+    <div class="mx-auto grid max-w-6xl gap-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+        <section class="q-card p-5 sm:p-6">
             <div class="mb-6">
                 <p class="q-eyebrow">Administrator portal</p>
-                <h1 class="mt-3 font-serif text-4xl font-semibold tracking-tight text-[#1f3b2e] sm:text-5xl">Sign in to review and activate provider accounts.</h1>
-                <p class="mt-3 text-base leading-7 text-[#5f625d]">Only administrator accounts can access this workspace. Non-admin users are rejected even if their credentials are valid.</p>
+                <h1 class="q-page-title mt-3">Sign in to review and activate provider accounts.</h1>
+                <p class="mt-3 text-base leading-7 text-[#5f625d]">Sign in with your administrator account to review providers and manage private reports.</p>
             </div>
 
             @if ($errors->any())
                 <x-alert type="error" message="Login could not be completed. Review the form and try again." class="mb-5" />
             @endif
 
-            <form method="POST" action="{{ route('admin.login.store') }}" class="space-y-5" x-data="{ showPassword: false }">
+            <form method="POST" action="{{ route('admin.login.store') }}" class="space-y-4" x-data="{ showPassword: false }">
                 @csrf
 
                 <x-form-input label="Username or email" name="email" type="text" placeholder="admin@example.com" autocomplete="username" />
@@ -53,11 +53,11 @@
             </form>
         </section>
 
-        <section class="space-y-5">
+        <section class="hidden space-y-4 lg:block">
             <div class="overflow-hidden rounded-[2rem] bg-[#1f3b2e] p-8 text-white shadow-[0_35px_80px_-30px_rgba(31,59,46,0.95)]">
                 <p class="text-sm font-semibold tracking-[0.25em] text-[#d9e4d0] uppercase">Approval workflow</p>
-                <h2 class="mt-4 font-serif text-4xl font-semibold tracking-tight">Review pending businesses, approve trusted providers, and lock restricted accounts.</h2>
-                <p class="mt-4 max-w-xl text-base leading-7 text-[#ecf1e7]">This admin workspace uses the same Qareeb visual system as the provider portal while keeping a distinct account review focus.</p>
+                <h2 class="mt-4 font-serif text-2xl font-semibold tracking-tight sm:text-3xl">Review pending businesses, approve trusted providers, and lock restricted accounts.</h2>
+                <p class="mt-4 max-w-xl text-base leading-7 text-[#ecf1e7]">Keep Qareeb welcoming and trustworthy by reviewing applications and following up on concerns.</p>
             </div>
             <div class="grid gap-4 sm:grid-cols-2">
                 <div class="q-panel p-5">

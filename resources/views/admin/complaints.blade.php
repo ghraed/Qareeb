@@ -3,7 +3,7 @@
 @section('content')
 <section class="space-y-5">
     @if ($errors->any())<div class="q-panel p-5" role="alert"><p>Please correct the review fields:</p><ul class="list-disc pl-5">@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>@endif
-    <h1 class="q-heading text-3xl">Private complaint review</h1><a class="q-button-secondary" href="{{ route('admin.dashboard') }}">Admin dashboard</a>
+    <h1 class="q-page-title">Private complaint review</h1><a class="q-button-secondary" href="{{ route('admin.dashboard') }}">Admin dashboard</a>
     @forelse ($complaints as $complaint)
         <article class="q-card space-y-4 p-6">
             <h2 class="q-heading text-xl">{{ $complaint->type }} — {{ $complaint->status->label() }}</h2><p class="q-copy">From {{ $complaint->user->name }} · Provider: {{ $complaint->provider?->name ?: 'Not specified' }}</p><p class="q-copy whitespace-pre-line">{{ $complaint->description }}</p>

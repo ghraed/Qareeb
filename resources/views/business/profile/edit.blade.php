@@ -21,6 +21,7 @@
         class="min-w-0 space-y-6"
         x-data="businessProfileEditForm(@js([
             'available' => (bool) old('is_available_for_hire', $profile->is_available_for_hire),
+            'fallbackName' => $user->name,
             'districtCities' => \App\Models\BusinessProfile::LEBANON_DISTRICT_CITIES,
             'districts' => \App\Models\BusinessProfile::LEBANON_DISTRICTS,
             'selectedDistricts' => $selectedDistricts,
@@ -38,8 +39,8 @@
             <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                 <div>
                     <p class="q-eyebrow">Profile management</p>
-                    <h1 class="q-heading mt-3 text-4xl sm:text-5xl">Edit your business profile</h1>
-                    <p class="q-copy mt-3 max-w-2xl text-base leading-7">Update your marketplace identity, manual location, and hiring availability with the same Qareeb design language used across the provider portal.</p>
+                    <h1 class="q-page-title mt-3">Edit your business profile</h1>
+                    <p class="q-copy mt-3 max-w-2xl text-base leading-7">Help Seekers get to know your business. Update your services, contact details, coverage areas, and availability.</p>
                 </div>
                 <span class="q-badge">{{ $profileCompletion }}% complete</span>
             </div>
@@ -61,7 +62,7 @@
                         </div>
 
                         <div class="mt-6 space-y-5">
-                            <x-form-input label="Business name" name="business_name" :value="$profile->business_name" placeholder="Qareeb Electric Services" x-on:input="updateAll('[data-business-name-preview]', $event.target.value, @js($user->name))" />
+                            <x-form-input label="Business name" name="business_name" :value="$profile->business_name" placeholder="Qareeb Electric Services" x-on:input="updateAll('[data-business-name-preview]', $event.target.value, fallbackName)" />
                             <x-form-input label="Business email" name="business_email_display" type="email" :value="$user->email" disabled />
                             <x-form-input label="Phone" name="phone" :value="$profile->phone" placeholder="+961 70 000 000" x-on:input="updateText('phonePreview', $event.target.value, 'Not listed yet')" />
 
@@ -347,6 +348,7 @@
         function businessProfileEditForm(config) {
             return {
                 available: config.available,
+                fallbackName: config.fallbackName,
                 districtCities: config.districtCities,
                 districts: config.districts,
                 selectedDistricts: config.selectedDistricts ?? [],

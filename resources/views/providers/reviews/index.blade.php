@@ -8,7 +8,7 @@
             <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                 <div>
                     <p class="q-eyebrow">Provider reviews</p>
-                    <h1 class="q-heading mt-3 text-4xl sm:text-5xl">{{ $profile->business_name ?: $provider->name }}</h1>
+                    <h1 class="q-page-title mt-3">{{ $profile->business_name ?: $provider->name }}</h1>
                     <div class="mt-4">
                         <x-rating-stars :rating="$profile->average_rating" :count="$profile->reviews_count" size="lg" />
                     </div>
