@@ -39,6 +39,13 @@
                 ['label' => 'Account status', 'route' => 'business.account.status', 'active' => 'business.account.status'],
             ];
     }
+
+    if (request()->is('/')) {
+        $navigationLinks = [
+            ['label' => 'Seeker login', 'route' => 'seeker.login', 'active' => 'seeker.login'],
+            ['label' => 'Business login', 'route' => 'business.login', 'active' => 'business.login'],
+        ];
+    }
 @endphp
 
 <header

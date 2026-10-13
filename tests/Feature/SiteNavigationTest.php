@@ -15,10 +15,16 @@ class SiteNavigationTest extends TestCase
         foreach (['/', route('seeker.login'), route('business.login')] as $url) {
             $header = $this->header($this->get($url)->assertOk()->getContent());
 
-            $this->assertStringContainsString(route('providers.index'), $header);
             $this->assertStringContainsString(route('seeker.login'), $header);
-            $this->assertStringContainsString(route('seeker.register'), $header);
             $this->assertStringContainsString(route('business.login'), $header);
+            if ($url === '/') {
+                $this->assertStringContainsString('Seeker login', $header);
+                $this->assertStringNotContainsString(route('providers.index'), $header);
+                $this->assertStringNotContainsString(route('seeker.register'), $header);
+            } else {
+                $this->assertStringContainsString(route('providers.index'), $header);
+                $this->assertStringContainsString(route('seeker.register'), $header);
+            }
             $this->assertStringNotContainsString(route('admin.login'), $header);
             $this->assertStringNotContainsString(route('business.register'), $header);
         }
