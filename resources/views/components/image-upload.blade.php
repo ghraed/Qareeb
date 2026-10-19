@@ -1,5 +1,6 @@
 @props([
     'label',
+    'focusId' => null,
     'name' => 'photo',
     'currentUrl' => null,
     'emptyLabel' => 'No image uploaded yet.',
@@ -55,6 +56,7 @@
         >
         <div class="flex flex-col gap-3 rounded-[1.15rem] border border-[#ddd1b8] bg-[#fffdf8] p-3 sm:flex-row sm:items-center">
             <button
+                @if ($focusId) id="{{ $focusId }}" @endif
                 type="button"
                 x-on:click="$refs.fileInput.click()"
                 class="inline-flex w-full items-center justify-center rounded-full bg-[#1f3b2e] px-4 py-3 text-sm font-semibold text-white sm:w-auto"

@@ -8,6 +8,7 @@ use App\Http\Requests\UploadBusinessWorkSampleRequest;
 use App\Models\BusinessProfile;
 use App\Services\BusinessPhotoService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
@@ -81,7 +82,7 @@ class BusinessProfileController extends Controller
             ->with('status', 'Your business profile has been updated.');
     }
 
-    public function updateHiringAvailability(Request $request): RedirectResponse
+    public function updateHiringAvailability(Request $request): RedirectResponse|JsonResponse
     {
         $validated = $request->validate([
             'is_available_for_hire' => ['required', 'boolean'],
@@ -96,7 +97,15 @@ class BusinessProfileController extends Controller
         } catch (\Throwable $exception) {
             report($exception);
 
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'Availability could not be saved. Please try again.'], 500);
+            }
+
             return back()->withErrors(['is_available_for_hire' => 'Availability could not be saved. Please try again.']);
+        }
+
+        if ($request->expectsJson()) {
+            return response()->json(['is_available_for_hire' => $isAvailable]);
         }
 
         return back()->with(

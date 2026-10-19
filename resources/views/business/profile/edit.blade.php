@@ -28,6 +28,7 @@
             'selectedCities' => $selectedCities,
         ]))"
         x-init="init()"
+        @hashchange.window="focusRequestedField()"
     >
         <form id="hiring-availability-toggle-form" method="POST" action="{{ route('business.profile.hiring-availability') }}" class="hidden">
             @csrf
@@ -46,6 +47,8 @@
             </div>
             <x-profile-completion :profile="$profile" />
         </section>
+
+        <x-business-next-steps :profile="$profile" local />
 
         <div class="grid min-w-0 gap-6 xl:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
             <section class="q-section min-w-0">
@@ -85,6 +88,7 @@
                                         <label class="flex cursor-pointer items-center gap-3 rounded-[1rem] border border-[#ddd1b8] bg-[#fffdf8] px-4 py-3 text-sm text-[#314236] transition hover:border-[#cdbf9f] hover:bg-[#f7f2e8]">
                                             <input
                                                 type="checkbox"
+                                                id="{{ $loop->first ? 'categories' : 'category-'.$loop->index }}"
                                                 name="categories[]"
                                                 value="{{ $workCategory }}"
                                                 @checked(in_array($workCategory, $selectedWorkCategories, true))
@@ -122,6 +126,7 @@
                                     <div class="relative min-w-0" x-data="{ open: false }">
                                         <button
                                             type="button"
+                                            id="state"
                                             x-on:click="open = ! open"
                                             class="q-input flex min-h-12 w-full min-w-0 items-center gap-3 border-[#ddd1b8] px-4 text-left focus:border-[#6c8a5b] focus:ring-[#e8dcc2]"
                                         >
@@ -169,6 +174,7 @@
                                     <div class="relative min-w-0" x-data="{ open: false }">
                                         <button
                                             type="button"
+                                            id="city"
                                             x-on:click="if (filteredCities().length) open = ! open"
                                             :disabled="filteredCities().length === 0"
                                             class="q-input flex min-h-12 w-full min-w-0 items-center gap-3 border-[#ddd1b8] px-4 text-left focus:border-[#6c8a5b] focus:ring-[#e8dcc2] disabled:cursor-not-allowed disabled:bg-[#f7f2e8]"
@@ -242,6 +248,7 @@
                         @enderror
                         <div class="mt-5 flex flex-wrap items-center gap-3">
                             <button
+                                id="hiring-availability-control"
                                 type="submit"
                                 form="hiring-availability-toggle-form"
                                 class="{{ $profile->is_available_for_hire ? 'inline-flex items-center justify-center rounded-[1.15rem] border border-[#f0c9c9] bg-[#fff5f5] px-5 py-3 text-sm font-semibold text-[#9a3d3d] transition hover:bg-[#ffecec]' : 'q-button-secondary' }}"
@@ -321,6 +328,7 @@
 
                 <x-image-upload
                     label="Profile photo"
+                    focus-id="profile_photo"
                     :current-url="$profile->profilePhotoUrl()"
                     empty-label="Upload a circular identity photo for your provider card."
                     :form-action="route('business.profile.profile-photo.store')"
@@ -329,6 +337,7 @@
 
                 <x-image-upload
                     label="Brand cover photo"
+                    focus-id="brand_photo"
                     :current-url="$profile->brandPhotoUrl()"
                     empty-label="Upload a wide brand image for your public provider page."
                     :form-action="route('business.profile.brand-photo.store')"
@@ -356,6 +365,18 @@
                 init() {
                     this.syncSelectedCities();
                     this.updateLocation();
+                    this.$nextTick(() => this.focusRequestedField());
+                },
+                focusRequestedField(requestedId = null) {
+                    const id = requestedId ?? window.location.hash.slice(1);
+                    if (! ['business_name', 'phone', 'description', 'categories', 'address', 'state', 'city', 'profile_photo', 'brand_photo', 'hiring-availability-control'].includes(id)) return;
+
+                    let field = document.getElementById(id);
+                    if (id === 'city' && field?.disabled) field = document.getElementById('state');
+                    if (! field || ! this.$root.contains(field)) return;
+
+                    field.scrollIntoView({ block: 'center' });
+                    field.focus({ preventScroll: true });
                 },
                 updateText(refName, value, fallback = "") {
                     if (! this.$refs[refName]) return;

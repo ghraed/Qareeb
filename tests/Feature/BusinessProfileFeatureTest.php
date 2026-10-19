@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
 
 class BusinessProfileFeatureTest extends TestCase
@@ -262,6 +263,19 @@ class BusinessProfileFeatureTest extends TestCase
         $provider->businessProfile->refresh();
 
         $this->assertSame(['Electrician', 'Technical & Repair Services'], $provider->businessProfile->categories);
+    }
+
+    public function test_profile_can_save_all_supported_categories_without_truncation(): void
+    {
+        $provider = $this->createProvider();
+        $this->assertSame('text', Schema::getColumnType('business_profiles', 'categories'));
+        $this->assertGreaterThan(255, strlen(json_encode(BusinessProfile::WORK_CATEGORIES)));
+
+        $this->actingAs($provider)->put(route('business.profile.update'), [
+            'categories' => BusinessProfile::WORK_CATEGORIES,
+        ])->assertSessionHasNoErrors()->assertRedirect(route('business.profile.edit'));
+
+        $this->assertSame(BusinessProfile::WORK_CATEGORIES, $provider->businessProfile->refresh()->categories);
     }
 
     public function test_profile_update_uses_authenticated_user_email_for_business_email(): void

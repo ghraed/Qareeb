@@ -25,8 +25,16 @@
             @endif
         </div>
         <div class="q-panel p-5 sm:col-span-2">
-            <p class="text-sm font-medium text-[#6b6b6b]">Work categories</p>
-            <p class="mt-2 text-lg font-semibold text-[#1f3b2e]">{{ $profile->formattedCategories() ?: 'No categories listed yet' }}</p>
+            <h3 id="work-categories-heading" class="text-base font-semibold text-qareeb-green">Work categories</h3>
+            @if ($profile->categories)
+                <ul aria-labelledby="work-categories-heading" role="list" class="mt-4 flex flex-wrap gap-2">
+                    @foreach ($profile->categories as $category)
+                        <li class="max-w-full rounded-xl border border-qareeb-olive/25 bg-qareeb-olive/10 px-3 py-2 text-sm leading-6 font-medium break-words text-qareeb-green">{{ $category }}</li>
+                    @endforeach
+                </ul>
+            @else
+                <p class="q-copy mt-3 text-sm">No categories listed yet</p>
+            @endif
         </div>
     </div>
 </section>
