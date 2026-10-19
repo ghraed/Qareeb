@@ -4,6 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>@yield('title', 'Qareeb')</title>
+        <link rel="icon" type="image/png" href="{{ asset('images/qareeb-logo.png') }}">
         <meta name="description" content="@yield('meta_description', 'Trusted help nearby.')">
         <meta property="og:title" content="@yield('og_title', trim($__env->yieldContent('title', 'Qareeb')))">
         <meta property="og:description" content="@yield('og_description', $__env->yieldContent('meta_description', 'Trusted help nearby.'))">
