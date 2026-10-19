@@ -57,6 +57,22 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Automated tests
+
+Run all PHP, JavaScript, and overlapping image-upload integration tests:
+
+```bash
+npm run test:all
+```
+
+Run individual suites with `composer test`, `npm test`, or
+`python3 tests/integration/image-concurrency.py`. PHP tests default to an isolated
+in-memory SQLite database; they do not need the MySQL database in `.env.testing`.
+An explicit `DB_CONNECTION` and `DB_DATABASE` environment override can select a
+dedicated test database instead. Never select a database containing real data:
+feature tests reset their database. PHP needs PDO SQLite and GD; the other suites
+need Node.js 22+ and Python 3. See [the test coverage guide](tests/README.md).
+
 ## Admin account
 
 Seed the development administrator with:

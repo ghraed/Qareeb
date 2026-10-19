@@ -3,6 +3,8 @@
     "private": true,
     "type": "module",
     "scripts": {
+        "test": "node --test tests/js/*.test.mjs",
+        "test:all": "composer test && npm test && python3 tests/integration/image-concurrency.py",
         "build": "vite build",
         "dev": "vite"
     },
