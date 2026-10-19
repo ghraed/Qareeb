@@ -28,7 +28,7 @@ class ProviderDashboardTest extends TestCase
     public function test_active_legacy_provider_without_profile_gets_safe_empty_own_profile(): void
     {
         $user = User::factory()->serviceProvider()->create();
-        $this->actingAs($user)->get(route('business.dashboard'))->assertOk()->assertSee('0% complete')->assertSee('Accept enquiries');
+        $this->actingAs($user)->get(route('business.dashboard'))->assertOk()->assertSee('0% complete')->assertSee('Mark availability');
         $this->assertDatabaseHas('business_profiles', ['user_id' => $user->id, 'is_available_for_hire' => false]);
         $this->get(route('business.profile.edit'))->assertOk();
         $this->assertSame(1, $user->businessProfile()->count());

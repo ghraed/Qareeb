@@ -49,7 +49,7 @@ class SeekerAuthController extends Controller
         $request->session()->regenerate();
         $request->session()->forget('url.intended');
 
-        return redirect()->route('seeker.dashboard');
+        return redirect()->route('seeker.dashboard')->with('status', 'Welcome back to Qareeb.');
     }
 
     public function logout(Request $request): RedirectResponse

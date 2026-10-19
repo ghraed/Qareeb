@@ -63,6 +63,36 @@ class PrivateComplaintTest extends TestCase
         $this->assertSame(1, Complaint::count());
     }
 
+    public function test_admin_review_shows_success_validation_and_save_failure_toasts(): void
+    {
+        $seeker = User::factory()->customer()->create();
+        $this->actingAs($seeker)->post(route('seeker.complaints.store'), $this->data());
+        $complaint = Complaint::firstOrFail();
+        $admin = User::factory()->admin()->create();
+
+        $this->actingAs($admin)->from(route('admin.complaints.index'))
+            ->patch(route('admin.complaints.update', $complaint), ['status' => 'in_review'])
+            ->assertRedirect(route('admin.complaints.index'))
+            ->assertSessionHas('status', 'Complaint review saved.');
+        $this->get(route('admin.complaints.index'))->assertOk()
+            ->assertSee('Complaint review saved.')->assertSee('bg-emerald-50', false)
+            ->assertSee('z-[2147483647]', false);
+
+        $this->from(route('admin.complaints.index'))
+            ->patch(route('admin.complaints.update', $complaint), ['status' => 'invalid'])
+            ->assertSessionHasErrors('status');
+        $this->get(route('admin.complaints.index'))->assertOk()->assertSee('bg-rose-50', false);
+
+        Complaint::saving(fn () => false);
+        $this->from(route('admin.complaints.index'))
+            ->patch(route('admin.complaints.update', $complaint), ['status' => 'resolved'])
+            ->assertSessionHasErrors('review');
+        $this->assertSame(ReportStatus::InReview, $complaint->refresh()->status);
+        $this->get(route('admin.complaints.index'))->assertOk()
+            ->assertSee('Complaint review could not be saved. Please try again.')
+            ->assertSee('bg-rose-50', false);
+    }
+
     public function test_rate_limit_and_non_seeker_submission_permissions(): void
     {
         $seeker = User::factory()->customer()->create();

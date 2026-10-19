@@ -47,7 +47,9 @@ class EditBusinessProfileViewTest extends TestCase
         $this->assertStringContainsString('value="+961 70 000 000"', $html);
         $this->assertStringContainsString('Trusted home services.', $html);
         $this->assertStringContainsString('name="categories[]"', $html);
-        $this->assertStringContainsString('Electrician, Technical &amp; Repair Services', $html);
+        $this->assertStringContainsString('\u0022selectedCategories\u0022:[\u0022Electrician\u0022,', $html);
+        $this->assertStringContainsString('x-model="selectedCategories"', $html);
+        $this->assertStringContainsString('x-for="category in selectedCategories"', $html);
         $this->assertStringContainsString('value="Main street, building 12"', $html);
         $this->assertStringContainsString('name="state[]"', $html);
         $this->assertStringContainsString('name="city[]"', $html);

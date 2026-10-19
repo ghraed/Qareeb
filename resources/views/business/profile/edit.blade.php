@@ -20,15 +20,17 @@
     <div
         class="min-w-0 space-y-6"
         x-data="businessProfileEditForm(@js([
-            'available' => (bool) old('is_available_for_hire', $profile->is_available_for_hire),
+            'available' => (bool) $profile->is_available_for_hire,
             'fallbackName' => $user->name,
             'districtCities' => \App\Models\BusinessProfile::LEBANON_DISTRICT_CITIES,
             'districts' => \App\Models\BusinessProfile::LEBANON_DISTRICTS,
             'selectedDistricts' => $selectedDistricts,
             'selectedCities' => $selectedCities,
+            'selectedCategories' => $selectedWorkCategories,
         ]))"
         x-init="init()"
         @hashchange.window="focusRequestedField()"
+        @availability-updated.window="available = $event.detail.available"
     >
         <form id="hiring-availability-toggle-form" method="POST" action="{{ route('business.profile.hiring-availability') }}" class="hidden">
             @csrf
@@ -77,35 +79,37 @@
                                 @enderror
                             </div>
 
-                            <div class="space-y-3">
-                                <div>
-                                    <label class="block text-sm font-medium text-[#314236]">Work categories</label>
-                                    <p class="mt-1 text-xs text-[#6b6b6b]">Choose the domains you want customers to associate with your business.</p>
+                            <fieldset class="min-w-0 space-y-3" aria-describedby="work-categories-help">
+                                <legend class="text-sm font-semibold text-qareeb-green">Work categories</legend>
+                                <div class="flex flex-wrap items-center justify-between gap-2">
+                                    <p id="work-categories-help" class="text-sm leading-6 text-qareeb-stone">Choose the services your business offers.</p>
+                                    <span class="rounded-full bg-qareeb-green/10 px-3 py-1 text-xs font-semibold text-qareeb-green" x-text="selectedCategories.length + ' selected'">{{ count($selectedWorkCategories) }} selected</span>
                                 </div>
 
-                                <div class="grid gap-3 sm:grid-cols-2">
+                                <div class="grid min-w-0 gap-2 sm:grid-cols-2">
                                     @foreach (\App\Models\BusinessProfile::WORK_CATEGORIES as $workCategory)
-                                        <label class="flex cursor-pointer items-center gap-3 rounded-[1rem] border border-[#ddd1b8] bg-[#fffdf8] px-4 py-3 text-sm text-[#314236] transition hover:border-[#cdbf9f] hover:bg-[#f7f2e8]">
+                                        <label class="flex min-h-12 min-w-0 cursor-pointer items-center gap-3 rounded-xl border border-qareeb-sand bg-white px-3 py-3 text-sm leading-6 text-qareeb-green transition-colors hover:border-qareeb-olive has-checked:border-qareeb-green/50 has-checked:bg-qareeb-green/10 has-checked:font-semibold has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-qareeb-green motion-reduce:transition-none">
                                             <input
                                                 type="checkbox"
                                                 id="{{ $loop->first ? 'categories' : 'category-'.$loop->index }}"
                                                 name="categories[]"
                                                 value="{{ $workCategory }}"
+                                                x-model="selectedCategories"
                                                 @checked(in_array($workCategory, $selectedWorkCategories, true))
-                                                class="h-4 w-4 rounded border-[#cdbf9f] text-[#6c8a5b] focus:ring-[#e8dcc2]"
+                                                class="size-4 shrink-0 cursor-pointer rounded accent-qareeb-green"
                                             >
-                                            <span>{{ $workCategory }}</span>
+                                            <span class="min-w-0 break-words">{{ $workCategory }}</span>
                                         </label>
                                     @endforeach
                                 </div>
 
                                 @error('categories')
-                                    <p class="text-sm font-medium text-rose-700">{{ $message }}</p>
+                                    <p class="text-sm font-medium text-rose-700" role="alert">{{ $message }}</p>
                                 @enderror
                                 @error('categories.*')
-                                    <p class="text-sm font-medium text-rose-700">{{ $message }}</p>
+                                    <p class="text-sm font-medium text-rose-700" role="alert">{{ $message }}</p>
                                 @enderror
-                            </div>
+                            </fieldset>
                         </div>
                     </div>
 
@@ -234,32 +238,40 @@
                         </div>
                     </div>
 
-                    <div class="q-panel p-5">
-                        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                    <section
+                        aria-labelledby="hiring-heading"
+                        class="q-panel p-5"
+                        x-data="availabilityToggle(@js((bool) $profile->is_available_for_hire))"
+                        @availability-updated.window="available = $event.detail.available; error = ''"
+                        @availability-saving.window="saving = $event.detail.saving"
+                        :aria-busy="saving"
+                    >
+                        <div class="flex flex-wrap items-start justify-between gap-3">
                             <div>
-                                <h2 class="q-heading text-2xl">Availability</h2>
-                                <p class="q-copy mt-1 text-sm">Control whether Seekers see you as accepting enquiries for work.</p>
+                                <h2 id="hiring-heading" class="q-heading text-2xl">Hiring</h2>
+                                <p class="q-copy mt-2 text-sm leading-6">Choose whether your business is accepting enquiries for work. This controls the #Hiring badge on your public profile.</p>
                             </div>
-                            <span class="q-badge" x-text="available ? 'Available for hire' : 'Currently unavailable'"></span>
+                            <span
+                                role="status"
+                                class="inline-flex w-full justify-center rounded-full border px-3 py-1.5 text-xs font-semibold sm:w-auto"
+                                :class="available ? 'border-qareeb-green/30 bg-qareeb-green/10 text-qareeb-green' : 'border-rose-200 bg-rose-50 text-rose-700'"
+                                x-text="available ? 'Available for hire' : 'Not available for hire'"
+                            >{{ $profile->is_available_for_hire ? 'Available for hire' : 'Not available for hire' }}</span>
                         </div>
-
+                        <button
+                            id="hiring-availability-control"
+                            type="submit"
+                            form="hiring-availability-toggle-form"
+                            @click.prevent="save(document.getElementById('hiring-availability-toggle-form'))"
+                            :disabled="saving"
+                            class="q-button-secondary mt-5 w-full"
+                            x-text="saving ? 'Saving…' : (available ? 'Stop hiring' : 'Start hiring')"
+                        >{{ $profile->is_available_for_hire ? 'Stop hiring' : 'Start hiring' }}</button>
+                        <p x-cloak x-show="error" x-text="error" class="mt-3 text-sm text-rose-700" role="alert"></p>
                         @error('is_available_for_hire')
-                            <p class="mt-2 text-sm text-rose-700" role="alert">{{ $message }}</p>
+                            <p class="mt-3 text-sm text-rose-700" role="alert">{{ $message }}</p>
                         @enderror
-                        <div class="mt-5 flex flex-wrap items-center gap-3">
-                            <button
-                                id="hiring-availability-control"
-                                type="submit"
-                                form="hiring-availability-toggle-form"
-                                class="{{ $profile->is_available_for_hire ? 'inline-flex items-center justify-center rounded-[1.15rem] border border-[#f0c9c9] bg-[#fff5f5] px-5 py-3 text-sm font-semibold text-[#9a3d3d] transition hover:bg-[#ffecec]' : 'q-button-secondary' }}"
-                            >
-                                {{ $profile->is_available_for_hire ? 'Mark unavailable' : 'Accept enquiries' }}
-                            </button>
-                            <p class="text-sm text-[#6b6b6b]">
-                                {{ $profile->is_available_for_hire ? 'This removes the hiring badge from your public profile immediately.' : 'This shows the hiring badge on your public profile immediately.' }}
-                            </p>
-                        </div>
-                    </div>
+                    </section>
 
                     <div class="flex flex-wrap gap-3">
                         <button type="submit" class="q-button-primary">Save profile</button>
@@ -283,11 +295,11 @@
                         @endif
 
                         <div class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 sm:left-6 sm:translate-x-0">
-                            <x-profile-avatar :profile="$profile" :name="$profile->business_name ?: $user->name" size="lg" />
+                            <x-profile-avatar :profile="$profile" :name="$profile->business_name ?: $user->name" size="lg" live-hiring />
                         </div>
                     </div>
 
-                    <div class="px-4 pb-6 pt-16 sm:px-6">
+                    <div class="px-4 pb-6 pt-24 sm:px-6">
                         <div class="flex flex-col items-start justify-between gap-4 sm:flex-row">
                             <div>
                                 <p class="q-eyebrow">Marketplace preview</p>
@@ -312,7 +324,12 @@
                             </div>
                             <div class="q-panel p-4">
                                 <p class="text-sm font-medium text-[#6b6b6b]">Work categories</p>
-                                <p class="q-copy mt-1 text-sm leading-6">{{ $selectedWorkCategories !== [] ? implode(', ', $selectedWorkCategories) : 'No work categories selected yet.' }}</p>
+                                <ul role="list" class="mt-3 flex flex-wrap gap-2" x-show="selectedCategories.length > 0">
+                                    <template x-for="category in selectedCategories" :key="category">
+                                        <li class="max-w-full rounded-lg border border-qareeb-olive/25 bg-qareeb-olive/10 px-3 py-1.5 text-sm leading-6 font-medium break-words text-qareeb-green" x-text="category"></li>
+                                    </template>
+                                </ul>
+                                <p class="q-copy mt-2 text-sm leading-6" x-show="selectedCategories.length === 0">No work categories selected yet.</p>
                             </div>
                             <div class="q-panel p-4">
                                 <p class="text-sm font-medium text-[#6b6b6b]">Location preview</p>
@@ -362,6 +379,7 @@
                 districts: config.districts,
                 selectedDistricts: config.selectedDistricts ?? [],
                 selectedCities: config.selectedCities ?? [],
+                selectedCategories: config.selectedCategories ?? [],
                 init() {
                     this.syncSelectedCities();
                     this.updateLocation();

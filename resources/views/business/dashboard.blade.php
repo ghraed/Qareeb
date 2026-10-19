@@ -30,7 +30,7 @@
                 </div>
                 <x-profile-completion :profile="$profile" />
                 <div class="mt-6 grid items-start gap-4 sm:grid-cols-2">
-                    <div x-data="availabilityToggle(@js((bool) $profile->is_available_for_hire))" :aria-busy="saving" :class="{ 'border-qareeb-green bg-qareeb-green text-white': available, 'border-qareeb-stone/30 bg-qareeb-stone/5 text-qareeb-stone': !available }" @keydown.escape.window="infoOpen = false" @class([
+                    <div x-data="availabilityToggle(@js((bool) $profile->is_available_for_hire))" @availability-updated.window="available = $event.detail.available" @availability-saving.window="saving = $event.detail.saving" :aria-busy="saving" :class="{ 'border-qareeb-green bg-qareeb-green text-white': available, 'border-qareeb-stone/30 bg-qareeb-stone/5 text-qareeb-stone': !available }" @keydown.escape.window="infoOpen = false" @class([
                         'min-w-0 rounded-2xl border px-4 py-3',
                         'border-qareeb-green bg-qareeb-green text-white' => $profile->is_available_for_hire,
                         'border-qareeb-stone/30 bg-qareeb-stone/5 text-qareeb-stone' => ! $profile->is_available_for_hire,
@@ -57,7 +57,7 @@
                                 @csrf
                                 @method('PATCH')
                                 <input type="hidden" name="is_available_for_hire" :value="available ? 0 : 1" value="{{ $profile->is_available_for_hire ? 0 : 1 }}">
-                                <button type="submit" role="switch" :disabled="saving" :aria-checked="available" :title="available ? 'Mark unavailable' : 'Accept enquiries'" aria-checked="{{ $profile->is_available_for_hire ? 'true' : 'false' }}" aria-label="Accepting enquiries for work" title="{{ $profile->is_available_for_hire ? 'Mark unavailable' : 'Accept enquiries' }}" class="flex min-h-11 min-w-11 cursor-pointer items-center justify-center rounded-full disabled:cursor-wait disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current">
+                                <button type="submit" role="switch" :disabled="saving" :aria-checked="available" :title="available ? 'Mark unavailable' : 'Mark availability'" aria-checked="{{ $profile->is_available_for_hire ? 'true' : 'false' }}" aria-label="Accepting enquiries for work" title="{{ $profile->is_available_for_hire ? 'Mark unavailable' : 'Mark availability' }}" class="flex min-h-11 min-w-11 cursor-pointer items-center justify-center rounded-full disabled:cursor-wait disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current">
                                     <span aria-hidden="true" :class="{ 'justify-end border-white/60 bg-white/25': available, 'justify-start border-qareeb-stone/50 bg-qareeb-stone/30': !available }" @class([
                                         'flex h-7 w-12 items-center rounded-full border p-0.5',
                                         'justify-end border-white/60 bg-white/25' => $profile->is_available_for_hire,

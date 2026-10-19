@@ -67,12 +67,53 @@
         </span>
     </a>
 
-    <button type="button" class="q-menu-toggle lg:hidden" x-cloak x-ref="menuToggle" aria-controls="site-navigation" aria-expanded="false" aria-label="Open navigation" x-bind:aria-expanded="menuOpen" x-on:click="openMenu()">
+    <div class="flex shrink-0 items-center gap-1 lg:order-last">
+        @if ($navigationUser?->isServiceProvider())
+            @php
+                $navigationAvailable = $navigationUser->hasActiveProviderAccount() && (bool) $navigationUser->businessProfile?->is_available_for_hire;
+            @endphp
+            <form
+                method="POST"
+                action="{{ route('business.profile.hiring-availability') }}"
+                x-data="availabilityToggle(@js($navigationAvailable))"
+                @submit.prevent="save($el)"
+                @availability-updated.window="available = $event.detail.available"
+                @availability-saving.window="saving = $event.detail.saving"
+                :aria-busy="saving"
+            >
+                @csrf
+                @method('PATCH')
+                <input type="hidden" name="is_available_for_hire" :value="available ? 0 : 1" value="{{ $navigationAvailable ? 0 : 1 }}">
+                <button
+                    type="submit"
+                    role="switch"
+                    aria-label="Accepting enquiries for work"
+                    aria-checked="{{ $navigationAvailable ? 'true' : 'false' }}"
+                    :aria-checked="available"
+                    @disabled(! $navigationUser->hasActiveProviderAccount())
+                    :disabled="saving || @js(! $navigationUser->hasActiveProviderAccount())"
+                    title="{{ $navigationAvailable ? 'Mark unavailable' : 'Mark availability' }}"
+                    :title="available ? 'Mark unavailable' : 'Mark availability'"
+                    @class([
+                        'flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-full border focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current disabled:cursor-not-allowed disabled:opacity-60',
+                        'border-qareeb-green/30 bg-qareeb-green/10 text-qareeb-green' => $navigationAvailable,
+                        'border-rose-700/30 bg-rose-700/5 text-rose-700' => ! $navigationAvailable,
+                    ])
+                    :class="{ 'border-qareeb-green/30 bg-qareeb-green/10 text-qareeb-green': available, 'border-rose-700/30 bg-rose-700/5 text-rose-700': !available }"
+                >
+                    <svg aria-hidden="true" class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 3v9m-5.5-7a9 9 0 1 0 11 0" />
+                    </svg>
+                </button>
+            </form>
+        @endif
+        <button type="button" class="q-menu-toggle lg:hidden" x-cloak x-ref="menuToggle" aria-controls="site-navigation" aria-expanded="false" aria-label="Open navigation" x-bind:aria-expanded="menuOpen" x-on:click="openMenu()">
         <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
             <path d="M6 8H22M6 14H17M6 20H22" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
             <circle cx="22" cy="14" r="1.5" fill="var(--color-qareeb-brown)" />
         </svg>
-    </button>
+        </button>
+    </div>
 
     <div id="site-navigation" aria-label="Main navigation" class="q-home-navigation" x-ref="menuPanel" x-bind:class="{ 'is-open': menuOpen }" x-bind:inert="!isDesktop && !menuOpen" x-bind:role="isDesktop ? null : 'dialog'" x-bind:aria-modal="!isDesktop && menuOpen ? 'true' : null" x-on:keydown.tab="trapFocus($event)">
         <div class="q-home-navigation-inner">

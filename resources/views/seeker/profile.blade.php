@@ -44,7 +44,6 @@
             <x-form-input label="Current password (only for sign-in changes)" name="current_password" type="password" autocomplete="current-password" />
         </div>
         <button class="q-button-primary" type="submit">Save private profile</button>
-        <a class="q-button-secondary" href="{{ route('seeker.dashboard') }}">Back to dashboard</a>
     </form>
 </section>
 @endsection

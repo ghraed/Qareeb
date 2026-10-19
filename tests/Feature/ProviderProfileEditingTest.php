@@ -26,7 +26,7 @@ class ProviderProfileEditingTest extends TestCase
         $this->assertSame('Other business', $otherProfile->refresh()->business_name);
         $this->assertNull($provider->refresh()->email);
         $this->assertSame('owner', $provider->username);
-        $this->get(route('providers.show', $provider))->assertOk()->assertSee('Owned services')->assertSee('Skilled services')->assertSee('Photography, Transportation')->assertSee('My street')->assertSee('1107');
+        $this->get(route('providers.show', $provider))->assertOk()->assertSee('Owned services')->assertSee('Skilled services')->assertSeeInOrder(['Photography', 'Transportation'])->assertSee('My street')->assertSee('1107');
         $this->get(route('business.profile.edit'))->assertOk()->assertSee('Owned services');
         $this->get('/business/profile/'.$otherProfile->id.'/edit')->assertNotFound();
     }

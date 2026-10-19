@@ -60,7 +60,7 @@
             <article class="q-card min-w-0 space-y-4 p-6">
                 <x-provider-avatar :photo-url="$profile->profilePhotoUrl()" :name="$profile->business_name ?: $provider->name" size="md" :hiring="$profile->is_available_for_hire" />
                 <h2 class="q-heading break-words text-2xl"><a href="{{ route('providers.show', $provider) }}">{{ $profile->business_name ?: $provider->name }}</a></h2>
-                <p class="q-copy text-sm">{{ $profile->formattedCategories() ?: 'No categories listed yet' }}</p>
+                <x-provider-card-categories :categories="$profile->categories" :provider-name="$profile->business_name ?: $provider->name" :provider-id="$provider->id" />
                 <p class="q-copy text-sm">{{ $profile->locationLine() ?: 'Location not provided' }}</p>
                 <x-rating-stars :rating="$profile->average_rating" :count="$profile->reviews_count" size="sm" />
                 <x-availability-badge :available="$profile->is_available_for_hire" />

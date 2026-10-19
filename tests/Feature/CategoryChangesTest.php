@@ -19,7 +19,7 @@ class CategoryChangesTest extends TestCase
         $this->actingAs($provider)->get(route('business.profile.edit'))->assertOk()->assertSee('Photography');
         $this->put(route('business.profile.update'), ['categories' => ['Photography', 'Electrician']])->assertSessionHasNoErrors();
         $this->assertSame(['Photography', 'Electrician'], $provider->businessProfile->refresh()->categories);
-        $this->get(route('providers.show', $provider))->assertOk()->assertSee('Photography, Electrician');
+        $this->get(route('providers.show', $provider))->assertOk()->assertSeeInOrder(['Photography', 'Electrician']);
     }
 
     public function test_retired_category_migration_is_exact_idempotent_and_flags_empty_profiles(): void

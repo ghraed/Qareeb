@@ -11,7 +11,7 @@
             <meta property="og:image" content="@yield('og_image')">
         @endif
         <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=fraunces:400,500,600,700|inter:400,500,600,700|noto-sans-arabic:400,500,700" rel="stylesheet" />
+        <link href="https://fonts.bunny.net/css?family=caveat:400,600|fraunces:400,500,600,700|inter:400,500,600,700|noto-sans-arabic:400,500,700" rel="stylesheet" />
         @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
             @vite(['resources/css/app.css', 'resources/js/app.js'])
         @endif
@@ -25,14 +25,15 @@
                 <x-site-header class="mb-6" />
 
                 <main id="main-content" class="min-w-0 flex-1">
-                    @if (session('status'))
-                        <x-alert type="success" :message="session('status')" class="mb-6" />
-                    @endif
-
                     @yield('content')
                 </main>
                 <footer class="mt-6 py-2 text-sm"><a class="font-semibold underline" href="{{ route('terms.show') }}">Terms and Conditions</a></footer>
             </div>
         </div>
+        <x-toast
+            :type="$errors->any() || session('error') ? 'error' : 'success'"
+            :message="$errors->first() ?: (session('error') ?: (session('status') ?: ''))"
+        />
+        @stack('overlays')
     </body>
 </html>

@@ -10,6 +10,7 @@
         'Segoe UI Symbol', 'Noto Color Emoji';
     --font-serif: 'Fraunces', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
     --font-arabic: 'Noto Sans Arabic', 'Segoe UI', sans-serif;
+    --font-handwriting: 'Caveat', 'Noto Sans Arabic', cursive;
     --color-qareeb-green: #1f3b2e;
     --color-qareeb-sand: #e8dcc2;
     --color-qareeb-cream: #f6f2e6;
@@ -37,6 +38,16 @@
 }
 
 @layer components {
+    .q-complaint-paper {
+        @apply min-w-0 rounded-lg border border-qareeb-sand bg-[#fffdf5] shadow-[0_8px_24px_-12px_rgba(31,59,46,0.2)];
+    }
+
+    .q-handwritten-note {
+        @apply font-handwriting text-2xl leading-8 text-qareeb-green;
+        background-image: repeating-linear-gradient(to bottom, transparent 0, transparent 31px, var(--color-qareeb-sand) 31px, var(--color-qareeb-sand) 32px);
+        overflow-wrap: anywhere;
+    }
+
     .q-card {
         @apply w-full min-w-0 rounded-[2rem] border border-white/70 bg-white/90 shadow-[0_30px_80px_-35px_rgba(31,59,46,0.28)] backdrop-blur;
     }

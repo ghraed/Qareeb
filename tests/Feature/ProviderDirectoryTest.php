@@ -51,6 +51,31 @@ class ProviderDirectoryTest extends TestCase
         $this->get(route('providers.index'))->assertOk()->assertSee('Clear filters');
     }
 
+    public function test_cards_preview_three_categories_and_only_open_a_dialog_when_more_exist(): void
+    {
+        $categories = ['Photography', 'Electrician', 'Plumber', 'Carpenter', 'Painter'];
+        $many = $this->provider('Many services', $categories);
+        $three = $this->provider('Three services', array_slice($categories, 0, 3));
+        $empty = $this->provider('No services yet', []);
+        $response = $this->get(route('providers.index'))->assertOk();
+
+        $dom = new \DOMDocument();
+        @$dom->loadHTML($response->getContent());
+        $xpath = new \DOMXPath($dom);
+        $preview = $xpath->query('//button[@aria-controls="provider-categories-'.$many->id.'"]')->item(0);
+        $this->assertNotNull($preview);
+        $this->assertStringContainsString('Photography', $preview->textContent);
+        $this->assertStringContainsString('Electrician', $preview->textContent);
+        $this->assertStringContainsString('Plumber', $preview->textContent);
+        $this->assertStringContainsString('...', $preview->textContent);
+        $this->assertStringNotContainsString('Carpenter', $preview->textContent);
+        $this->assertStringNotContainsString('Painter', $preview->textContent);
+        $this->assertSame(5, $xpath->query('//dialog[@id="provider-categories-'.$many->id.'"]//li')->length);
+        $response->assertDontSee('id="provider-categories-'.$three->id.'"', false)
+            ->assertDontSee('id="provider-categories-'.$empty->id.'"', false)
+            ->assertSee('No categories listed yet');
+    }
+
     public function test_district_and_city_coverage_compose_with_categories_and_legacy_storage(): void
     {
         $match = $this->provider('Combined match', ['Photography']);

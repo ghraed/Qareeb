@@ -20,8 +20,9 @@ class ProviderAvailabilityTest extends TestCase
             $this->assertSame($available, $profile->refresh()->is_available_for_hire);
             $this->put(route('business.profile.update'), ['business_name' => 'Services'])->assertSessionHasNoErrors();
             $this->assertSame($available, $profile->refresh()->is_available_for_hire);
-            $this->actingAs($user->fresh())->get(route('business.dashboard'))->assertOk()->assertSee($available ? 'Mark unavailable' : 'Accept enquiries');
-            $this->get(route('business.profile.edit'))->assertOk()->assertSee($available ? 'Mark unavailable' : 'Accept enquiries');
+            $this->actingAs($user->fresh())->get(route('business.dashboard'))->assertOk()->assertSee($available ? 'Mark unavailable' : 'Mark availability');
+            $this->get(route('business.profile.edit'))->assertOk()->assertSee($available ? 'Stop hiring' : 'Start hiring')
+                ->assertSee('id="hiring-heading"', false)->assertDontSee('>Availability</h2>', false);
             $this->get(route('providers.show', $user))->assertOk()->assertSee($available ? 'Available for hire' : 'Currently unavailable');
         }
         $this->patch(route('business.profile.hiring-availability'), ['is_available_for_hire' => 'bad'])->assertSessionHasErrors('is_available_for_hire');

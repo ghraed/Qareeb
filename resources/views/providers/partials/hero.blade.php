@@ -14,11 +14,11 @@
         @endif
 
         <div class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 sm:left-10 sm:translate-x-0">
-            <x-provider-avatar :photo-url="$profile->profilePhotoUrl()" :name="$businessName" size="xl" :hiring="$profile->is_available_for_hire" />
+            <x-profile-avatar :profile="$profile" :name="$businessName" size="xl" />
         </div>
     </div>
 
-    <div class="px-4 pb-6 pt-20 sm:px-10">
+    <div class="px-4 pb-6 pt-28 sm:px-10">
         <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div>
                 <p class="q-eyebrow">Marketplace provider</p>
