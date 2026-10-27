@@ -1,5 +1,6 @@
 @php
     $navigationUser = auth()->user();
+    $providerPreregistration = config('qareeb.provider_preregistration');
     $navigationHome = url('/');
     $logoutRoute = null;
     $navigationLinks = [
@@ -17,7 +18,7 @@
             ['label' => 'Complaints', 'route' => 'admin.complaints.index', 'active' => 'admin.complaints.*'],
             ['label' => 'Image reports', 'route' => 'admin.image-reports.index', 'active' => 'admin.image-reports.*'],
         ];
-    } elseif ($navigationUser?->isSeeker()) {
+    } elseif ($navigationUser?->isSeeker() && ! $providerPreregistration) {
         $navigationHome = route('seeker.dashboard');
         $logoutRoute = 'seeker.logout';
         $navigationLinks = [
@@ -40,11 +41,22 @@
             ];
     }
 
-    if (request()->is('/')) {
+    if (request()->is('/') && (! $providerPreregistration || ! $navigationUser)) {
         $navigationLinks = [
             ['label' => 'Seeker login', 'route' => 'seeker.login', 'active' => 'seeker.login'],
             ['label' => 'Business login', 'route' => 'business.login', 'active' => 'business.login'],
         ];
+    }
+
+    if ($providerPreregistration && (! $navigationUser || $navigationUser->isSeeker())) {
+        $navigationHome = url('/');
+        $logoutRoute = $navigationUser ? 'seeker.logout' : null;
+        $navigationLinks = [
+            ['label' => 'Provider login', 'route' => 'business.login', 'active' => 'business.login'],
+        ];
+        if (! request()->is('/')) {
+            $navigationLinks[] = ['label' => 'Register as a provider', 'route' => 'business.register', 'active' => 'business.register'];
+        }
     }
 @endphp
 

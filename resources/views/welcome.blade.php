@@ -1,3 +1,4 @@
+@php($providerPreregistration = config('qareeb.provider_preregistration'))
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
@@ -22,13 +23,17 @@
                 <main class="flex flex-1 items-center py-3">
                     <div class="grid w-full gap-4 lg:grid-cols-[1fr_0.9fr] lg:items-center lg:gap-8">
                         <section class="space-y-3">
-                            <span class="inline-flex rounded-full border border-[#d7ccb6] bg-[#f6f2e6] px-4 py-1.5 text-sm font-semibold text-[#1f3b2e]">Local services</span>
+                            <span class="inline-flex rounded-full border border-[#d7ccb6] bg-[#f6f2e6] px-4 py-1.5 text-sm font-semibold text-[#1f3b2e]">{{ $providerPreregistration ? 'Provider preregistration' : 'Local services' }}</span>
                             <div class="space-y-3">
-                                <h1 class="q-page-title max-w-3xl">Find trusted help, close to home.</h1>
-                                <p class="max-w-2xl text-sm leading-6 text-[#5f625d] sm:text-base sm:leading-7">Explore local services, discover providers in your area, and contact the right person directly.</p>
+                                <h1 class="q-page-title max-w-3xl">{{ $providerPreregistration ? 'Grow your business with Qareeb.' : 'Find trusted help, close to home.' }}</h1>
+                                <p class="max-w-2xl text-sm leading-6 text-[#5f625d] sm:text-base sm:leading-7">{{ $providerPreregistration ? 'We are welcoming service providers ahead of our public launch. Register your business for review and prepare your profile after approval.' : 'Explore local services, discover providers in your area, and contact the right person directly.' }}</p>
                             </div>
                             <div class="flex flex-wrap gap-3">
-                                <a href="{{ route('seeker.login') }}" class="q-button-primary">Find a provider</a>
+                                @if ($providerPreregistration)
+                                    <a href="{{ route('business.register') }}" class="q-button-primary">Register as a provider</a>
+                                @else
+                                    <a href="{{ route('seeker.login') }}" class="q-button-primary">Find a provider</a>
+                                @endif
                             </div>
                         </section>
 
@@ -36,8 +41,8 @@
                             <x-app-logo class="h-12 w-12 shrink-0 rounded-xl shadow-[0_25px_60px_-28px_rgba(31,59,46,0.55)] lg:h-20 lg:w-20 lg:rounded-[1.5rem]" alt="Qareeb logo" />
                             <div class="space-y-1 lg:space-y-2">
                                 <p class="text-xs font-semibold uppercase tracking-[0.3em] text-[#6c8a5b] lg:text-sm">Trusted help, nearby</p>
-                                <h2 class="font-serif text-xl font-semibold tracking-tight text-[#1f3b2e] lg:text-3xl">Local services, closer to you</h2>
-                                <p class="text-sm leading-6 text-[#5f625d]">Discover providers in your area and contact them directly.</p>
+                                <h2 class="font-serif text-xl font-semibold tracking-tight text-[#1f3b2e] lg:text-3xl">{{ $providerPreregistration ? 'Be part of our first providers' : 'Local services, closer to you' }}</h2>
+                                <p class="text-sm leading-6 text-[#5f625d]">{{ $providerPreregistration ? 'Join early and get your business ready for launch.' : 'Discover providers in your area and contact them directly.' }}</p>
                             </div>
                         </section>
                     </div>

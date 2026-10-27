@@ -73,6 +73,14 @@ dedicated test database instead. Never select a database containing real data:
 feature tests reset their database. PHP needs PDO SQLite and GD; the other suites
 need Node.js 22+ and Python 3. See [the test coverage guide](tests/README.md).
 
+## Provider preregistration phase
+
+Set `PROVIDER_PREREGISTRATION=true` in `.env` and refresh the configuration cache
+to show provider registration and login while pausing seeker access. Seeker page
+URLs redirect to the homepage; seeker form submissions are blocked. Existing
+seekers can still log out. Provider approval and administrator access continue
+to work. Set the flag to `false` to restore seeker access for the public launch.
+
 ## Admin account
 
 Seed the development administrator with:
