@@ -28,9 +28,9 @@
                                 <h1 class="q-page-title max-w-3xl">{{ $providerPreregistration ? 'Grow your business with Qareeb.' : 'Find trusted help, close to home.' }}</h1>
                                 <p class="max-w-2xl text-sm leading-6 text-[#5f625d] sm:text-base sm:leading-7">{{ $providerPreregistration ? 'We are welcoming service providers ahead of our public launch. Register your business for review and prepare your profile after approval.' : 'Explore local services, discover providers in your area, and contact the right person directly.' }}</p>
                             </div>
-                            <div class="flex flex-wrap gap-3">
+                            <div class="flex w-full flex-wrap gap-3">
                                 @if ($providerPreregistration)
-                                    <a href="{{ route('business.register') }}" class="q-button-primary">Register as a provider</a>
+                                    <a href="{{ route('business.register') }}" class="q-button-primary w-full justify-center text-center sm:w-auto">Register as a provider</a>
                                 @else
                                     <a href="{{ route('seeker.login') }}" class="q-button-primary">Find a provider</a>
                                 @endif
@@ -47,7 +47,7 @@
                         </section>
                     </div>
                 </main>
-                <footer class="shrink-0 py-1 text-sm"><a class="font-semibold underline" href="{{ route('terms.show') }}">Terms and Conditions</a></footer>
+                <footer class="mt-auto shrink-0 py-3 text-center text-sm"><a class="font-semibold underline" href="{{ route('terms.show') }}">Terms and Conditions</a></footer>
             </div>
         </div>
     </body>
